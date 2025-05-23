@@ -20,6 +20,11 @@ async function button_click() {
 
     document.getElementById("btn_test").innerText = "Camarada";
     document.getElementById("btn_test").style.backgroundColor ="rgb(235, 20, 20)";
+
+    const display = document.getElementById("display");
+    katex.render("\\frac{1}{2\\pi}\\int_{\\mathbb{R}}{f(x)e^{-ikx}dx}", display, {
+        displayMode: true
+    });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
