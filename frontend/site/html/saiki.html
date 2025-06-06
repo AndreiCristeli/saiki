@@ -12,9 +12,18 @@
   <script defer src="../../dependencies/katex/contrib/auto-render.min.js"
   onload="renderMathInElement(document.body);"></script>
 
+  <!-- translate -->
+  <script src="../script/locales.js"></script>
+  <script src="https://unpkg.com/i18next@22.4.10/i18next.min.js"></script>
 </head>
 
 <body>
+
+  <!-- translate -->
+  <select class="translateBox" onchange="trocarIdioma(this.value)">
+    <option value="pt">Português</option>
+    <option value="en">English</option>
+  </select>
 
   <h1 style="-webkit-text-stroke: 2px black;"><strong>saiki</strong></h1>
   <p style="font-size: 30px;">Qual é o algoritmo do dia?</p>
@@ -92,6 +101,7 @@
     
     <button class="closeDialog" aria-label="Fechar">&times;</button>
   </dialog>
+
 
   <script src="../../site/script/main.js"></script>
 </body>
