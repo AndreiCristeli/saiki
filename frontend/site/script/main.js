@@ -83,3 +83,16 @@ function keydown(event, input, element) {
   }
 
 }
+
+function click(event, button) {
+  const dialog = document.querySelector('.infoDialog');
+  if (dialog) {
+    dialog.showModal();
+  }  
+}
+
+function closeDialog(event, dialog) {
+  if(dialog) {
+    dialog.close();
+  }
+}
