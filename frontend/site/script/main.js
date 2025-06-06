@@ -93,7 +93,13 @@ function click(event, button) {
 
 function closeDialog(event, dialog) {
   if(dialog) {
-    dialog.close();
+    dialog.style.animation = 'desvanecer 0.8s ease-out forwards';
+
+    dialog.addEventListener('animationend', function handleClose() {
+      dialog.close();
+      dialog.style.animation = '';
+      dialog.removeEventListener('animationend', handleClose);
+    });
   }
 }
 
