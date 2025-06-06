@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saiki - Algoritmo do Dia</title>
+  <link rel="stylesheet" href="../../site/css/style.css">
+
+  <!-- katex dependencies -->
+  <link rel="stylesheet" href="../../dependencies/katex/katex.min.css" />
+  <script defer src="../../dependencies/katex/katex.min.js"></script>
+  <script defer src="../../dependencies/katex/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+</head>
+
+<body>
+
+  <h1 style="-webkit-text-stroke: 2px black;"><strong>saiki</strong></h1>
+  <p style="font-size: 30px;">Qual é o algoritmo do dia?</p>
+  <input type="text" placeholder="Escreva aqui" class="Input">
+
+  <!-- Label for players -->
+  <div class="attempts">Tentativas: 0</div>
+  <ul class="label">
+    <li>Categoria</li>
+    <li>Ano</li>
+    <li>Complexidade Temporal Média</li>
+    <li>Complexidade Espacial Auxiliar</li>
+    <li>Estrutura de Dados</li>
+    <li>Solução</li>
+    <li>Generalidade</li>
+  </ul>
+
+  <!-- Div de ancoragem para os novos card's -->
+  <div class="cards-container"></div>
+
+</body>
+
+</html>
