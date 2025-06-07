@@ -1,0 +1,28 @@
+# .gitignore at <saiki/>
+# ---------------------
+
+### IDEs ###
+.vscode/
+.vs/
+.idea/
+
+### Python ###
+*.venv/*
+*/__pycache__/*
+*.pyc
+
+### Binaries ###
+bin/
+*.o
+*.a
+*.lib
+*.dll
+*.so
+*.exe
+
+### Data and logging ###
+*.log
+
+### Temporaries ###
+*temp/
+*.ls

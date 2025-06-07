@@ -1,0 +1,85 @@
+
+great-people:
+  - name: Alan Turing
+    year: 1930
+
+algorithms:
+  - name: bubblesort
+    year: 1956
+    temporal-complexity: O(n^2)
+    spacial-complexity: O(1)
+    data-structure: [array, list]
+    solution: exact
+    generality: general
+  
+  - name: heapsort
+    year: 1964
+    temporal-complexity: O(n \log{n})
+    spacial-complexity: O(1)
+    data-structure: [heap]
+    solution: exact
+    generality: general
+
+  - name: mergesort
+    year: 1945
+    temporal-complexity: O(n \log{n})
+    spacial-complexity: O(n)
+    data-structure: [array, list]
+    solution: exact
+    generality: general
+    
+  - name: selectionsort
+    year: 1950
+    temporal-complexity: O(n^2)
+    spacial-complexity: O(1)
+    data-structure: [array, list]
+    solution: exact
+    generality: general
+    
+  - name: quicksort
+    year: 1959
+    temporal-complexity: O(n \log{n})
+    spacial-complexity: O(1)
+    data-structure: [array, list]
+    solution: exact
+    generality: general
+    
+  - name: introsort
+    year: 1997
+    temporal-complexity: O(n \log{n})
+    spacial-complexity: O(\log{n})
+    data-structure: [array, list]
+    solution: exact
+    generality: general
+    
+  - name: tournamentsort
+    year: 0
+    temporal-complexity: O(n \log{n})
+    spacial-complexity: O(n)
+    data-structure: [priority_queue]
+    solution: exact
+    generality: general
+    
+  - name: treesort
+    year: 0
+    temporal-complexity: O(n \log{n})
+    spacial-complexity: O(n)
+    data-structure: [array, list]
+    solution: exact
+    generality: general
+    
+  - name: blocksort
+    year: 2008
+    temporal-complexity: O(n \log{n})
+    spacial-complexity: O(1)
+    data-structure: [array, list]
+    solution: exact
+    generality: general
+    
+  - name: smoothsort
+    year: 1981
+    temporal-complexity: O(n \log{n})
+    spacial-complexity: O(1)
+    data-structure: [priority_queue]
+    solution: exact
+    generality: general
