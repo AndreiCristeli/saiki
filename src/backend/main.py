@@ -5,7 +5,7 @@ Runs the backend server.
 """
 
 # for uvicorn
-from backend.api import app
+from src.backend.api import app
 
 """
 Setup running:
