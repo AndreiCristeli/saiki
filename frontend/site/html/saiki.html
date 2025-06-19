@@ -25,12 +25,16 @@
     <option value="en">English</option>
   </select>
 
+  <!-- TODO: Add Navigation Bar (To select Entity type, etc.) -->
+
   <h1 style="-webkit-text-stroke: 2px black;"><strong>saiki</strong></h1>
   <p style="font-size: 30px;">Qual é o algoritmo do dia?</p>
   <input type="text" placeholder="Escreva aqui" class="Input">
 
   <!-- Label for players -->
-  <div class="attempts">Tentativas: 0</div>
+  <div class="attempts">
+    <div class="attempts-label">Tentativas: </div> <div class="attempts-field">0</div>
+  </div>
   <ul class="label">
     <li>Categoria</li>
     <li>Ano</li>
@@ -103,7 +107,7 @@
   </dialog>
 
 
-  <script src="../../site/script/main.js"></script>
+  <script type="module" src="../../site/script/main.js"></script>
 </body>
 
 </html>

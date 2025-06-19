@@ -1,10 +1,18 @@
+/** 
+ * @file frontend/site/script/locale.js
+ * 
+ * @author AndreiCristeli
+ * 
+ * @version 0.1
+ */
+
 const resources = {
   pt: {
     translation: {
       title: "saiki",
       question: "Qual é o algoritmo do dia?",
       inputPlaceholder: "Escreva aqui",
-      attempts: "Tentativas: {{count}}",
+      attempts: "Tentativas: ",
       howToPlay: "Como jogar",
       description: "Você deve adivinhar o algoritmo do dia se baseando nas pistas.",
       categoryInfoTitle: "Categoria",
@@ -28,7 +36,7 @@ const resources = {
       title: "saiki",
       question: "What is today's algorithm?",
       inputPlaceholder: "Type here",
-      attempts: "Attempts: {{count}}",
+      attempts: "Attempts: ",
       howToPlay: "How to play",
       description: "You must guess the algorithm of the day based on the clues.",
       categoryInfoTitle: "Category",
