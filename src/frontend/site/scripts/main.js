@@ -6,7 +6,17 @@ async function communicate(data) {
 }
 
 async function button_click() {
-    api("guess/hint", "POST", { "name": "corrupção" })
+    api("guess/hint", "POST", {
+        "attempt": "corrupção"
+    })
+        .then(data => {
+            communicate(data);
+        })
+        .catch(err => console.error(err));
+
+    api("guess/entity", "POST", {
+        "entity": "merge sort"
+    })
         .then(data => {
             communicate(data);
         })

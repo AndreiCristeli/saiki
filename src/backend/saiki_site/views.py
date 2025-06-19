@@ -9,6 +9,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from typing import Any
 import json
+from .models import example_algorithm
 
 
 class FrontendView(object):
@@ -37,44 +38,56 @@ class GuessView(object):
     """Handles the view of the Guess game mode."""
 
     @staticmethod
-    @csrf_exempt
+    @csrf_exempt    # Cookies~
     def request_hint(req) -> JsonResponse:
+        """Processes the request of a hint, via POST."""
+
         if req.method != "POST":
+            # empty return~
             return JsonResponse({})
-
+        
         try:
-            print(req)
             data = json.loads(req.body)
-            name: str = data.get("name")
+            name: str = data.get("attempt")
 
-            print(data, name)
+            if not isinstance(name, str):
+                raise TypeError
 
-        except:
+        except TypeError | KeyError as e:
             name: str = "undef"
+            print(e)
 
         return JsonResponse({
-            "msg": name.upper()
+            "name": name.upper()
         })
 
     @staticmethod
+    @csrf_exempt    # Cookies~
     def request_entity(req) -> JsonResponse:
-        return JsonResponse({
-            "name": "Merge Sort",
-            "type": "partial",
-            "data": {
-                "category": ["Sorting", "wrong"],
-                "year": [1945, "correct"],
-                "average_time_complexity": ["O(n log n)", "correct"],
-                "auxiliary_space_complexity": ["O(n)", "partial"],
-                "data_structure": ["Array", "correct"],
-                "kind_of_solution": ["Exact", "wrong"],
-                "generality": ["General-purpose", "wrong"]
-            }
-        })
+        """Processes the request of an entity, via POST."""
+
+        print(type(req))
+
+        if req.method != "POST":
+            # empty return~
+            return JsonResponse({})
+
+        try:
+            data = json.loads(req.body)
+            entity: str = data.get("entity")
+
+        except:
+            return JsonResponse({})
+        
+        if entity != "merge sort":
+            return JsonResponse({})
+
+        # Mocking gathering the data~
+        # return JsonResponse({})
+        return example_algorithm.to_json()
 
 
 class OtherView(object):
-    ...
 
     @staticmethod
     def read_root(req) -> JsonResponse:

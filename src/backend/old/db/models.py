@@ -1,15 +1,9 @@
 """
-backend/saiki_site/models.py
+backend/db/models.py
 
-Django models used by the site.
-"""
+System's database models.
 
-from django.db import models
-
-
-"""
-(Initially on src/backend/db/models.py. 
-@TODO: CHANGE IT TO THERE, EVENTUALLY)
+For all effects, relies on Django's type.
 """
 
 from django.db import models
@@ -21,14 +15,13 @@ class Model_Algorithm(models.Model):
     """Represents an algorithm; the entity."""
 
     name = CharField(max_length=32)
-    year = IntegerField()
+    year = IntegerField(max_length=32)
     category = CharField(max_length=32)
-    data_structures = CharField(max_length=512)
     design_paradigm = CharField(max_length=32)
     generality = CharField(max_length=32)
     temporal_complexity = CharField(max_length=32)
     spatial_complexity = CharField(max_length=32)
-    solution_kind = CharField(max_length=32)
+    solution_type = CharField(max_length=32)
 
     def to_json(self) -> JsonResponse:
         data: dict[str, CharField] = {
@@ -39,19 +32,22 @@ class Model_Algorithm(models.Model):
             "generality": self.generality,
             "temporal_complexity": self.temporal_complexity,
             "spatial_complexity": self.spatial_complexity,
-            "solution_kind": self.solution_kind,
+            "solution_type": self.solution_type,
         }
 
         return JsonResponse(data)
 
 
 # Testing
-
 example_algorithm = Model_Algorithm(name="Merge sort",
                                     year=1945,
                                     category="Sorting",
-                                    temporal_complexity="O(n log n)",
-                                    spatial_complexity="O(n)",
-                                    data_structures="array",
+                                    time_complexity="O(n log n)",
+                                    space_complexity="O(n)",
+                                    data_structure=["array"],
                                     solution_kind="exact",
                                     generality="general-purpose")
+
+
+if __name__ == "__main__":
+    ...
