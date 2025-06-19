@@ -7,7 +7,7 @@
  * @version 0.1
  */
 
-import * as cl from "./card_logic.js"
+import * as cl from "./attempt.js"
 
 // TODO: Handle entity_type properly according to user's selection.
 const ENTITY_TYPE_PH = "Algorithm"
@@ -24,12 +24,13 @@ function __normalize_input(input){
 
 // Envent handler for keydown on the input text box
 export function input_keydown(event, input, div_attempts) {
+  const user_input = __normalize_input(event.target.value); 
+
   if (/^[a-zA-z]$/.test(event.key)){ // Using RegExp for validating if entry is a letter.
     // TODO: add suggestion logic.
-    //console.log(event.key);
+    // console.log(event.key);
 
   } else if (event.key === 'Enter') {
-    const user_input = __normalize_input(event.target.value); 
     console.log(`Nomalized Input: ${user_input}`);
     input.value = '';
 
