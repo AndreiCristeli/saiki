@@ -6,13 +6,19 @@ async function communicate(data) {
 }
 
 async function button_click() {
-    api("/cmrd")
+    api("guess/hint", "POST", { "name": "corrupção" })
+        .then(data => {
+            communicate(data);
+        })
+        .catch(err => console.error(err));
+
+    api("cmrd")
         .then(data => {
             communicate(data.msg);
         })
         .catch(err => console.error(err));
 
-    api("/hangar")
+    api("hangar")
         .then(data => {
             communicate(data.msg);
         })

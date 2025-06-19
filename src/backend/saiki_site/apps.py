@@ -1,3 +1,9 @@
+"""
+backend/saiki_site/apps.py
+
+...
+"""
+
 from django.apps import AppConfig
 
 

@@ -2,6 +2,8 @@
 backend/api/req.py
 
 Requests via FastAPI~
+
+(deprecated~)
 """
 
 from fastapi import FastAPI
