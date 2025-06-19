@@ -1,0 +1,119 @@
+[
+  {
+    "name": "Breadth-First Search (BFS)",
+    "type": "partial",
+    "data": {
+      "category": "Graph Search",
+      "year": "1959",
+      "average_time_complexity": "T ∈ O(V + E)",
+      "auxiliary_space_complexity": "S ∈ O(V)",
+      "data_structure": "[] | B",
+      "kind_of_solution": "Exact",
+      "generality": "General"
+    }
+  },
+  {
+    "name": "Depth-First Search (DFS)",
+    "type": "partial",
+    "data": {
+      "category": "Graph Search",
+      "year": "1959",
+      "average_time_complexity": "T ∈ O(V + E)",
+      "auxiliary_space_complexity": "S ∈ O(V)",
+      "data_structure": "[] | B",
+      "kind_of_solution": "Exact",
+      "generality": "General"
+    }
+  },
+  {
+    "name": "Dijkstra's Algorithm",
+    "type": "partial",
+    "data": {
+      "category": "Graph Search",
+      "year": "1956",
+      "average_time_complexity": "T ∈ O((V + E) log V)",
+      "auxiliary_space_complexity": "S ∈ O(V)",
+      "data_structure": "[] | B",
+      "kind_of_solution": "Exact",
+      "generality": "General (non-negative weights)"
+    }
+  },
+  {
+    "name": "A* Search",
+    "type": "partial",
+    "data": {
+      "category": "Graph Search",
+      "year": "1968",
+      "average_time_complexity": "T ∈ O(E)",
+      "auxiliary_space_complexity": "S ∈ O(V)",
+      "data_structure": "[] | B",
+      "kind_of_solution": "Exact",
+      "generality": "General (with admissible heuristic)"
+    }
+  },
+  {
+    "name": "Bellman-Ford Algorithm",
+    "type": "partial",
+    "data": {
+      "category": "Graph Search",
+      "year": "1958",
+      "average_time_complexity": "T ∈ O(V·E)",
+      "auxiliary_space_complexity": "S ∈ O(V)",
+      "data_structure": "[]",
+      "kind_of_solution": "Exact",
+      "generality": "General (handles negative weights)"
+    }
+  },
+  {
+    "name": "Floyd-Warshall Algorithm",
+    "type": "partial",
+    "data": {
+      "category": "Graph Search",
+      "year": "1962",
+      "average_time_complexity": "T ∈ O(V³)",
+      "auxiliary_space_complexity": "S ∈ O(V²)",
+      "data_structure": "[]",
+      "kind_of_solution": "Exact",
+      "generality": "General (all-pairs shortest paths)"
+    }
+  },
+  {
+    "name": "Iterative Deepening DFS (IDDFS)",
+    "type": "partial",
+    "data": {
+      "category": "Graph Search",
+      "year": "1971",
+      "average_time_complexity": "T ∈ O(V + E)",
+      "auxiliary_space_complexity": "S ∈ O(d)",
+      "data_structure": "[] | B",
+      "kind_of_solution": "Exact",
+      "generality": "General"
+    }
+  },
+  {
+    "name": "Bidirectional Search",
+    "type": "partial",
+    "data": {
+      "category": "Graph Search",
+      "year": "1971",
+      "average_time_complexity": "T ∈ O(b^(d/2))",
+      "auxiliary_space_complexity": "S ∈ O(b^(d/2))",
+      "data_structure": "[] | B",
+      "kind_of_solution": "Exact",
+      "generality": "General (requires known goal)"
+    }
+  },
+  {
+    "name": "Greedy Best-First Search",
+    "type": "partial",
+    "data": {
+      "category": "Graph Search",
+      "year": "1985",
+      "average_time_complexity": "T ∈ O(E)",
+      "auxiliary_space_complexity": "S ∈ O(V)",
+      "data_structure": "[] | B",
+      "kind_of_solution": "Approximate",
+      "generality": "General (uses heuristic)"
+    }
+  }
+]
