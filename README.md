@@ -62,5 +62,5 @@ In this example, the player made two attempts:
 1. **Clone the repository**
    ```bash
    git clone https://github.com/AndreiCristeli/saiki.git
-   cd saiki-algorithm-game
+   cd saiki
    (...)
