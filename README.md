@@ -20,7 +20,7 @@ It's like Wordle, but focused on CS.
 
 Below is an example of the game in action:
 
-![Game Screenshot](./img_game.JPG)
+![Game Screenshot](./imgs/img_game.JPG)
 
 In this example, the player made two attempts:
 - First attempt: `bubble sort` → incorrect (several red or yellow fields)
