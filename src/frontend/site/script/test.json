@@ -1,0 +1,54 @@
+[
+  {
+    "name": "Merge Sort",
+    "type": "partial",
+    "data": {
+      "category": ["Sorting", "wrong"],
+      "year": [1945, "correct"],
+      "average_time_complexity": ["O(n log n)", "correct"],
+      "auxiliary_space_complexity": ["O(n)", "partial"],
+      "data_structure": ["Array", "correct"],
+      "kind_of_solution": ["Exact", "wrong"],
+      "generality": ["General-purpose", "wrong"]
+    }
+  },
+  {
+    "name": "Dijkstra's Algorithm",
+    "type": "partial",
+    "data": {
+      "category": ["Graph Search", "wrong"],
+      "year": [1959, "wrong"],
+      "average_time_complexity": ["O((V + E) log V)", "partial"],
+      "auxiliary_space_complexity": ["O(V)", "correct"],
+      "data_structure": ["Graph (with Priority Queue)", "partial"],
+      "kind_of_solution": ["Exact", "correct"],
+      "generality": ["Single-source shortest path (positive weights)", "wrong"]
+    }
+  },
+  {
+    "name": "Quick Sort",
+    "type": "correct",
+    "data": {
+      "category": ["Sorting", "correct"],
+      "year": [1960, "correct"],
+      "average_time_complexity": ["O(n log n)", "correct"],
+      "auxiliary_space_complexity": ["O(log n)", "correct"],
+      "data_structure": ["Array", "correct"],
+      "kind_of_solution": ["Exact", "correct"],
+      "generality": ["General-purpose", "correct"]
+    }
+  },
+  {
+    "name": "A* Search",
+    "type": "wrong",
+    "data":{
+      "category": ["Pathfinding", "wrong"],
+      "year": [1968, "correct"],
+      "average_time_complexity": ["O(b^d)", "correct"],
+      "auxiliary_space_complexity": ["O(b^d)", "correct"],
+      "data_structure": ["Graph (with Priority Queue)", "wrong"],
+      "kind_of_solution": ["Heuristic", "correct"],
+      "generality": ["Single-source shortest path with heuristics", "wrong"]
+    }
+  }
+]

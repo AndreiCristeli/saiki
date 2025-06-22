@@ -1,7 +1,9 @@
 """
-backend/api/main.py
+backend/api/req.py
 
-Runs the backend~
+Requests via FastAPI~
+
+(deprecated~)
 """
 
 from fastapi import FastAPI
@@ -15,11 +17,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/api/cmrd")
 def read_root() -> dict[str, str]:
     return { 
         "msg": "Hello from backend! Camarada"
     }
+
 
 @app.get("/api/hangar")
 def read_root() -> dict[str, str]:

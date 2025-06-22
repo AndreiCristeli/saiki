@@ -23,3 +23,10 @@ run-backend:
 
 # (currently empty)
 build:
+
+
+# Others
+# ------
+
+include .install.mak
+
