@@ -15,8 +15,9 @@ from django.db import models
 from django.db import models
 from django.db.models import CharField, IntegerField
 from django.http import JsonResponse
-
-
+from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.models import User
+#------------------------------------------------Model Algorithm---------------------------------------------------------------------
 class Model_Algorithm(models.Model):
     """Represents an algorithm; the entity."""
 
@@ -43,10 +44,7 @@ class Model_Algorithm(models.Model):
         }
 
         return JsonResponse(data)
-
-
-# Testing
-
+# Testing the Model_Algorithm class
 example_algorithm = Model_Algorithm(name="Merge sort",
                                     year=1945,
                                     category="Sorting",
@@ -55,3 +53,41 @@ example_algorithm = Model_Algorithm(name="Merge sort",
                                     data_structures="array",
                                     solution_kind="exact",
                                     generality="general-purpose")
+#------------------------------------------------------------------------------------------------------------------------------------
+class Jogador(models.Model):
+    """Represents a player; the entity."""
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    id = models.AutoField(primary_key=True)
+    name_public = models.CharField(max_length=32)
+    name_user = models.CharField(max_length=32, unique=True)
+    name_email = models.CharField(max_length=64, unique=True)
+    name_password = models.CharField(max_length=128)  # Hashed password
+    last_login = models.DateTimeField(auto_now=True)
+    status = models.BooleanField(default=False)  # False = inactive, True = active
+
+    @property
+    def user_stats(self):
+        return {
+            "last_login": self.last_login,
+            "status": self.status,
+        }
+
+    def set_password(self, raw_password):
+        self.name_password = make_password(raw_password)
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.name_password)
+
+    @property
+    def userconfigs(self):
+        return {
+            "public": self.name_public,
+            "user": self.name_user,
+            "email": self.name_email,
+            "password": self.name_password,
+        }
+
+    def __str__(self):
+        return self.name_user
