@@ -13,7 +13,7 @@ class SaikiDatabase(object):
     def __init__(self) -> None:
         ...
 
-    def fetch_entity(self, name: str) -> None:
+    def fetch_algorithm(self, name: str) -> None:
         """Attempts getting an entity on the database."""
         ...
 

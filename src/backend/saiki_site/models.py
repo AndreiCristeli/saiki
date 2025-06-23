@@ -16,8 +16,17 @@ from django.db import models
 from django.db.models import CharField, IntegerField
 from django.http import JsonResponse
 
+from abc import abstractmethod
 
-class Model_Algorithm(models.Model):
+
+class Model_Saiki(models.Model):
+
+    @abstractmethod
+    def to_json(self) -> JsonResponse:
+        ...
+
+
+class Model_Algorithm(Model_Saiki):
     """Represents an algorithm; the entity."""
 
     name = CharField(max_length=32)

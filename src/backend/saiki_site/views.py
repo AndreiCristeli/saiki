@@ -7,7 +7,6 @@ Viewing configuration for saiki_site Django's application.
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
-from typing import Any
 import json
 from .models import example_algorithm
 
@@ -45,7 +44,7 @@ class GuessView(object):
         if req.method != "POST":
             # empty return~
             return JsonResponse({})
-        
+
         try:
             data = json.loads(req.body)
             name: str = data.get("attempt")
