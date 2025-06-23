@@ -7,7 +7,7 @@
       "year": 1960,
       "average_time_complexity": "O(n²)",
       "auxiliary_space_complexity": "O(1)",
-      "data_structure": "In-place",
+      "data_structure": ["In-place"],
       "kind_of_solution": "Exact",
       "generality": "General-purpose"
     }
@@ -20,7 +20,7 @@
       "year": 1950,
       "average_time_complexity": "O(n²)",
       "auxiliary_space_complexity": "O(1)",
-      "data_structure": "In-place",
+      "data_structure": ["In-place"],
       "kind_of_solution": "Exact",
       "generality": "General-purpose"
     }
@@ -33,7 +33,7 @@
       "year": 1950,
       "average_time_complexity": "O(n²)",
       "auxiliary_space_complexity": "O(1)",
-      "data_structure": "In-place",
+      "data_structure": ["In-place"],
       "kind_of_solution": "Exact",
       "generality": "General-purpose"
     }
@@ -46,7 +46,7 @@
       "year": 1945,
       "average_time_complexity": "O(n log n)",
       "auxiliary_space_complexity": "O(n)",
-      "data_structure": "Array",
+      "data_structure": ["Buffer"],
       "kind_of_solution": "Exact",
       "generality": "General-purpose"
     }
@@ -59,7 +59,7 @@
       "year": 1960,
       "average_time_complexity": "O(n log n)",
       "auxiliary_space_complexity": "O(n)",
-      "data_structure": "In-place",
+      "data_structure": ["In-place"],
       "kind_of_solution": "Exact",
       "generality": "General-purpose"
     }
@@ -72,7 +72,7 @@
       "year": 1964,
       "average_time_complexity": "O(n log n)",
       "auxiliary_space_complexity": "O(1)",
-      "data_structure": "In-place",
+      "data_structure": ["In-place"],
       "kind_of_solution": "Exact",
       "generality": "General-purpose"
     }
@@ -85,7 +85,7 @@
       "year": 1959,
       "average_time_complexity": "O(n^1.5)",
       "auxiliary_space_complexity": "O(1)",
-      "data_structure": "In-place",
+      "data_structure": ["In-place"],
       "kind_of_solution": "Exact",
       "generality": "General-purpose"
     }
@@ -98,7 +98,7 @@
       "year": 1954,
       "average_time_complexity": "O(n + k)",
       "auxiliary_space_complexity": "O(k)",
-      "data_structure": "Array",
+      "data_structure": ["Buffer"],
       "kind_of_solution": "Exact",
       "generality": "Limitada"
     }
@@ -111,7 +111,7 @@
       "year": 1954,
       "average_time_complexity": "O(n·k)",
       "auxiliary_space_complexity": "O(n + k)",
-      "data_structure": "Array",
+      "data_structure": ["Buffer"],
       "kind_of_solution": "Exact",
       "generality": "Limitada"
     }
@@ -124,7 +124,7 @@
       "year": 1956,
       "average_time_complexity": "O(n + k)",
       "auxiliary_space_complexity": "O(n + k)",
-      "data_structure": "Array",
+      "data_structure": ["Buffer"],
       "kind_of_solution": "Exact",
       "generality": "Limitada"
     }
@@ -137,7 +137,7 @@
       "year": 2002,
       "average_time_complexity": "O(n log n)",
       "auxiliary_space_complexity": "O(n)",
-      "data_structure": "Array",
+      "data_structure": ["Buffer"],
       "kind_of_solution": "Exact",
       "generality": "General-purpose"
     }
@@ -150,7 +150,7 @@
       "year": 2000,
       "average_time_complexity": "O(n²)",
       "auxiliary_space_complexity": "O(1)",
-      "data_structure": "In-place",
+      "data_structure": ["In-place"],
       "kind_of_solution": "Exact",
       "generality": "General-purpose"
     }
@@ -163,7 +163,7 @@
       "year": 1980,
       "average_time_complexity": "O(n²)",
       "auxiliary_space_complexity": "O(1)",
-      "data_structure": "In-place",
+      "data_structure": ["In-place"],
       "kind_of_solution": "Exact",
       "generality": "General-purpose"
     }
@@ -176,7 +176,7 @@
         "year": 1956,
         "average_time_complexity": "O(n²)",
         "auxiliary_space_complexity": "O(1)",
-        "data_structure": "In-place",
+        "data_structure": ["In-place"],
         "kind_of_solution": "Exact",
         "generality": "General-purpose"
     }
