@@ -4,7 +4,7 @@ backend/saiki_site/views.py
 Viewing configuration for saiki_site Django's application.
 """
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from typing import Any
@@ -104,3 +104,70 @@ def read_root1(req) -> JsonResponse:
             "msg": "Helicóptero"
         }
     )
+
+
+
+#-------------------------------------------------------------------------------------------
+from .forms import JogadorForm, JogadorLoginForm
+from .models import Jogador
+from django.contrib import messages
+from django.contrib.auth import login
+
+def jogador_login(request):
+    if request.method == "POST":
+        form = JogadorLoginForm(request.POST)
+        if form.is_valid():
+            name_user = form.cleaned_data['name_user']
+            password = form.cleaned_data['password']
+            try:
+                jogador = Jogador.objects.get(name_user=name_user)
+                if jogador.check_password(password):
+                    login(request, jogador.user)  # o User real associado
+                    return redirect('painel_jogador')  # ou outra view pós-login
+                else:
+                    messages.error(request, "Senha incorreta.")
+            except Jogador.DoesNotExist:
+                messages.error(request, "Usuário não encontrado.")
+    else:
+        form = JogadorLoginForm()
+    return render(request, "jogador_login.html", {"form": form})
+
+def painel_jogador(request):
+    if not request.user.is_authenticated:
+        return redirect('jogador_login')
+
+    try:
+        jogador = Jogador.objects.get(user=request.user)
+    except Jogador.DoesNotExist:
+        jogador = None
+
+    return render(request, "painel_jogador.html", {"jogador": jogador})
+
+
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
+
+def jogador_create(request):
+    if request.method == 'POST':
+        form = JogadorForm(request.POST)
+        if form.is_valid():
+            # Cria o usuário base do Django
+            user = User.objects.create_user(
+                username=form.cleaned_data['name_user'],
+                email=form.cleaned_data['name_email'],
+                password=form.cleaned_data['name_password']
+            )
+
+            jogador = form.save(commit=False)
+            jogador.user = user  # associa o usuário criado
+            jogador.set_password(form.cleaned_data['name_password'])  # hash na senha
+            jogador.save()
+
+            return redirect('jogador_success')  # ou a tela que desejar
+    else:
+        form = JogadorForm()
+
+    return render(request, 'jogador_form.html', {'form': form}) 
+
+def jogador_success(request):
+    return HttpResponse("Jogador criado com sucesso!")
