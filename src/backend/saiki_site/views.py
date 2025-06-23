@@ -65,11 +65,12 @@ class GuessView(object):
     @csrf_exempt    # Cookies~
     def request_entity(req) -> JsonResponse:
         """Processes the request of an entity, via POST."""
-
         print(type(req))
 
         if req.method != "POST":
             # empty return~
+            print("CAIU AIDENTRO DENTROOOOO")
+            
             return JsonResponse({})
 
         try:
@@ -84,7 +85,9 @@ class GuessView(object):
 
         # Mocking gathering the data~
         # return JsonResponse({})
-        return example_algorithm.to_json()
+        # return example_algorithm.to_json()
+        print(entity)
+        return JsonResponse({"name": "Merge Sort", "type": "partial",    "data": {      "category": ["Sorting", "wrong"],      "year": [1945, "correct"],      "average_time_complexity": ["O(n log n)", "correct"],      "auxiliary_space_complexity": ["O(n)", "partial"],      "data_structure": ["Array", "correct"],      "kind_of_solution": ["Exact", "wrong"],      "generality": ["General-purpose", "wrong"]     }    })
 
 
 class OtherView(object):
