@@ -1,0 +1,20 @@
+IDEIAS DE TESTES:
+TESTES DE JOGO:
+Verificar se a resposta correta é validada e o jogo termina com sucesso
+Garantir que o número máximo de tentativas seja respeitado (caso haja algum modo com)
+Verificar se o jogo reinicia corretamente após o fim
+
+TESTES DE BANCO DE DADOS:
+Verificar se um novo usuário é inserido corretamente no banco
+Garantir que cada partida seja salva com tentativas, pontuação e status corretos
+Validar que partidas e pontuação estejam corretamente associadas ao usuário (seria outro teste?)
+
+TESTES DE ATUTENTICAÇÃO:
+Verificar autenticação com credenciais válidas (a vá)
+Verificar mensagem de erro e bloqueio com credenciais incorretas ()
+Verificar se páginas do jogo não são acessíveis sem login (erro ao tentar acessar o subdomínio de jogo "/game" por exemplo)
+
+TESTES DE INTEGRAÇÃO:
+Garantir que o frontend envie a resposta para o backend com sucesso
+Verificar se o backend processa e retorna feedback corretamente
+Garantir que o frontend atualize visualmente com base no feedback
