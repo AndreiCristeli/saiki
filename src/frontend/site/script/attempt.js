@@ -28,12 +28,17 @@ async function __backend_attempt(entity_type, user_input){
     */
 
     // Local json test.
-    let response = await fetch("../script/test.json")
+    // let response = await fetch("/static/site/script/test.json");
+    let response = await fetch("http://127.0.0.1:8000/api/guess/entity/", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ entity : user_input }),
+                                });
     let attempt = await response.json();
     
     // For now, returning random element from the test json file just for fun.
     // In practice it should be only one element returned from database.
-    return attempt[Math.floor(Math.random() * 3)];
+    return attempt;
 }
 
 export async function process_attempt(user_input, div_attempts, entity_type){
