@@ -34,8 +34,7 @@ export async function input_keydown(event, input, div_attempts) {
     
     if(user_input) {
       let r = await cl.process_attempt(user_input, div_attempts, ENTITY_TYPE_PH);
-      console.log("r" + r);
-      if (r === -1){
+      if (r === -3){ // Verify win condition.
         input.disabled = true;
         // Win Dialog.
       }

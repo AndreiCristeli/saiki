@@ -1,5 +1,5 @@
 /** 
- * @file frontend/site/script/translate.js
+ * @file frontend/site/scripts/renderer.js
  * 
  * @author victorxaviercosta
  * 
@@ -33,7 +33,7 @@ export function render_card(object, card_class){
   // Creating the card header div element.
   const header = document.createElement('div');
   header.className = "card-header";
-  header.textContent = object.name
+  header.textContent = object.name;
   card.appendChild(header);
 
   // Creating infoGrid div element.

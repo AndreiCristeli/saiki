@@ -7,7 +7,7 @@
  * @version 0.1
  */
 
-//import { api } from "./api.js"
+import { api } from "./api.js"
 
 let attempts = 0; // Temporaly saved as a global shared variable.
 let victory = false; // Temporaly saved as a global shared variable.
@@ -15,40 +15,40 @@ let victory = false; // Temporaly saved as a global shared variable.
 
 import { render_card } from "./renderer.js"
 
-async function __backend_attempt(entity_type, user_input){
+async function __backend_attempt(user_input, entity_type){
     // Search in database passing entity_type and user_input.
-    // Should return an JS object with information about the attempt.
 
-    /* Not sure yet how should the backend call be.
+    let attempt;
+    try{
+        attempt = await api("/guess/entity/", "POST", { entity : user_input });
+    } catch(error){
+        console.log(error);
+    }
 
-    api("/hangar")
-    .then(data => {
-        communicate(data.msg);
-    })
-    .catch(err => console.error(err));
-    */
-
-    // Local json test.
-    // let response = await fetch("/static/site/script/test.json");
-    let response = await fetch("http://127.0.0.1:8000/api/guess/entity/", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ entity : user_input }),
-                                });
-    let attempt = await response.json();    
-    
-    // For now, returning random element from the test json file just for fun.
-    // In practice it should be only one element returned from database.
     return attempt;
 }
 
+export function verify_repeat(user_input){
+    const card_container = document.querySelector('.cards-container');
+
+    for(let card of card_container.children){
+        if(card.querySelector(".card-header").textContent.toLowerCase() === user_input){
+            return true;
+        }
+    }
+
+    return false;
+}
+
 export async function process_attempt(user_input, div_attempts, entity_type){
-    if(victory) { return -1; }
+    if (verify_repeat(user_input)){
+        return -1;
+    }
 
     // Call back_end attempt process_logic.
-    let attempt = await __backend_attempt(entity_type, user_input);
+    let attempt = await __backend_attempt(user_input, entity_type);
     if(Object.keys(attempt).length === 0) {
-        return -2;
+        return -2; // Entity not found in db.
     }
 
     // TODO: Treat invalid entry case.
@@ -68,7 +68,7 @@ export async function process_attempt(user_input, div_attempts, entity_type){
 
     if(attempt.type === "correct"){
         victory = true;
-        return -1;
+        return -3;
     }
 
     return 0;
