@@ -53,7 +53,7 @@ algorithms:
     generality: general
     
   - name: tournamentsort
-    year: 0
+    year: 1968
     temporal-complexity: O(n \log{n})
     spacial-complexity: O(n)
     data-structure: [priority_queue]
