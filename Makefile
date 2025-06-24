@@ -9,21 +9,22 @@
 
 .PHONY: build run-backend run-django migrate
 
-# Running the server
-# ------------------
 
-# Running the FastAPI server application
-run-backend:
-	uvicorn src.backend.main:app
 
-# Running the Django server
-run-django:
-	python3 src/backend/manage.py runserver
+# Environment variables
+# ---------------------
 
-# Run migrations: makemigrations + migrate
-migrate:
-	python3 src/backend/manage.py makemigrations
-	python3 src/backend/manage.py migrate
+ifeq ($(OS),Windows_NT)
+define PYTHON
+	python
+endef
+else
+define PYTHON
+	python3
+endef
+endif
+
+
 
 # Building
 # --------
@@ -32,7 +33,9 @@ migrate:
 build:
 
 
-# Others
-# ------
 
-include .install.mak
+# Derivations
+# -----------
+
+-include .install.mak
+-include src/backend/Makefile

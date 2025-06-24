@@ -22,20 +22,37 @@ install: __setup_python
 # Python
 # ------
 
-PYTHON						:= python
 PYTHON_VENV_DIR				:= .venv/
+PYTHON_REQ_PACKAGES		    := docs/req.txt
+PYTHON_PIP_LOG              := temp/pip-install.log
+
+ifeq ($(OS),Windows_NT)
 PYTHON_PIP					:= $(PYTHON_VENV_DIR)Scripts/python.exe -m pip
 PYTHON_ACTIVATE_SCRIPT		:= $(PYTHON_VENV_DIR)Scripts/activate
-PYTHON_REQ_TXT				:= docs/req.txt
+
+# for some unknown reason Windows's version won't work... @TODO: adapt
+define PYTHON_PIP_INSTALL_CMD
+	call /$(PYTHON_ACTIVATE_SCRIPT) && \
+	$(PYTHON_PIP) install --require-virtualenv --quiet --no-input --log "$(PYTHON_PIP_LOG)" --requirement "$(PYTHON_REQ_PACKAGES)"
+endef
+else
+PYTHON_PIP                  := pip
+PYTHON_ACTIVATE_SCRIPT      := $(PYTHON_VENV_DIR)bin/activate
+
+define PYTHON_PIP_INSTALL_CMD
+	. ./$(PYTHON_ACTIVATE_SCRIPT); \
+	$(PYTHON_PIP) install --require-virtualenv --quiet --no-input --log "$(PYTHON_PIP_LOG)" --requirement "$(PYTHON_REQ_PACKAGES)"
+endef
+endif
+
 
 
 # Setting up VENV and installing the requirement packages.
 
 __setup_python:
-	$(PYTHON) -m venv $(PYTHON_VENV_DIR)
-# for some unknown reason Windows's python's venv pip doesn't reck "-r" wtf
-#./"$(PYTHON_ACTIVATE_SCRIPT)"
-# ./$(PYTHON_PIP) --require-virtualenv --quiet --no-input --requirement "$(PYTHON_REQ_TXT)"
-	echo "Python is setup. Run the following to activate the venv:"
-	echo "./$(PYTHON_ACTIVATE_SCRIPT)"
+	@$(PYTHON) -m venv $    (PYTHON_VENV_DIR)
+	@$(PYTHON_PIP_INSTALL_CMD)
+#. pip --require-virtualenv --quiet --no-input --requirement "$(PYTHON_REQ_TXT)"
+	@echo "Python is setup. Run the following to activate the venv:"
+	@echo "./$(PYTHON_ACTIVATE_SCRIPT)"
 
