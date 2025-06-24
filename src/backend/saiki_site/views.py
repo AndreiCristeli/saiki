@@ -60,6 +60,36 @@ class GuessView(object):
             "name": name.upper()
         })
 
+    def check_fields(entity_name: str) -> JsonResponse:
+        from random import randint
+
+        with open("src/frontend/site/scripts/test.json", "r", encoding="utf-8") as file:
+            json_stream = json.load(file)
+    
+        correct_entity = json_stream[randint(0, len(json_stream))]
+        response: dict = {}
+
+        for m in json_stream:
+            if (m["name"].lower() == entity_name):
+                print(f"m: {m["name"]}")
+                response["name"] = m["name"]
+                response["data"] = {}
+                response["type"] = "correct"
+
+                for field in m["data"]:
+                    print(f"field: {m["data"][field]}")
+                    response["data"][field] = []
+                    response["data"][field].append(m["data"][field])
+                    if (m["data"][field] == correct_entity["data"][field]):
+                        response["data"][field].append("correct")
+                    else:
+                        response["type"] = "wrong"
+                        response["data"][field].append("wrong")
+                        
+        # print(response)
+        return JsonResponse(response)
+        
+
     @staticmethod
     @csrf_exempt    # Cookies~
     def request_entity(req) -> JsonResponse:
@@ -68,7 +98,6 @@ class GuessView(object):
 
         if req.method != "POST":
             # empty return~
-            print("CAIU AIDENTRO DENTROOOOO")
             
             return JsonResponse({})
 
@@ -79,14 +108,14 @@ class GuessView(object):
         except:
             return JsonResponse({})
         
-        if entity != "merge sort":
-            return JsonResponse({})
+        
 
         # Mocking gathering the data~
         # return JsonResponse({})
         # return example_algorithm.to_json()
         print(entity)
-        return JsonResponse({"name": "Merge Sort", "type": "partial",    "data": {      "category": ["Sorting", "wrong"],      "year": [1945, "correct"],      "average_time_complexity": ["O(n log n)", "correct"],      "auxiliary_space_complexity": ["O(n)", "partial"],      "data_structure": ["Array", "correct"],      "kind_of_solution": ["Exact", "wrong"],      "generality": ["General-purpose", "wrong"]     }    })
+        return GuessView.check_fields(entity)
+        #return JsonResponse({"name": "Merge Sort", "type": "partial",    "data": {      "category": ["Sorting", "wrong"],      "year": [1945, "correct"],      "average_time_complexity": ["O(n log n)", "correct"],      "auxiliary_space_complexity": ["O(n)", "partial"],      "data_structure": ["Array", "correct"],      "kind_of_solution": ["Exact", "wrong"],      "generality": ["General-purpose", "wrong"]     }    })
 
 
 class OtherView(object):

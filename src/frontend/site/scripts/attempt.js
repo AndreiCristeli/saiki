@@ -10,6 +10,7 @@
 //import { api } from "./api.js"
 
 let attempts = 0; // Temporaly saved as a global shared variable.
+let victory = false; // Temporaly saved as a global shared variable.
 // TODO: Structure a frontend Player data-structure.
 
 import { render_card } from "./renderer.js"
@@ -34,7 +35,7 @@ async function __backend_attempt(entity_type, user_input){
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify({ entity : user_input }),
                                 });
-    let attempt = await response.json();
+    let attempt = await response.json();    
     
     // For now, returning random element from the test json file just for fun.
     // In practice it should be only one element returned from database.
@@ -42,8 +43,13 @@ async function __backend_attempt(entity_type, user_input){
 }
 
 export async function process_attempt(user_input, div_attempts, entity_type){
+    if(victory) { return -1; }
+
     // Call back_end attempt process_logic.
     let attempt = await __backend_attempt(entity_type, user_input);
+    if(Object.keys(attempt).length === 0) {
+        return -2;
+    }
 
     // TODO: Treat invalid entry case.
     // Idea: Only call process_attempt if there's a 'first suggestion' when Suggestion is implemented.
@@ -54,8 +60,16 @@ export async function process_attempt(user_input, div_attempts, entity_type){
     
     // Get player victory logic from backend.
     let card_class = `card ${attempt.type}`;
-    console.log(`Card Class = ${card_class}`)
+    console.log(`Card Class = ${card_class}`);
 
     // Add a new card corresponding to user's attempt.
+    
     render_card(attempt, card_class);
+
+    if(attempt.type === "correct"){
+        victory = true;
+        return -1;
+    }
+
+    return 0;
 }

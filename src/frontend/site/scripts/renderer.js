@@ -27,7 +27,7 @@ export function render_card(object, card_class){
 
     infoItem.className = `info-item ${object.data[key][1]}-color`
     
-    infoItem.textContent = object.data[key][0];
+    katex.render(object.data[key][0], infoItem.textContent, {displayMode : true}); // TODO: Make it work
     infoGrid.appendChild(infoItem);
   }
 
