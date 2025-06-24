@@ -33,6 +33,7 @@ class FrontendView(object):
             return HttpResponse(index.read(), content_type="text/html")
 
 
+
 class GuessView(object):
     """Handles the view of the Guess game mode."""
 
@@ -60,35 +61,53 @@ class GuessView(object):
             "name": name.upper()
         })
 
-    def check_fields(entity_name: str) -> JsonResponse:
+    @staticmethod
+    def check_fields(selected_entity: int | None, entity_name: str) -> JsonResponse:
+        """Checks if the entity is in the"""
+
         from random import randint
 
         with open("src/frontend/site/scripts/test.json", "r", encoding="utf-8") as file:
             json_stream = json.load(file)
-    
-        correct_entity = json_stream[randint(0, len(json_stream))]
-        response: dict = {}
 
-        for m in json_stream:
-            if (m["name"].lower() == entity_name):
-                print(f"m: {m["name"]}")
-                response["name"] = m["name"]
-                response["data"] = {}
-                response["type"] = "correct"
+        print(type(json_stream))
 
-                for field in m["data"]:
-                    print(f"field: {m["data"][field]}")
-                    response["data"][field] = []
-                    response["data"][field].append(m["data"][field])
-                    if (m["data"][field] == correct_entity["data"][field]):
-                        response["data"][field].append("correct")
-                    else:
-                        response["type"] = "wrong"
-                        response["data"][field].append("wrong")
-                        
-        # print(response)
-        return JsonResponse(response)
-        
+        if selected_entity is None:
+            # choosing an entity
+            from random import randint
+            selected_entity: int = randint(0, len(json_stream) - 1)
+
+        correct_entity = json_stream[selected_entity]
+
+        for entity in json_stream:
+            # @TODO: to abstract and improve comparison!
+            if entity["name"].lower() == entity_name:
+
+                response: dict = {
+                    "name": entity["name"],
+                    "data": {},
+                    "type": "correct"
+                }
+
+                for field in entity["data"]:
+                    guess_type: str = "correct" if entity["data"][field] == correct_entity["data"][field] else "wrong"
+                    response["data"][field] = [entity["data"][field], guess_type]
+
+                    if response["type"] == "correct":
+                        response["type"] = guess_type
+
+                response_json: JsonResponse = JsonResponse(response)
+
+                if response["type"] == "correct":
+                    response_json.delete_cookie("selected")
+                else:
+                    response_json.set_cookie("selected", selected_entity)
+
+                return response_json
+
+        response_json: JsonResponse = JsonResponse({})
+        response_json.set_cookie("selected", selected_entity)
+        return response_json
 
     @staticmethod
     @csrf_exempt    # Cookies~
@@ -107,15 +126,22 @@ class GuessView(object):
 
         except:
             return JsonResponse({})
-        
-        
 
         # Mocking gathering the data~
         # return JsonResponse({})
         # return example_algorithm.to_json()
         print(entity)
-        return GuessView.check_fields(entity)
+
+        selected_entity: str | None = req.COOKIES.get("selected")
+        try:
+            selected_entity: int = int(selected_entity)
+        except TypeError:
+            selected_entity: None = None
+
+        print(f"COOKIE GET: {selected_entity} ({type(selected_entity)})")
+
         #return JsonResponse({"name": "Merge Sort", "type": "partial",    "data": {      "category": ["Sorting", "wrong"],      "year": [1945, "correct"],      "average_time_complexity": ["O(n log n)", "correct"],      "auxiliary_space_complexity": ["O(n)", "partial"],      "data_structure": ["Array", "correct"],      "kind_of_solution": ["Exact", "wrong"],      "generality": ["General-purpose", "wrong"]     }    })
+        return GuessView.check_fields(selected_entity, entity)
 
 
 class OtherView(object):
