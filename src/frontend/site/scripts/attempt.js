@@ -15,6 +15,13 @@ let victory = false; // Temporaly saved as a global shared variable.
 
 import { render_card } from "./renderer.js"
 
+export const ATTEMPT_RC = {
+    SUCCESS: 0,
+    REPEATED_ANSWER: 1,
+    NOT_FOUND: 2,
+    VICTORY: 3
+};
+
 async function __backend_attempt(user_input, entity_type){
     // Search in database passing entity_type and user_input.
 
@@ -42,13 +49,13 @@ export function verify_repeat(user_input){
 
 export async function process_attempt(user_input, div_attempts, entity_type){
     if (verify_repeat(user_input)){
-        return -1;
+        return ATTEMPT_RC.REPEATED_ANSWER;
     }
 
     // Call back_end attempt process_logic.
     let attempt = await __backend_attempt(user_input, entity_type);
     if(Object.keys(attempt).length === 0) {
-        return -2; // Entity not found in db.
+        return ATTEMPT_RC.NOT_FOUND; // Entity not found in db.
     }
 
     // TODO: Treat invalid entry case.
@@ -68,8 +75,8 @@ export async function process_attempt(user_input, div_attempts, entity_type){
 
     if(attempt.type === "correct"){
         victory = true;
-        return -3;
+        return ATTEMPT_RC.VICTORY;
     }
 
-    return 0;
+    return ATTEMPT_RC.SUCCESS;
 }
