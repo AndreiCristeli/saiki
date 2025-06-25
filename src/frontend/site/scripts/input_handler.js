@@ -7,7 +7,8 @@
  * @version 0.1
  */
 
-import * as cl from "./attempt.js"
+import * as attempt from "./attempt.js"
+import * as eg from "./easter_eggs.js"
 
 // TODO: Handle entity_type properly according to user's selection.
 const ENTITY_TYPE_PH = "Algorithm"
@@ -19,7 +20,7 @@ function __normalize_input(input){
   return trimmed.toLowerCase();
 }
 
-// Envent handler for keydown on the input text box
+// Event handler for keydown on the input text box
 export async function input_keydown(event, input, div_attempts) {
   const user_input = __normalize_input(event.target.value); 
   // console.log(`Nomalized Input: ${user_input}`);
@@ -29,14 +30,22 @@ export async function input_keydown(event, input, div_attempts) {
     // console.log(event.key);
     
   } else if (user_input && event.key === 'Enter') {
-      let attempt_rc = await cl.process_attempt(user_input, div_attempts, ENTITY_TYPE_PH);
+      if(user_input === "milvus"){
+        eg.showMilvusDialog(); input.value = ''; return;
+
+      } else if (user_input === "pokemon" || user_input === "monkepo"){
+        eg.showPokemonDialog(); input.value = ''; return;
+
+      }
+
+      let attempt_rc = await attempt.process_attempt(user_input, div_attempts, ENTITY_TYPE_PH);
 
         switch (attempt_rc){
-          case cl.ATTEMPT_RC.REPEATED_ANSWER: 
-          case cl.ATTEMPT_RC.NOT_FOUND:
+          case attempt.ATTEMPT_RC.REPEATED_ANSWER: 
+          case attempt.ATTEMPT_RC.NOT_FOUND:
             break;
-          case cl.ATTEMPT_RC.VICTORY: // Win Condition.
-            win_condition(input);
+          case attempt.ATTEMPT_RC.VICTORY: // Win Condition.
+            attempt.win_condition(input);
 
           default:
             input.value = '';
@@ -44,38 +53,14 @@ export async function input_keydown(event, input, div_attempts) {
     }
 }
 
-export function win_condition(input) {
-  input.disabled = true;
-
-  /*
-  Diary mode
-  input.style.border = "2px solid green";
-  input.style.backgroundColor = "#e0ffe0";
-  input.style.color = "#004400";
-  input.placeholder = "Parabéns! Você venceu! 🎉";
-  */
-
-  const div = document.createElement("div");
-  div.textContent = "Parabéns! Você venceu! 🎉";
-  div.className = "div_new_game"; // Se quiser estilizar com CSS
-
-  const btn = document.createElement("button");
-  btn.textContent = "Novo Jogo";
-  btn.className = "btn_new_game";
-  btn.addEventListener("click", (event) => new_game_click(event, btn, input));
-
-  // Adicionar o botão à div
-  div.appendChild(btn);
-  input.parentNode.replaceChild(div, input);
-}
-
-export function new_game_click(event, btn, input) {
+// Event handler for when clicking on new game.
+export function new_game_click(event, btn) {
   const container = btn.closest(".div_new_game");
   const div_attempts = document.querySelector('.attempts-field');
-  cl.reset_game(container, div_attempts);
+  attempt.reset_game(container, div_attempts);
 }
 
-// Envent handler for click on the info button.
+// Event handler for click on the info button.
 export function info_click(event, button) {
   const dialog = document.querySelector('.infoDialog');
   if (dialog) {
@@ -83,7 +68,7 @@ export function info_click(event, button) {
   }  
 }
 
-// Envent handler for click on the close button of the info dialog.
+// Event handler for click on the close button of the info dialog.
 export function close_info_dialog(event, dialog) {
   if(dialog) {
     dialog.style.animation = 'desvanecer 0.8s ease-out forwards';

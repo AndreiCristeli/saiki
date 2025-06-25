@@ -8,7 +8,7 @@
  */
 
 import { api } from "./api.js"
-import { input_keydown } from "./input_handler.js"; 
+import { input_keydown, new_game_click } from "./input_handler.js"; 
 
 let number_attempts = 0; // Temporaly saved as a global shared variable.
 let victory = false; // Temporaly saved as a global shared variable.
@@ -80,6 +80,31 @@ export async function process_attempt(user_input, div_attempts, entity_type){
     }
 
     return ATTEMPT_RC.SUCCESS;
+}
+
+export function win_condition(input) {
+  input.disabled = true;
+
+  /*
+  Diary mode
+  input.style.border = "2px solid green";
+  input.style.backgroundColor = "#e0ffe0";
+  input.style.color = "#004400";
+  input.placeholder = "Parabéns! Você venceu! 🎉";
+  */
+
+  const div = document.createElement("div");
+  div.textContent = "Parabéns! Você venceu! 🎉";
+  div.className = "div_new_game"; // Se quiser estilizar com CSS
+
+  const btn = document.createElement("button");
+  btn.textContent = "Novo Jogo";
+  btn.className = "btn_new_game";
+  btn.addEventListener("click", (event) => new_game_click(event, btn));
+
+  // Adicionar o botão à div
+  div.appendChild(btn);
+  input.parentNode.replaceChild(div, input);
 }
 
 export function reset_game(container, div_attempts) {
