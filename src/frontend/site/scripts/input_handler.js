@@ -29,42 +29,46 @@ export async function input_keydown(event, input, div_attempts) {
     // TODO: add suggestion logic.
     // console.log(event.key);
     
-  } else if (event.key === 'Enter') {
-    input.value = '';
-    
-    if(user_input) {
-      let r = await cl.process_attempt(user_input, div_attempts, ENTITY_TYPE_PH);
-      if (r === -3){ // Verify win condition.
-        input.disabled = true;
+  } else if (user_input && event.key === 'Enter') {
+      let attempt_rc = await cl.process_attempt(user_input, div_attempts, ENTITY_TYPE_PH);
 
-        /*
-        Diary mode
-        input.style.border = "2px solid green";
-        input.style.backgroundColor = "#e0ffe0";
-        input.style.color = "#004400";
-        input.placeholder = "Parabéns! Você venceu! 🎉";
-        */
+        switch (attempt_rc){
+          case cl.ATTEMPT_RC.REPEATED_ANSWER: 
+          case cl.ATTEMPT_RC.NOT_FOUND:
+            break;
+          case cl.ATTEMPT_RC.VICTORY: // Win Condition.
+            input.disabled = true;
 
-        const div = document.createElement("div");
-        div.textContent = "Parabéns! Você venceu! 🎉";
-        div.className = "div_new_game"; // Se quiser estilizar com CSS
+            /*
+            Diary mode
+            input.style.border = "2px solid green";
+            input.style.backgroundColor = "#e0ffe0";
+            input.style.color = "#004400";
+            input.placeholder = "Parabéns! Você venceu! 🎉";
+            */
 
-        const btn = document.createElement("button");
-        btn.textContent = "Novo Jogo";
-        btn.className = "btn_new_game";
-        btn.onclick = () => {
-          console.log("Clicou no botão!");
-          // Aqui você pode chamar resetInput(), reiniciar o jogo, etc.
-        };
+            const div = document.createElement("div");
+            div.textContent = "Parabéns! Você venceu! 🎉";
+            div.className = "div_new_game"; // Se quiser estilizar com CSS
 
-        // Adicionar o botão à div
-        div.appendChild(btn);
+            const btn = document.createElement("button");
+            btn.textContent = "Novo Jogo";
+            btn.className = "btn_new_game";
+            btn.onclick = () => {
+              console.log("Clicou no botão!");
+              // Aqui você pode chamar resetInput(), reiniciar o jogo, etc.
+            };
 
-        input.parentNode.replaceChild(div, input);
-      }
+            // Adicionar o botão à div
+            div.appendChild(btn);
+            input.parentNode.replaceChild(div, input);
+
+          default:
+            input.value = '';
+        }
     }
-  }
 }
+
 
 // Envent handler for click on the info button.
 export function info_click(event, button) {
