@@ -140,11 +140,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 """ Cross-Origin Resource Sharing
     ---------------------------- """
 
-# CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
+# CORS_ALLOW_ALL_ORIGINS: bool = True
+CORS_ALLOWED_ORIGINS: list[str] = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
 ]
 
 # Allow cookies to be sent
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS: bool = True
+SESSION_COOKIE_SECURE: bool = False     # HTTP
+

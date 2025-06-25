@@ -44,15 +44,8 @@ class Model_Algorithm(models.Model):
         }
 
         return JsonResponse(data)
-# Testing the Model_Algorithm class
-example_algorithm = Model_Algorithm(name="Merge sort",
-                                    year=1945,
-                                    category="Sorting",
-                                    temporal_complexity="O(n log n)",
-                                    spatial_complexity="O(n)",
-                                    data_structures="array",
-                                    solution_kind="exact",
-                                    generality="general-purpose")
+
+
 #------------------------------------------------------------------------------------------------------------------------------------
 class Jogador(models.Model):
     """Represents a player; the entity."""
