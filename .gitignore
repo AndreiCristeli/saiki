@@ -8,6 +8,7 @@
 
 ### Python ###
 *.venv/*
+*venv/*
 */__pycache__/*
 *.pyc
 
@@ -26,3 +27,4 @@ bin/
 ### Temporaries ###
 *temp/
 *.ls
+*.sqlite3
