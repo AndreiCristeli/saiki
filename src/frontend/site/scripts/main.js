@@ -11,21 +11,21 @@ import * as ih from "./input_handler.js";
 
 // This function runs when the entire page (all HTML, CSS, sripts, images and resouces) is completely loaded.
 window.onload = function () {
-    const input = document.querySelector('.Input');
-    const div_attempts = document.querySelector('.attempts-field');
-    input.addEventListener('keydown', (event) => ih.input_keydown(event, input, div_attempts));
+	const input = document.querySelector('.Input');
+	const div_attempts = document.querySelector('.attempts-field');
+	input.addEventListener('keydown', (event) => ih.input_keydown(event, input, div_attempts));
 
-    const button = document.querySelector('.footer-info');
-    button.addEventListener('click', (event) => ih.info_click(event, button));
+	const button = document.querySelector('.footer-info');
+	button.addEventListener('click', (event) => ih.info_click(event, button));
 
 	const select_language = document.querySelector('.translateBox');
 	select_language.addEventListener('change', (event) => changeLanguage(select_language.value));
 
-    const closeBtn = document.querySelector('.closeDialog');
-    if (closeBtn) {
-      const dialog = document.querySelector('.infoDialog');
-      closeBtn.addEventListener('click', (event) => ih.close_info_dialog(event, dialog));
-    }
+	const closeBtn = document.querySelector('.closeDialog');
+	if (closeBtn) {
+		const dialog = document.querySelector('.infoDialog');
+		closeBtn.addEventListener('click', (event) => ih.close_info_dialog(event, dialog));
+	}
 };
 
 // TODO: Move tranlate logic to translate.js.
