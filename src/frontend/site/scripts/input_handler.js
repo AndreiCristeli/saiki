@@ -36,7 +36,31 @@ export async function input_keydown(event, input, div_attempts) {
       let r = await cl.process_attempt(user_input, div_attempts, ENTITY_TYPE_PH);
       if (r === -3){ // Verify win condition.
         input.disabled = true;
-        // Win Dialog.
+
+        /*
+        Diary mode
+        input.style.border = "2px solid green";
+        input.style.backgroundColor = "#e0ffe0";
+        input.style.color = "#004400";
+        input.placeholder = "Parabéns! Você venceu! 🎉";
+        */
+
+        const div = document.createElement("div");
+        div.textContent = "Parabéns! Você venceu! 🎉";
+        div.className = "div_new_game"; // Se quiser estilizar com CSS
+
+        const btn = document.createElement("button");
+        btn.textContent = "Novo Jogo";
+        btn.className = "btn_new_game";
+        btn.onclick = () => {
+          console.log("Clicou no botão!");
+          // Aqui você pode chamar resetInput(), reiniciar o jogo, etc.
+        };
+
+        // Adicionar o botão à div
+        div.appendChild(btn);
+
+        input.parentNode.replaceChild(div, input);
       }
     }
   }
