@@ -79,7 +79,8 @@ class GuessState:
         if reset:
             response_json.delete_cookie("key", samesite="Lax")
             response_json.delete_cookie("selected", samesite="Lax")
-
+            response_json.delete_cookie("A#", samesite="Lax")
+            
             return response_json
 
         response_json.set_cookie("key", self.key, secure=False, httponly=True, samesite="Lax")
