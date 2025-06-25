@@ -9,7 +9,6 @@
 
 import * as cl from "./attempt.js"
 
-
 // TODO: Handle entity_type properly according to user's selection.
 const ENTITY_TYPE_PH = "Algorithm"
 
@@ -37,31 +36,7 @@ export async function input_keydown(event, input, div_attempts) {
           case cl.ATTEMPT_RC.NOT_FOUND:
             break;
           case cl.ATTEMPT_RC.VICTORY: // Win Condition.
-            input.disabled = true;
-
-            /*
-            Diary mode
-            input.style.border = "2px solid green";
-            input.style.backgroundColor = "#e0ffe0";
-            input.style.color = "#004400";
-            input.placeholder = "Parabéns! Você venceu! 🎉";
-            */
-
-            const div = document.createElement("div");
-            div.textContent = "Parabéns! Você venceu! 🎉";
-            div.className = "div_new_game"; // Se quiser estilizar com CSS
-
-            const btn = document.createElement("button");
-            btn.textContent = "Novo Jogo";
-            btn.className = "btn_new_game";
-            btn.onclick = () => {
-              console.log("Clicou no botão!");
-              // Aqui você pode chamar resetInput(), reiniciar o jogo, etc.
-            };
-
-            // Adicionar o botão à div
-            div.appendChild(btn);
-            input.parentNode.replaceChild(div, input);
+            win_condition(input);
 
           default:
             input.value = '';
@@ -69,6 +44,36 @@ export async function input_keydown(event, input, div_attempts) {
     }
 }
 
+export function win_condition(input) {
+  input.disabled = true;
+
+  /*
+  Diary mode
+  input.style.border = "2px solid green";
+  input.style.backgroundColor = "#e0ffe0";
+  input.style.color = "#004400";
+  input.placeholder = "Parabéns! Você venceu! 🎉";
+  */
+
+  const div = document.createElement("div");
+  div.textContent = "Parabéns! Você venceu! 🎉";
+  div.className = "div_new_game"; // Se quiser estilizar com CSS
+
+  const btn = document.createElement("button");
+  btn.textContent = "Novo Jogo";
+  btn.className = "btn_new_game";
+  btn.addEventListener("click", (event) => new_game_click(event, btn, input));
+
+  // Adicionar o botão à div
+  div.appendChild(btn);
+  input.parentNode.replaceChild(div, input);
+}
+
+export function new_game_click(event, btn, input) {
+  const container = btn.closest(".div_new_game");
+  const div_attempts = document.querySelector('.attempts-field');
+  cl.reset_game(container, div_attempts);
+}
 
 // Envent handler for click on the info button.
 export function info_click(event, button) {

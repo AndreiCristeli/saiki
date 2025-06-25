@@ -1,5 +1,5 @@
 /** 
- * @file frontend/site/script/card_logic.js
+ * @file frontend/site/script/attempt.js
  * 
  * @author AndreiCristeli
  * @author victorxaviercosta
@@ -8,8 +8,9 @@
  */
 
 import { api } from "./api.js"
+import { input_keydown } from "./input_handler.js"; 
 
-let attempts = 0; // Temporaly saved as a global shared variable.
+let number_attempts = 0; // Temporaly saved as a global shared variable.
 let victory = false; // Temporaly saved as a global shared variable.
 // TODO: Structure a frontend Player data-structure.
 
@@ -62,8 +63,8 @@ export async function process_attempt(user_input, div_attempts, entity_type){
     // Idea: Only call process_attempt if there's a 'first suggestion' when Suggestion is implemented.
 
     // Updating attempt count.
-    attempts++;
-    div_attempts.textContent = `${attempts}`;
+    number_attempts++;
+    div_attempts.textContent = `${number_attempts}`;
     
     // Get player victory logic from backend.
     let card_class = `card ${attempt.type}`;
@@ -79,4 +80,37 @@ export async function process_attempt(user_input, div_attempts, entity_type){
     }
 
     return ATTEMPT_RC.SUCCESS;
+}
+
+export function reset_game(container, div_attempts) {
+  const new_input = document.createElement("input");
+  new_input.type = "text";
+  new_input.className = "Input";
+  new_input.placeholder = "Escreva aqui";
+  new_input.autocomplete = "off";
+
+  container.parentNode.replaceChild(new_input, container);
+
+  // Resetar variáveis de controle
+  number_attempts = 0;
+  victory = false;
+
+  if (div_attempts) {
+    div_attempts.textContent = `${number_attempts}`;
+  }
+
+  const cardsContainer = document.querySelector(".cards-container");
+  if (cardsContainer) {
+    cardsContainer.innerHTML = "";
+  }
+
+  new_input.disabled = false;
+  new_input.value = "";
+
+  new_input.addEventListener("keydown", (event) =>
+    input_keydown(event, new_input, div_attempts)
+  );
+
+  // Se houver função para iniciar jogo, chame aqui:
+  // start_new_game();
 }
