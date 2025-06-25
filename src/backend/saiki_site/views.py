@@ -5,10 +5,12 @@ Viewing configuration for saiki_site Django's application.
 """
 
 from django.shortcuts import render, redirect
+from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
+from .guesser import guesser, GuessState
+from typing import Any
 import json
-from .models import example_algorithm
 
 
 class FrontendView(object):
@@ -33,13 +35,12 @@ class FrontendView(object):
             return HttpResponse(index.read(), content_type="text/html")
 
 
-
 class GuessView(object):
     """Handles the view of the Guess game mode."""
 
     @staticmethod
-    @csrf_exempt    # Cookies~
-    def request_hint(req) -> JsonResponse:
+    @csrf_exempt  # Cookies~
+    def request_hint(req: WSGIRequest) -> JsonResponse:
         """Processes the request of a hint, via POST."""
 
         if req.method != "POST":
@@ -62,86 +63,74 @@ class GuessView(object):
         })
 
     @staticmethod
-    def check_fields(selected_entity: int | None, entity_name: str) -> JsonResponse:
-        """Checks if the entity is in the"""
+    def __check_fields(state: GuessState, entity_name: str) -> JsonResponse:
+        """Checks the fields of the player's guessing (and returns the response)."""
 
-        from random import randint
+        # making sure the state have a selected entity.
+        guesser.select_entity(state)
 
-        with open("src/frontend/site/scripts/test.json", "r", encoding="utf-8") as file:
-            json_stream = json.load(file)
+        # the entity that is marked to be solved by the player.
+        from .enc import unpermute
+        real_selected_index: int = unpermute(state.selected, state.key, 1000)
+        correct_entity: dict = guesser.get_entity(real_selected_index)
 
-        print(type(json_stream))
+        # the one matching what he inserted.
+        match_entity: dict | None
+        match_entity_index: int
+        match_entity, match_entity_index = guesser.fetch_entity(entity_name)
 
-        if selected_entity is None:
-            # choosing an entity
-            from random import randint
-            selected_entity: int = randint(0, len(json_stream) - 1)
+        # will hold the JSON response back to the user.
+        response: dict = {}
 
-        correct_entity = json_stream[selected_entity]
+        if match_entity is not None:
+            # meaning that at least it was found on the database...
 
-        for entity in json_stream:
-            # @TODO: to abstract and improve comparison!
-            if entity["name"].lower() == entity_name:
+            response: dict = {
+                "name": match_entity["name"],
+                "data": {},
+                "type": "correct"
+            }
 
-                response: dict = {
-                    "name": entity["name"],
-                    "data": {},
-                    "type": "correct"
-                }
+            for field in match_entity["data"]:
 
-                for field in entity["data"]:
-                    guess_type: str = "correct" if entity["data"][field] == correct_entity["data"][field] else "wrong"
-                    response["data"][field] = [entity["data"][field], guess_type]
+                # if the field is correct, for all effects.
+                guess_type: str = "correct" if match_entity["data"][field] == correct_entity["data"][field] else "wrong"
 
-                    if response["type"] == "correct":
-                        response["type"] = guess_type
-
-                response_json: JsonResponse = JsonResponse(response)
+                # adding the respective field to the response...
+                response["data"][field] = [match_entity["data"][field], guess_type]
 
                 if response["type"] == "correct":
-                    response_json.delete_cookie("selected")
-                else:
-                    response_json.set_cookie("selected", selected_entity)
+                    # if the response is correct up to now, it can potentially make the whole answer wrong.
+                    response["type"] = guess_type
 
-                return response_json
+            state.add_attempt(match_entity_index)
+        
+        response_json: JsonResponse = JsonResponse(response)
 
-        response_json: JsonResponse = JsonResponse({})
-        response_json.set_cookie("selected", selected_entity)
+        to_reset_cookies: bool = response["type"] == "correct" if "type" in response else False
+        state.set_cookie(response_json, to_reset_cookies)
+
         return response_json
 
     @staticmethod
-    @csrf_exempt    # Cookies~
-    def request_entity(req) -> JsonResponse:
+    @csrf_exempt  # Cookies~
+    def request_entity(req: WSGIRequest) -> JsonResponse:
         """Processes the request of an entity, via POST."""
-        print(type(req))
 
         if req.method != "POST":
             # empty return~
-            
             return JsonResponse({})
 
-        try:
-            data = json.loads(req.body)
-            entity: str = data.get("entity")
+        data: dict[str, Any] = json.loads(req.body)
 
-        except:
+        try:
+            entity: str = data["entity"]
+
+        except KeyError:
             return JsonResponse({})
 
-        # Mocking gathering the data~
-        # return JsonResponse({})
-        # return example_algorithm.to_json()
-        print(entity)
-
-        selected_entity: str | None = req.COOKIES.get("selected")
-        try:
-            selected_entity: int = int(selected_entity)
-        except TypeError:
-            selected_entity: None = None
-
-        print(f"COOKIE GET: {selected_entity} ({type(selected_entity)})")
-
-        #return JsonResponse({"name": "Merge Sort", "type": "partial",    "data": {      "category": ["Sorting", "wrong"],      "year": [1945, "correct"],      "average_time_complexity": ["O(n log n)", "correct"],      "auxiliary_space_complexity": ["O(n)", "partial"],      "data_structure": ["Array", "correct"],      "kind_of_solution": ["Exact", "wrong"],      "generality": ["General-purpose", "wrong"]     }    })
-        return GuessView.check_fields(selected_entity, entity)
+        guess_state: GuessState = GuessState.from_request(req)
+        return GuessView.__check_fields(guess_state, entity)
 
 
 class OtherView(object):
@@ -163,12 +152,12 @@ def read_root1(req) -> JsonResponse:
     )
 
 
-
-#-------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------
 from .forms import JogadorForm, JogadorLoginForm
 from .models import Jogador
 from django.contrib import messages
 from django.contrib.auth import login
+
 
 def jogador_login(request):
     if request.method == "POST":
@@ -189,6 +178,7 @@ def jogador_login(request):
         form = JogadorLoginForm()
     return render(request, "jogador_login.html", {"form": form})
 
+
 def painel_jogador(request):
     if not request.user.is_authenticated:
         return redirect('jogador_login')
@@ -203,6 +193,7 @@ def painel_jogador(request):
 
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+
 
 def jogador_create(request):
     if request.method == 'POST':
@@ -224,7 +215,8 @@ def jogador_create(request):
     else:
         form = JogadorForm()
 
-    return render(request, 'jogador_form.html', {'form': form}) 
+    return render(request, 'jogador_form.html', {'form': form})
+
 
 def jogador_success(request):
     return HttpResponse("Jogador criado com sucesso!")
