@@ -50,7 +50,7 @@ endif
 # Setting up VENV and installing the requirement packages.
 
 __setup_python:
-	@$(PYTHON) -m venv $    (PYTHON_VENV_DIR)
+	@$(PYTHON) -m venv $(PYTHON_VENV_DIR)
 	@$(PYTHON_PIP_INSTALL_CMD)
 #. pip --require-virtualenv --quiet --no-input --requirement "$(PYTHON_REQ_TXT)"
 	@echo "Python is setup. Run the following to activate the venv:"
