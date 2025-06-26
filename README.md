@@ -71,11 +71,11 @@ In this example, the player made two attempts:
 ### V 0.0.1
 ### Sistema
 * Cookies:
- O frontend salva cookies na maquina e envia para o backend, porém não os utiliza.
+ O frontend salva cookies na maquina para salvar o estado atual do jogador, e posteriormente os envia para o backend, que por sua vez ainda não os utiliza de forma efetiva.
 * Comunicação entre frontend e servidor:
  Realizada através de requisições entre scripts em javascript (frontend) e python (backend). Essa comunicação possibilita que o banco de dados alimente o servidor.
 * Servidor com Banco de Dados DJango:
- O servidor funciona como um midend para fornecer as informações necessárias para o frontend.
+ O middleware Django funciona como um midend para fornecer as informações necessárias para o frontend, sendo o Django tanto o servidor da aplicação como o midend.
  
 ### Usabilidade:
 * Jogo de advinhação simples:
