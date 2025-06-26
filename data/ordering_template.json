@@ -100,7 +100,7 @@
       "auxiliary_space_complexity": "O(k)",
       "data_structure": ["Buffer"],
       "kind_of_solution": "Exact",
-      "generality": "Limitada"
+      "generality": "Limited"
     }
   },
   {
@@ -113,7 +113,7 @@
       "auxiliary_space_complexity": "O(n + k)",
       "data_structure": ["Buffer"],
       "kind_of_solution": "Exact",
-      "generality": "Limitada"
+      "generality": "Limited"
     }
   },
   {
@@ -126,7 +126,7 @@
       "auxiliary_space_complexity": "O(n + k)",
       "data_structure": ["Buffer"],
       "kind_of_solution": "Exact",
-      "generality": "Limitada"
+      "generality": "Limited"
     }
   },
   {

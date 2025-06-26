@@ -7,9 +7,9 @@
       "year": "1959",
       "average_time_complexity": "T ∈ O(V + E)",
       "auxiliary_space_complexity": "S ∈ O(V)",
-      "data_structure": ["Grafo", "Complex"],
+      "data_structure": ["Graph", "Complex"],
       "kind_of_solution": "Exact",
-      "generality": "General"
+      "generality": "General-purpose"
     }
   },
   {
@@ -20,9 +20,9 @@
       "year": "1959",
       "average_time_complexity": "T ∈ O(V + E)",
       "auxiliary_space_complexity": "S ∈ O(V)",
-      "data_structure": ["Grafo", "Complex"],
+      "data_structure": ["Graph", "Complex"],
       "kind_of_solution": "Exact",
-      "generality": "General"
+      "generality": "General-purpose"
     }
   },
   {
@@ -33,9 +33,9 @@
       "year": "1956",
       "average_time_complexity": "T ∈ O((V + E) log V)",
       "auxiliary_space_complexity": "S ∈ O(V)",
-      "data_structure": ["Grafo", "Complex"],
+      "data_structure": ["Graph", "Complex"],
       "kind_of_solution": "Exact",
-      "generality": "General (non-negative weights)"
+      "generality": "General-purpose (non-negative weights)"
     }
   },
   {
@@ -46,9 +46,9 @@
       "year": "1968",
       "average_time_complexity": "T ∈ O(E)",
       "auxiliary_space_complexity": "S ∈ O(V)",
-      "data_structure": ["Grafo", "Complex"],
+      "data_structure": ["Graph", "Complex"],
       "kind_of_solution": "Exact",
-      "generality": "General (with admissible heuristic)"
+      "generality": "General-purpose (with admissible heuristic)"
     }
   },
   {
@@ -59,9 +59,9 @@
       "year": "1958",
       "average_time_complexity": "T ∈ O(V·E)",
       "auxiliary_space_complexity": "S ∈ O(V)",
-      "data_structure": ["Grafo", "Simple"],
+      "data_structure": ["Graph", "Simple"],
       "kind_of_solution": "Exact",
-      "generality": "General (handles negative weights)"
+      "generality": "General-purpose"
     }
   },
   {
@@ -72,9 +72,9 @@
       "year": "1962",
       "average_time_complexity": "T ∈ O(V³)",
       "auxiliary_space_complexity": "S ∈ O(V²)",
-      "data_structure": ["Grafo", "Simple"],
+      "data_structure": ["Graph", "Simple"],
       "kind_of_solution": "Exact",
-      "generality": "General (all-pairs shortest paths)"
+      "generality": "General-purpose"
     }
   },
   {
@@ -85,9 +85,9 @@
       "year": "1971",
       "average_time_complexity": "T ∈ O(V + E)",
       "auxiliary_space_complexity": "S ∈ O(d)",
-      "data_structure": ["Grafo", "Complex"],
+      "data_structure": ["Graph", "Complex"],
       "kind_of_solution": "Exact",
-      "generality": "General"
+      "generality": "General-purpose"
     }
   },
   {
@@ -98,9 +98,9 @@
       "year": "1971",
       "average_time_complexity": "T ∈ O(b^(d/2))",
       "auxiliary_space_complexity": "S ∈ O(b^(d/2))",
-      "data_structure": ["Grafo", "Complex"],
+      "data_structure": ["Graph", "Complex"],
       "kind_of_solution": "Exact",
-      "generality": "General (requires known goal)"
+      "generality": "General-purpose"
     }
   },
   {
@@ -111,9 +111,9 @@
       "year": "1985",
       "average_time_complexity": "T ∈ O(E)",
       "auxiliary_space_complexity": "S ∈ O(V)",
-      "data_structure": ["Grafo", "Complex"],
+      "data_structure": ["Graph", "Complex"],
       "kind_of_solution": "Approximate",
-      "generality": "General (uses heuristic)"
+      "generality": "General-purpose"
     }
   }
 ]
