@@ -70,13 +70,13 @@ In this example, the player made two attempts:
 
 ### V 0.0.1
 ### Sistema
-** Cookies:
-* O frontend salva cookies na maquina e envia para o backend, porém não os utiliza.
-** Comunicação entre frontend e servidor:
-* Realizada através de requisições entre scripts em javascript (frontend) e python (backend). Essa comunicação possibilita que o banco de dados alimente o servidor.
-** Servidor com Banco de Dados DJango:
-* O servidor funciona como um midend para fornecer as informações necessárias para o frontend.
+* Cookies:
+O frontend salva cookies na maquina e envia para o backend, porém não os utiliza.
+* Comunicação entre frontend e servidor:
+Realizada através de requisições entre scripts em javascript (frontend) e python (backend). Essa comunicação possibilita que o banco de dados alimente o servidor.
+* Servidor com Banco de Dados DJango:
+O servidor funciona como um midend para fornecer as informações necessárias para o frontend.
  
 ### Usabilidade:
-** Jogo de advinhação simples:
-* O jogo de advinhação está disponível para os algoritmos de ordenação.
+* Jogo de advinhação simples:
+O jogo de advinhação está disponível para os algoritmos de ordenação.
