@@ -9,7 +9,7 @@
 const resources = {
   pt: {
     translation: {
-      title: "saiki",
+      title: "Saiki",
       question: "Qual é o algoritmo do dia?",
       inputPlaceholder: "Escreva aqui",
       attempts: "Tentativas: ",
