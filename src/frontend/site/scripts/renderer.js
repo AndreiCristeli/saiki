@@ -63,32 +63,35 @@ export function render_card(object) {
   container.insertBefore(card, container.firstChild);
 }
 
+export function remove_hints_container() {
+  let hints_container = document.querySelector(".hints");
+
+  if (hints_container) { 
+    try {
+        hints_container.remove();
+        input_hint_div.removeChild(hints_container);
+    } catch (NotFoundError) {
+        
+    }
+  }
+}
+
 /** Renders the hints at the input text-box. */
 export function render_hints(hints) {
+
   const input_hint_div = document.querySelector(".input-hint");
-  let hints_container = document.querySelector(".hints");
   
-  // re-creating it (in case it already exists.)
-  if (hints_container) { 
-    console.log("popodpsp");
-    hints_container.remove();
-    input_hint_div.removeChild(hints_container);
-  }
+  remove_hints_container();
+
+  if (hints.length == 0)
+    return;
   
-  hints_container = document.createElement('div');
+  // re-creating hints container.
+  let hints_container = document.createElement('div');
   hints_container.className = "hints"
 
   // * @TODO organize it.
-  // deletes the hint box when the input is out-of-focus.
-  document.querySelector(".Input").addEventListener('blur', function () {
-      try {
-          hints_container.remove();
-          input_hint_div.removeChild(hints_container);
-      } catch (NotFoundError) {
-
-      }
-  })
-
+  
   // adding each hint row.
   for (let name of hints) {
     // each hint row...

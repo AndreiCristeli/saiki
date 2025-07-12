@@ -1,4 +1,4 @@
-import { render_hints } from "./renderer.js";
+import { render_hints, remove_hints_container } from "./renderer.js";
 import { api } from "./api.js";
 
 // Should Retur a list of Names of the specified entity
@@ -12,6 +12,10 @@ async function __get_backend_hints(input) {
     }
     
     return response['closest_matches'];
+}
+
+export function hide_hints(){
+    remove_hints_container();
 }
 
 export async function display_hints(user_input) {

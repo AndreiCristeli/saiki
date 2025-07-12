@@ -115,11 +115,22 @@ class GuessState:
 
         return None
 
-    def get_all(self, data) -> JsonResponse:
+    @property
+    def __real_indexes(self) -> list[int]:
+        from .enc import unpermute
+        return list(map(lambda x: unpermute(x, self.key, 1000), self.attempted))
+
+    @property
+    def attempted_names(self) -> list[str]:
+        real_indexes: list[int] = self.__real_indexes
+        return list(map(
+            lambda index: guesser.get_entity(index)["name"], real_indexes
+        ))
+
+    def get_collection(self, data) -> JsonResponse:
         """Returns all the entity data serialized."""
 
-        from .enc import unpermute
-        real_indexes: list[int] = list(map(lambda x: unpermute(x, self.key, 1000), self.attempted))
+        real_indexes: list[int] = self.__real_indexes
 
         print(data)
 
@@ -129,16 +140,12 @@ class GuessState:
         # retrieving the data.
         for index in real_indexes:
             entity = guesser.get_entity(index)
-            print(entity)
 
             response = self.__check_entity(entity_name=entity["name"])
-            print(response)
 
             response_list.append(
                 response
             )
-
-        print(response_list)
 
         return JsonResponse({
             "tries": len(response_list),
@@ -289,13 +296,22 @@ class Guesser(object):
         entity: dict = self.__static_json_data_stream[index]
         return HistoricalEntity.from_type(entity["type"].lower(), entity["name"], ** entity["data"])
 
-    def match_name(self, name: str) -> list[str]:
+    def match_name(self, state: GuessState, name: str) -> list[str]:
         """Matches an entity name over the collection. Returns a list of possible results. """
 
+        from difflib import get_close_matches
+        from typing import Iterable
+
         max_query_results: int = 5
+        cutoff: float = 0.35
 
-        return ["cmarada", "irmandade", "Juscelino KubsCristiano Augusto"]
+        attempt_names: list[str] = state.attempted_names
+        name_list: Iterable[str] = filter(
+            lambda x: x not in attempt_names, map(lambda x: x["name"], self.__static_json_data_stream)
+        )
+        matches: list[str] = get_close_matches(name, name_list, n=max_query_results, cutoff=cutoff)
 
+        return matches
 
 
 """Global initialization"""

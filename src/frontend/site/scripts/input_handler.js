@@ -9,14 +9,14 @@
 
 import * as attempt from "./attempt.js"
 import * as eg from "./easter_eggs.js"
-import {display_hints} from "./hints.js"
+import { display_hints, hide_hints } from "./hints.js"
 
 // TODO: Handle entity_type properly according to user's selection.
 const ENTITY_TYPE_PH = "Algorithm"
 
 // Normalizes user's input.
 // Returns all input words captalized (Change as needed for the backend database).
-function __normalize_input(input){
+function __normalize_input(input) {
   let trimmed = input.trim(); // Removes leading and trailing spaces (but not spaces between words).
   return trimmed.toLowerCase();
 }
@@ -26,13 +26,15 @@ export async function input_keydown(event, input, div_attempts) {
   const user_input = __normalize_input(event.target.value); 
   // console.log(`Nomalized Input: ${user_input}`);
 
-  if (/^[a-zA-z]$/.test(event.key)){ // Using RegExp for validating if entry is a letter.
+  if (/^[a-zA-z]$/.test(event.key)) { // Using RegExp for validating if entry is a letter.
     // TODO: add suggestion logic.
     //console.log(event.key);
     display_hints(user_input);
     
   } else if (user_input && event.key === 'Enter') {
-      if(user_input === "milvus"){
+      hide_hints();
+
+      if (user_input === "milvus"){
         eg.showMilvusDialog(); input.value = ''; return;
 
       } else if (user_input === "pokemon" || user_input === "monkepo"){
@@ -41,7 +43,7 @@ export async function input_keydown(event, input, div_attempts) {
 
       let attempt_rc = await attempt.process_attempt(user_input, div_attempts, ENTITY_TYPE_PH);
 
-        switch (attempt_rc){
+        switch (attempt_rc) {
           case attempt.ATTEMPT_RC.REPEATED_ANSWER: 
           case attempt.ATTEMPT_RC.NOT_FOUND:
             break;

@@ -64,7 +64,8 @@ class GuessView(object):
             print(e)
             return GuessView.empty()
 
-        matches: list[str] = guesser.match_name(name)
+        guess_state: GuessState = GuessState.from_request(req)
+        matches: list[str] = guesser.match_name(guess_state, name)
 
         return JsonResponse({
             "number_of_matches": len(matches),
@@ -103,7 +104,7 @@ class GuessView(object):
         data = json.loads(req.body)
 
         guess_state: GuessState = GuessState.from_request(req)
-        return guess_state.get_all(data)
+        return guess_state.get_collection(data)
 
 
 # -------------------------------------------------------------------------------------------

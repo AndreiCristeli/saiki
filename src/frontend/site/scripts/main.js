@@ -32,6 +32,17 @@ window.onload = function () {
 		const dialog = document.querySelector('.infoDialog');
 		closeBtn.addEventListener('click', (event) => ih.close_info_dialog(event, dialog));
 	}
+	
+	// deletes the hint box when the input is out-of-focus.
+  	document.querySelector(".Input").addEventListener('blur', function () {
+	  let hints_container = document.querySelector(".hints");
+      try {
+          hints_container.remove();
+          input_hint_div.removeChild(hints_container);
+      } catch (NotFoundError) {
+			
+      }
+  })
 };
 
 /**	Updates the visual information of the page, on load / refresh */
