@@ -19,6 +19,10 @@
 
 <body>
 
+  <div class="top-bar">
+    <img src="/static/assets/Saiki_logo.svg" alt="Saiki Logo" class="logo">
+  </div>
+  
   <!-- translate -->
   <select class="translateBox">
     <option value="pt">Português</option>
@@ -27,11 +31,11 @@
 
   <!-- TODO: Add Navigation Bar (To select Entity type, etc.) -->
 
-  <h1 style="-webkit-text-stroke: 2px black;"><strong>Saiki</strong></h1>
   <p style="font-size: 30px;">Qual é o algoritmo do dia?</p>
   <input type="text" placeholder="Escreva aqui" class="Input">
 
-  <!-- Label for players -->
+  <!-- Label for players -->  
+
   <div class="attempts">
     <div class="attempts-label">Tentativas: </div> <div class="attempts-field">0</div>
   </div>
@@ -45,12 +49,13 @@
     <li>Solução</li>
     <li>Generalidade</li>
   </ul>
-  
-  <!-- Div de ancoragem para os novos card's -->
-  <div class="cards-container"></div>
 
+  <!-- Div de ancoragem para os novos card's -->
+  
+  <div class="cards-container"></div>
+  
   <!-- Info -->
-  <button class="footer-info">i</button>
+<button class="footer-info">i</button>
 
   <dialog class="infoDialog">
     <h1 class="howToPlayTitle">Como jogar</h1>
@@ -106,7 +111,6 @@
     
     <button class="closeDialog" aria-label="Fechar">&times;</button>
   </dialog>
-
 
   <script type="module" src="/static/site/scripts/main.js"></script>
 </body>
