@@ -20,10 +20,10 @@ export const ATTEMPT_RC = {
     SUCCESS: 0,
     REPEATED_ANSWER: 1,
     NOT_FOUND: 2,
-    VICTORY: 3
+    VICTORY: 3,
 };
 
-async function __backend_attempt(user_input, entity_type){
+async function __backend_attempt(user_input, entity_type) {
     // Search in database passing entity_type and user_input.
 
     let attempt;
@@ -67,18 +67,18 @@ export async function process_attempt(user_input, div_attempts, entity_type){
     div_attempts.textContent = `${number_attempts}`;
     
     // Get player victory logic from backend.
-    let card_class = `card ${attempt.type}`;
+    let card_class = `card ${attempt.guessed}`;
     console.log(`Card Class = ${card_class}`);
 
     // Add a new card corresponding to user's attempt.
     
     render_card(attempt, card_class);
 
-    if(attempt.type === "correct"){
+    if (attempt.guessed === "correct") {
         victory = true;
         return ATTEMPT_RC.VICTORY;
     }
-
+    
     return ATTEMPT_RC.SUCCESS;
 }
 

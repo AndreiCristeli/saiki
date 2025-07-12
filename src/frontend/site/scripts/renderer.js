@@ -12,16 +12,18 @@ function render_katex(input_str, target_element) {
     });  
 }
 
-function render_math(field, input_str, target_element) {
+function render_math(field, input_list, target_element) {
 
     if (field === "average_time_complexity") {
-        render_katex("T \\in " + input_str, target_element);
+        render_katex("T \\in " + input_list, target_element);
       
     } else if (field === "auxiliary_space_complexity") {
-        render_katex("S \\in " + input_str, target_element);
+        render_katex("S \\in " + input_list, target_element);
       
     } else {
-        target_element.textContent = input_str;
+        for (let value of input_list) {
+          target_element.textContent = target_element.textContent + `${value}\n`;
+        }
     }
 }
 

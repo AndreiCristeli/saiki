@@ -10,14 +10,15 @@ import json
 from dataclasses import dataclass
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
+from .entities import HistoricalEntity
 
 
 @dataclass(init=True, repr=True, eq=False, frozen=False, slots=True)
 class GuessState:
     """Represents the state of the player in the Guess game mode."""
 
-    key: str    # the player's session id
-    selected: None | int    # a pointer to the entity currently selected
+    key: str  # the player's session id
+    selected: None | int  # a pointer to the entity currently selected
     attempted: list[int]  # already guessed...
 
     @staticmethod
@@ -80,7 +81,7 @@ class GuessState:
             response_json.delete_cookie("key", samesite="Lax")
             response_json.delete_cookie("selected", samesite="Lax")
             response_json.delete_cookie("A#", samesite="Lax")
-            
+
             return response_json
 
         response_json.set_cookie("key", self.key, secure=False, httponly=True, samesite="Lax")
@@ -125,6 +126,15 @@ class Guesser(object):
         with open(data_path, "r", encoding="utf-8") as file:
             self.__static_json_data_stream: list[dict] = json.load(file)
 
+        for entry in self.__static_json_data_stream:
+            entry: dict = entry["data"]
+            print("entry:", entry)
+
+            for data_field in entry:
+                if not isinstance(entry[data_field], list):
+                    # then we have to list it.
+                    entry[data_field] = [entry[data_field]]
+
     def fetch_entity(self, entity_name: str) -> tuple[None | dict, int]:
         """Fetches an entity by its name on the data pool."""
 
@@ -133,13 +143,14 @@ class Guesser(object):
             if entity["name"].lower() == entity_name:
                 return entity, i
 
-        return None, 0
+        return None, - 1
 
     def select_entity(self, state: GuessState) -> GuessState:
         """Collapses the entity selection; chooses one from the data pool as the correct.
             :param state: The current player's guess mode state.
             :return: the new state after the selection. The parameter is modified.
         """
+
         from random import randint
 
         if state.selected is not None:
@@ -154,18 +165,33 @@ class Guesser(object):
 
         return state
 
-    def get_entity(self, index: int) -> dict:
+    def get_entity(self, index: int) -> dict[str, list]:
         """Retrieves an entity by its index in the data pool.
             :param index: The 0-based index.
             :return: The json dictionary associated with the entity entry.
             :raises TypeError: If the index is out of the bounds."""
         return self.__static_json_data_stream[index]
 
+    def fetch_entity2(self, entity_name: str) -> tuple[None | HistoricalEntity, int]:
+        """Fetches an entity by its name on the data pool.
+        Alternative version, that returns the HistoricalEntity object."""
+
+        for i, entity in enumerate(self.__static_json_data_stream):
+            print(f"entity[{i}]: {entity}")
+            if entity["name"].lower() == entity_name:
+                return HistoricalEntity.from_type(entity["type"].lower(), entity_name, ** entity["data"]), i
+
+        return None, - 1
+
+    def get_entity2(self, index: int) -> HistoricalEntity:
+
+        entity: dict = self.__static_json_data_stream[index]
+        return HistoricalEntity.from_type(entity["type"].lower(), entity["name"], ** entity["data"])
+
 
 """Global initialization"""
 
 guesser: Guesser = Guesser()
-
 
 if __name__ == "__main__":
     ...

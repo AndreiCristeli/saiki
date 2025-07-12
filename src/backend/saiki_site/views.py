@@ -8,6 +8,8 @@ from django.shortcuts import render, redirect
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+
+from .entities import HistoricalEntity
 from .guesser import guesser, GuessState
 from typing import Any
 import json
@@ -72,7 +74,7 @@ class GuessView(object):
         # the entity that is marked to be solved by the player.
         from .enc import unpermute
         real_selected_index: int = unpermute(state.selected, state.key, 1000)
-        correct_entity: dict = guesser.get_entity(real_selected_index)
+        correct_entity: dict[str, list] | HistoricalEntity = guesser.get_entity2(real_selected_index)
 
         # the one matching what he inserted.
         match_entity: dict | None
@@ -88,26 +90,28 @@ class GuessView(object):
             response: dict = {
                 "name": match_entity["name"],
                 "data": {},
-                "type": "correct"
+                "guessed": "correct"
             }
 
             for field in match_entity["data"]:
 
                 # if the field is correct, for all effects.
-                guess_type: str = "correct" if match_entity["data"][field] == correct_entity["data"][field] else "wrong"
+                # guess_type: str = GuessView.__compare_entity_field(match_entity["data"][field], correct_entity["data"][field])
+                guess_type: str = correct_entity @ (field, match_entity["data"][field])
 
                 # adding the respective field to the response...
                 response["data"][field] = [match_entity["data"][field], guess_type]
 
-                if response["type"] == "correct":
+                if response["guessed"] == "correct":
                     # if the response is correct up to now, it can potentially make the whole answer wrong.
-                    response["type"] = guess_type
+                    response["guessed"] = guess_type
 
             state.add_attempt(match_entity_index)
-        
+
+        print(response)
         response_json: JsonResponse = JsonResponse(response)
 
-        to_reset_cookies: bool = response["type"] == "correct" if "type" in response else False
+        to_reset_cookies: bool = response["guessed"] == "correct" if "guessed" in response else False
         state.set_cookie(response_json, to_reset_cookies)
 
         return response_json

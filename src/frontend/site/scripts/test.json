@@ -1,8 +1,9 @@
 [
   {
     "name": "Bubble Sort",
+    "type": "Algorithm",
     "data": {
-      "category": "Sorting",
+      "category": ["Sorting", "camarada"],
       "year": 1960,
       "average_time_complexity": "O(n^2)",
       "auxiliary_space_complexity": "O(1)",
@@ -13,6 +14,7 @@
   },
   {
     "name": "Insertion Sort",
+    "type": "Algorithm",
     "data": {
       "category": "Sorting",
       "year": 1950,
@@ -25,6 +27,7 @@
   },
   {
     "name": "Selection Sort",
+    "type": "Algorithm",
     "data": {
       "category": "Sorting",
       "year": 1950,
@@ -37,6 +40,7 @@
   },
   {
     "name": "Merge Sort",
+    "type": "Algorithm",
     "data": {
       "category": "Sorting",
       "year": 1945,
@@ -49,6 +53,7 @@
   },
   {
     "name": "Quick Sort",
+    "type": "Algorithm",
     "data": {
       "category": "Sorting",
       "year": 1960,
@@ -61,6 +66,7 @@
   },
   {
     "name": "Heap Sort",
+    "type": "Algorithm",
     "data": {
       "category": "Sorting",
       "year": 1964,
@@ -73,6 +79,7 @@
   },
   {
     "name": "Shell Sort",
+    "type": "Algorithm",
     "data": {
       "category": "Sorting",
       "year": 1959,
@@ -85,6 +92,7 @@
   },
   {
     "name": "Counting Sort",
+    "type": "Algorithm",
     "data": {
       "category": "Sorting",
       "year": 1954,
@@ -97,6 +105,7 @@
   },
   {
     "name": "Radix Sort",
+    "type": "Algorithm",
     "data": {
       "category": "Sorting",
       "year": 1954,
@@ -109,6 +118,7 @@
   },
   {
     "name": "Bucket Sort",
+    "type": "Algorithm",
     "data": {
       "category": "Sorting",
       "year": 1956,
@@ -121,6 +131,7 @@
   },
   {
     "name": "Tim Sort",
+    "type": "Algorithm",
     "data": {
       "category": "Sorting",
       "year": 2002,
@@ -133,6 +144,7 @@
   },
   {
     "name": "Gnome Sort",
+    "type": "Algorithm",
     "data": {
       "category": "Sorting",
       "year": 2000,
@@ -145,6 +157,7 @@
   },
   {
     "name": "Comb Sort",
+    "type": "Algorithm",
     "data": {
       "category": "Sorting",
       "year": 1980,
@@ -157,6 +170,7 @@
   },
   {
     "name": "Cocktail Sort",
+    "type": "Algorithm",
     "data": {
         "category": "Sorting",
         "year": 1956,
