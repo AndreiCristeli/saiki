@@ -44,7 +44,7 @@ export function render_card(object, card_class){
   for (let key in object.data) {
     const infoItem = document.createElement('div');
     
-    infoItem.className = `info-item ${object.data[key][1]}-color`
+    infoItem.className = `info-item ${object.data[key][1]}-color`;
     
     render_math(key, object.data[key][0], infoItem);
     infoGrid.appendChild(infoItem);

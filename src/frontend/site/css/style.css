@@ -1,14 +1,9 @@
-:root {
-  --bg-gradient: linear-gradient(90deg,rgba(3, 0, 105, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
-  --info-color: #DCE7FC;
-  --correct-color: #00db42;
-  --partial-color: #dbb300;
-  --wrong-color: #ce0030;
-  --highlight-color: #fffb00;
-  --text-color: #fff;
-  --card-radius: 30px;
-  --card-padding: 1rem;
-}
+@import url("colors.css");
+@import url("card.css");
+@import url("easter_eggs.css");
+@import url("header.css");
+@import url("info_dialog.css");
+@import url("new_game.css");
 
 * {
   box-sizing: border-box;
@@ -17,17 +12,30 @@
 
 body {
   margin: 0;
-  background: var(--bg-gradient);
-  color: var(--text-color);
+  background: var(--backgorund);
+  color: var(--primary-text);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 1rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 h1 {
   margin: 1rem 0 0.5rem;
   font-size: 50px;
+}
+
+h2 {
+  margin: 1rem 0;
+  font-size: 18pt;
+}
+
+.saiki-logo{
+  filter: invert(100%) sepia(0%) saturate(7473%) hue-rotate(97deg) brightness(96%) contrast(97%);
+  width: 140px;
+  height: 60px;
+  object-fit: cover;  /* To "crop" the image keeping the aspect ratio. */
 }
 
 .translateBox {
@@ -56,7 +64,7 @@ h1 {
 input[type="text"] {
   margin: 1rem 0;
   padding: 0.5rem;
-  background: #ddd;
+  background: var(--input-background);
   border: solid 2px black;
   border-radius: 20px;
   width: 90%;
@@ -65,45 +73,9 @@ input[type="text"] {
   font-size: 1rem;
 }
 
-.div_new_game {
-  display: flex;
-  flex-direction: column;
-  margin: 1rem 0;
-  padding: 1rem;
-  gap: 1rem;
-  color: #004400;
-  background: #e0ffe0;
-  border: 2px solid black;
-  border-radius: 20px;
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
-  justify-content: center;
-  font-size: 1rem;
-}
-
-.btn_new_game {
-  background-color: #4CAF50;
-  color: white;    
-  border: none;
-  width: 45%; 
-  align-self: center;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn_new_game:hover {
-  background-color: #45a049;
-  transform: scale(1.05);
-}
-
-.btn_new_game:active {
-  transform: scale(0.98);
+input:focus {
+  outline: none;
+  background-color: var(--input-background-focus);
 }
 
 .attempts {
@@ -112,58 +84,6 @@ input[type="text"] {
   gap: 0.5rem;
   font-size: 1.2rem;
   margin: 1rem 0;
-}
-
-.card {
-  display: flex;
-  flex-direction: column;
-  border: 4px solid;
-  border-radius: var(--card-radius);
-  margin: 1rem 0;
-  padding: var(--card-padding);
-  width: 100%;
-  max-width: 800px;
-  background: rgba(255, 255, 255, 0.1);
-  animation: emergir 0.8s ease-out forwards;
-}
-
-.card.correct {
-  border-color: var(--correct-color);
-}
-
-.card.partial {
-  border-color: var(--partial-color);
-}
-
-.card.wrong {
-  border-color: var(--wrong-color);
-}
-
-.card-header {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  gap: 0.5rem;
-}
-
-.info-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  border-radius: 50%;
-  color: white;
-  font-size: 0.8rem;
-  height: 72px;
-  width: 72px;
-  margin: auto;
-  text-align: center;
-  word-break: break-word;       
-  white-space: normal;
 }
 
 .hint-labels {
@@ -183,33 +103,6 @@ input[type="text"] {
   width: 6rem;
   text-align: center;
   -webkit-text-stroke: 0.19px black;
-}
-
-.infoDialog {
-  background: var(--info-color);
-  height: 100vh;
-  width: 60%;
-  border-radius: 20px;
-  animation: emergir 0.8s ease-out forwards;
-}
-
-.infoDialog::-webkit-scrollbar {
-  width: 8px; 
-}
-
-.infoDialog::-webkit-scrollbar-track {
-  background: #f5f5f5; 
-  border-radius: 8px;
-}
-
-.infoDialog::-webkit-scrollbar-thumb {
-  background-color: #999;
-  border-radius: 5px;
-  border: 1px solid black;
-}
-
-.infoDialog::-webkit-scrollbar-thumb:hover {
-  background-color: #666;
 }
 
 .closeDialog {
@@ -234,11 +127,6 @@ input[type="text"] {
 }
 
 
-.correct-color { background-color: var(--correct-color); }
-.partial-color { background-color: var(--partial-color); }
-.wrong-color { background-color: var(--wrong-color); }
-.highlight-color { background-color: var(--highlight-color); color: black; }
-
 .footer-info {
   position: fixed;
   border: none;
@@ -253,50 +141,4 @@ input[type="text"] {
   justify-content: center;
   font-size: 1.5rem;
   cursor: pointer;
-}
-
-.milvus-dialog {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  font-size: xx-large;
-  background: #00b3ff;
-  height: 30vh;
-  width: 30%;
-  border-radius: 20px;
-  animation: emergir 0.8s ease-out forwards;
-}
-
-.pokemon-dialog {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  font-size: xx-large;
-  background: #d9d607;
-  border-color: #0303ab;
-  border-width: 5px;
-  border-radius: 20px;
-  height: 30vh;
-  width: 30%;
-  animation: emergir 0.8s ease-out forwards;
-}
-
-@media (max-width: 600px) {
-  .info-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@keyframes emergir {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes desvanecer {
-  from { opacity: 1; transform: translateY(0px); }
-  to   { opacity: 0; transform: translateY(10px); }
 }
