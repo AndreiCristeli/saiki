@@ -133,25 +133,6 @@ class GuessView(object):
         return GuessView.__check_fields(guess_state, entity)
 
 
-class OtherView(object):
-
-    @staticmethod
-    def read_root(req) -> JsonResponse:
-        return JsonResponse(
-            {
-                "msg": "Hello from backend! Camarada"
-            }
-        )
-
-
-def read_root1(req) -> JsonResponse:
-    return JsonResponse(
-        {
-            "msg": "Helicóptero"
-        }
-    )
-
-
 # -------------------------------------------------------------------------------------------
 from .forms import JogadorForm, JogadorLoginForm
 from .models import Jogador
