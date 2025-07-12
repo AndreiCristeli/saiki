@@ -81,7 +81,7 @@ export async function process_attempt(user_input, div_attempts, entity_type){
     // TODO: Treat invalid entry case.
     // Idea: Only call process_attempt if there's a 'first suggestion' when Suggestion is implemented.
 
-    //
+    // 
     attempt_count_update(div_attempts);
 
     // Add a new card corresponding to user's attempt.

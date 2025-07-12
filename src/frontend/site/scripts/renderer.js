@@ -66,10 +66,11 @@ export function render_card(object) {
 /** Renders the hints at the input text-box. */
 export function render_hints(hints) {
   const input_hint_div = document.querySelector(".input-hint");
-  let hints_container = document.querySelector("hints");
+  let hints_container = document.querySelector(".hints");
   
   // re-creating it (in case it already exists.)
   if (hints_container) { 
+    console.log("popodpsp");
     hints_container.remove();
     input_hint_div.removeChild(hints_container);
   }

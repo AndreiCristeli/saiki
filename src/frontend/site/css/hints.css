@@ -4,13 +4,17 @@
     display: flex;
     flex-direction: row;
     width: fit-content;
-    gap: 10px;
+    position: relative;
 }
 
 .hints {
     background-color: var(--bg-hints-container);
     position: absolute;
+    top: 4rem;
     box-shadow: 0 5px 10px #0003;
+    padding: .5rem;
+    width: 100%;
+    margin-top: 3px;
 }
 
 .hint_item {
@@ -22,6 +26,7 @@
     align-items: center;
     font-weight: 700;
     border-radius: 5px;
+    padding: .5rem;
 }
 
 .hint_item .selected {
