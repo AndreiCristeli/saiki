@@ -41,80 +41,35 @@ class GuessView(object):
     """Handles the view of the Guess game mode."""
 
     @staticmethod
+    def empty() -> JsonResponse:
+        """Represents an empty JSON response."""
+        return JsonResponse({})
+
+    @staticmethod
     @csrf_exempt  # Cookies~
     def request_hint(req: WSGIRequest) -> JsonResponse:
         """Processes the request of a hint, via POST."""
 
         if req.method != "POST":
-            # empty return~
-            return JsonResponse({})
+            return GuessView.empty()
 
         try:
-            data = json.loads(req.body)
+            data: dict = json.loads(req.body)
             name: str = data.get("attempt")
 
             if not isinstance(name, str):
                 raise TypeError
 
         except TypeError | KeyError as e:
-            name: str = "undef"
             print(e)
+            return GuessView.empty()
+
+        matches: list[str] = guesser.match_name(name)
 
         return JsonResponse({
-            "name": name.upper()
+            "number_of_matches": len(matches),
+            "closest_matches": matches
         })
-
-    @staticmethod
-    def __check_fields(state: GuessState, entity_name: str) -> JsonResponse:
-        """Checks the fields of the player's guessing (and returns the response)."""
-
-        # making sure the state have a selected entity.
-        guesser.select_entity(state)
-
-        # the entity that is marked to be solved by the player.
-        from .enc import unpermute
-        real_selected_index: int = unpermute(state.selected, state.key, 1000)
-        correct_entity: dict[str, list] | HistoricalEntity = guesser.get_entity2(real_selected_index)
-
-        # the one matching what he inserted.
-        match_entity: dict | None
-        match_entity_index: int
-        match_entity, match_entity_index = guesser.fetch_entity(entity_name)
-
-        # will hold the JSON response back to the user.
-        response: dict = {}
-
-        if match_entity is not None:
-            # meaning that at least it was found on the database...
-
-            response: dict = {
-                "name": match_entity["name"],
-                "data": {},
-                "guessed": "correct"
-            }
-
-            for field in match_entity["data"]:
-
-                # if the field is correct, for all effects.
-                # guess_type: str = GuessView.__compare_entity_field(match_entity["data"][field], correct_entity["data"][field])
-                guess_type: str = correct_entity @ (field, match_entity["data"][field])
-
-                # adding the respective field to the response...
-                response["data"][field] = [match_entity["data"][field], guess_type]
-
-                if response["guessed"] == "correct":
-                    # if the response is correct up to now, it can potentially make the whole answer wrong.
-                    response["guessed"] = guess_type
-
-            state.add_attempt(match_entity_index)
-
-        print(response)
-        response_json: JsonResponse = JsonResponse(response)
-
-        to_reset_cookies: bool = response["guessed"] == "correct" if "guessed" in response else False
-        state.set_cookie(response_json, to_reset_cookies)
-
-        return response_json
 
     @staticmethod
     @csrf_exempt  # Cookies~
@@ -122,8 +77,7 @@ class GuessView(object):
         """Processes the request of an entity, via POST."""
 
         if req.method != "POST":
-            # empty return~
-            return JsonResponse({})
+            return GuessView.empty()
 
         data: dict[str, Any] = json.loads(req.body)
 
@@ -131,10 +85,25 @@ class GuessView(object):
             entity: str = data["entity"]
 
         except KeyError:
-            return JsonResponse({})
+            return GuessView.empty()
+
+        # guess_state: GuessState = GuessState.from_request(req)
+        # return GuessView.__check_fields(guess_state, entity)
+        return GuessState.from_request(req).guess(entity)
+
+    @staticmethod
+    @csrf_exempt
+    def request_load(req: WSGIRequest) -> JsonResponse:
+        """Returns the corresponding data on the cookies, form"""
+
+        if req.method != "POST":
+            return GuessView.empty()
+
+        # for instance, ignores the JSON data, as it isn't needed...
+        data = json.loads(req.body)
 
         guess_state: GuessState = GuessState.from_request(req)
-        return GuessView.__check_fields(guess_state, entity)
+        return guess_state.get_all(data)
 
 
 # -------------------------------------------------------------------------------------------

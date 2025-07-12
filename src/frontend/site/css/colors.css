@@ -15,6 +15,8 @@
     --input-background-focus: #ddd;
 
     --separator: #323337;
+    --bg-hints-container: #323337;
+    --bg-hints: #44464b;
 }
 
 .correct-color { background-color: var(--correct-color); }

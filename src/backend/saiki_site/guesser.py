@@ -23,7 +23,11 @@ class GuessState:
 
     @staticmethod
     def from_request(request: WSGIRequest) -> GuessState:
-        """Retrieves the Player's guessing state by the request."""
+        """Retrieves the Player's guessing state by the request.
+
+        :param request: The Django request.
+        :return: The user's guessing state. Creates a new if doesn't identify one.
+        """
 
         key: None | str = request.COOKIES.get("key")
 
@@ -99,6 +103,8 @@ class GuessState:
         return response_json
 
     def add_attempt(self, attempt_index: int) -> None:
+        """..."""
+
         if not isinstance(attempt_index, int):
             raise TypeError
 
@@ -108,6 +114,99 @@ class GuessState:
         )
 
         return None
+
+    def get_all(self, data) -> JsonResponse:
+        """Returns all the entity data serialized."""
+
+        from .enc import unpermute
+        real_indexes: list[int] = list(map(lambda x: unpermute(x, self.key, 1000), self.attempted))
+
+        print(data)
+
+        # will hold the JSON data in python.
+        response_list: list[dict] = list()
+
+        # retrieving the data.
+        for index in real_indexes:
+            entity = guesser.get_entity(index)
+            print(entity)
+
+            response = self.__check_entity(entity_name=entity["name"])
+            print(response)
+
+            response_list.append(
+                response
+            )
+
+        print(response_list)
+
+        return JsonResponse({
+            "tries": len(response_list),
+            "entities": response_list,
+        })
+
+    def __check_entity(self, entity_name: str) -> dict:
+        """Checks the fields of the player's guessing. Returns the JSON format response (as a dictionary).
+
+        :param entity_name: Name of the entity being guessed.
+        :returns: Entity's guessing response in JSON format."""
+
+        # making sure the state have a selected entity.
+        guesser.select_entity(self)
+
+        # the entity that is marked to be solved by the player.
+        from .enc import unpermute
+        real_selected_index: int = unpermute(self.selected, self.key, 1000)
+        correct_entity: dict[str, list] | HistoricalEntity = guesser.get_entity2(real_selected_index)
+
+        # the one matching what he inserted.
+        match_entity: dict | None
+        match_entity_index: int
+        match_entity, match_entity_index = guesser.fetch_entity(entity_name)
+        print("match entity:", match_entity)
+
+        # will hold the JSON response back to the user.
+        response: dict = {}
+
+        if match_entity is not None:
+            # meaning that at least it was found on the database...
+
+            response: dict = {
+                "name": match_entity["name"],
+                "data": {},
+                "guessed": "correct"
+            }
+
+            for field in match_entity["data"]:
+
+                # if the field is correct, for all effects.
+                # guess_type: str = GuessView.__compare_entity_field(match_entity["data"][field], correct_entity["data"][field])
+                guess_type: str = correct_entity @ (field, match_entity["data"][field])
+
+                # adding the respective field to the response...
+                response["data"][field] = [match_entity["data"][field], guess_type]
+
+                if response["guessed"] == "correct":
+                    # if the response is correct up to now, it can potentially make the whole answer wrong.
+                    response["guessed"] = guess_type
+
+            self.add_attempt(match_entity_index)
+
+        return response
+
+    def guess(self, entity_name: str) -> JsonResponse:
+        """Checks the fields of the player's guessing. Updates the guessing state (through the response).
+
+        :param entity_name: Name of the entity being guessed.
+        :returns: Returns the entity guessing response."""
+
+        response = self.__check_entity(entity_name)
+        response_json: JsonResponse = JsonResponse(response)
+
+        to_reset_cookies: bool = response["guessed"] == "correct" if "guessed" in response else False
+        self.set_cookie(response_json, to_reset_cookies)
+
+        return response_json
 
 
 class Guesser(object):
@@ -138,6 +237,8 @@ class Guesser(object):
     def fetch_entity(self, entity_name: str) -> tuple[None | dict, int]:
         """Fetches an entity by its name on the data pool."""
 
+        entity_name: str = entity_name.lower()
+
         for i, entity in enumerate(self.__static_json_data_stream):
             # @TODO: to abstract and improve comparison!
             if entity["name"].lower() == entity_name:
@@ -165,7 +266,7 @@ class Guesser(object):
 
         return state
 
-    def get_entity(self, index: int) -> dict[str, list]:
+    def get_entity(self, index: int) -> dict[str, str | list]:
         """Retrieves an entity by its index in the data pool.
             :param index: The 0-based index.
             :return: The json dictionary associated with the entity entry.
@@ -187,6 +288,14 @@ class Guesser(object):
 
         entity: dict = self.__static_json_data_stream[index]
         return HistoricalEntity.from_type(entity["type"].lower(), entity["name"], ** entity["data"])
+
+    def match_name(self, name: str) -> list[str]:
+        """Matches an entity name over the collection. Returns a list of possible results. """
+
+        max_query_results: int = 5
+
+        return ["cmarada", "irmandade", "Juscelino KubsCristiano Augusto"]
+
 
 
 """Global initialization"""

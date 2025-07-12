@@ -16,10 +16,24 @@ class HistoricalEntity(ABC):
 
     _json_dict: dict[str, list]
 
-    def __init__(self, name: str) -> None:
+    @property
+    def name(self) -> str:
+        """Retrieves the entity's name."""
+        return self["name"]
+
+    @property
+    @abstractmethod
+    def type_name(self) -> str:
+        return "entity"
+
+    def __init__(self, name: str, ** kwargs) -> None:
         self._json_dict: dict[str, str | list] = {
             "name": name
         }
+
+        for kw, v in kwargs.items():
+            kw: str
+            self._json_dict[kw] = v
 
     def __getitem__(self, item: str) -> str | list:
         """Returns the corresponding JSON item."""
@@ -27,14 +41,6 @@ class HistoricalEntity(ABC):
             raise TypeError
 
         return self._json_dict[item]
-
-    @property
-    def name(self) -> str:
-        return self["name"]
-
-    @property
-    def type_name(self) -> str:
-        return "entity"
 
     def __matmul__(self, item: tuple[str, list]) -> str:
         """`compare_field` operator wrapper."""
@@ -44,8 +50,8 @@ class HistoricalEntity(ABC):
 
         elif not isinstance(item[1], list):
             raise TypeError(1)
-                
-        return self.compare_field(* item)
+
+        return self.compare_field(*item)
 
     def compare_field(self, field_name: str, field_item: list[str]) -> str:
         """Compares two entities fields for guessing, verifying if A \\subseteq B.
@@ -53,7 +59,7 @@ class HistoricalEntity(ABC):
         Returns "correct", if A == B, "partial" if A \\subset B, and "wrong" otherwise."""
 
         if field_name not in self._json_dict:
-            raise ValueError(0)
+            raise ValueError(f"field_name: {field_name} ({self._json_dict})")
 
         # A == B
         if field_item == self._json_dict[field_name]:
@@ -68,7 +74,7 @@ class HistoricalEntity(ABC):
         return "wrong"
 
     @staticmethod
-    def from_type(entity_type: str, * args, ** kwargs) -> HistoricalEntity:
+    def from_type(entity_type: str, *args, **kwargs) -> HistoricalEntity:
         """Returns an Entity from the specified type."""
 
         possible_entities_type: dict[str, type] = {
@@ -79,22 +85,36 @@ class HistoricalEntity(ABC):
             raise ValueError("...")
 
         return possible_entities_type[entity_type](
-            * args,
-            ** kwargs,
+            *args,
+            **kwargs,
         )
 
 
 class Algorithm(HistoricalEntity):
+    """Represents the algorithm entity."""
+
+    @property
+    def type_name(self) -> str:
+        return "algorithm"
 
     def __init__(self, name: str, ** kwargs) -> None:
-        super().__init__(name)
 
-        for kw, v in kwargs.items():
-            self._json_dict[kw] = v
+        fields: list[str] = ["category", "year", "average_time_complexity", "auxiliary_space_complexity",
+                             "data_structure", "kind_of_solution", "generality"]
 
-    # def __contains__(self, item: tuple[str, list]) -> bool: ...
+        for key in kwargs:
+            if key not in fields:
+                raise KeyError("arrombado1")
 
+            fields.pop(fields.index(key))
+
+        if fields:
+            raise KeyError("arrombado2")
+
+        super().__init__(name, ** kwargs)
 
 
 if __name__ == "__main__":
-    Algorithm()
+    Algorithm("Victor's algorithm", category="cmrd", year=2025, average_time_complexity="O(n)",
+              auxiliary_space_complexity="O(n)", data_structure="List", kind_of_solution="Just wrong",
+              generality="Doidera")

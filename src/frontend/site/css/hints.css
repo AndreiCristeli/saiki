@@ -1,0 +1,37 @@
+@import url("colors.css");
+
+.input-hint {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    gap: 10px;
+}
+
+.hints {
+    background-color: var(--bg-hints-container);
+    position: absolute;
+    box-shadow: 0 5px 10px #0003;
+}
+
+.hint_item {
+    text-align: left;
+    cursor: pointer;
+    text-transform: capitalize;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: 700;
+    border-radius: 5px;
+}
+
+.hint_item .selected {
+    background-color: var(--bg-hints);
+    text-align: left;
+    cursor: pointer;
+    text-transform: capitalize;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: 700;
+    border-radius: 5px;
+}

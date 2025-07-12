@@ -9,7 +9,7 @@
 
 import * as attempt from "./attempt.js"
 import * as eg from "./easter_eggs.js"
-// import {display_hints} from "./hints.js"
+import {display_hints} from "./hints.js"
 
 // TODO: Handle entity_type properly according to user's selection.
 const ENTITY_TYPE_PH = "Algorithm"
@@ -28,7 +28,7 @@ export async function input_keydown(event, input, div_attempts) {
 
   if (/^[a-zA-z]$/.test(event.key)){ // Using RegExp for validating if entry is a letter.
     // TODO: add suggestion logic.
-    console.log(event.key);
+    //console.log(event.key);
     display_hints(user_input);
     
   } else if (user_input && event.key === 'Enter') {
@@ -37,7 +37,6 @@ export async function input_keydown(event, input, div_attempts) {
 
       } else if (user_input === "pokemon" || user_input === "monkepo"){
         eg.showPokemonDialog(); input.value = ''; return;
-
       }
 
       let attempt_rc = await attempt.process_attempt(user_input, div_attempts, ENTITY_TYPE_PH);

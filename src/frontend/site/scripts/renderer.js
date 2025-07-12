@@ -2,6 +2,7 @@
  * @file frontend/site/scripts/renderer.js
  * 
  * @author victorxaviercosta
+ * @author HexagonalUniverse
  * 
  * @version 0.1
  */
@@ -27,7 +28,9 @@ function render_math(field, input_list, target_element) {
     }
 }
 
-export function render_card(object, card_class){
+export function render_card(object) {
+  let card_class = `card ${object.guessed}`;
+
   // Creating the card div element.
   const card = document.createElement('div');
   card.className = card_class;
@@ -58,4 +61,52 @@ export function render_card(object, card_class){
   // Insert the card to body ou em outro container (ex: abaixo do último card)
   const container = document.querySelector('.cards-container');
   container.insertBefore(card, container.firstChild);
+}
+
+/** Renders the hints at the input text-box. */
+export function render_hints(hints) {
+  const input_hint_div = document.querySelector(".input-hint");
+  let hints_container = document.querySelector("hints");
+  
+  // re-creating it (in case it already exists.)
+  if (hints_container) { 
+    hints_container.remove();
+    input_hint_div.removeChild(hints_container);
+  }
+  
+  hints_container = document.createElement('div');
+  hints_container.className = "hints"
+
+  // * @TODO organize it.
+  // deletes the hint box when the input is out-of-focus.
+  document.querySelector(".Input").addEventListener('blur', function () {
+      try {
+          hints_container.remove();
+          input_hint_div.removeChild(hints_container);
+      } catch (NotFoundError) {
+
+      }
+  })
+
+  // adding each hint row.
+  for (let name of hints) {
+    // each hint row...
+    const hint_item = document.createElement('div');
+    hint_item.className = "hint_item";
+    hint_item.innerText = name;
+    hints_container.appendChild(hint_item);
+  }
+  
+  input_hint_div.appendChild(hints_container);
+}
+
+/** Bulk-loads a collection of entities.
+ *  Used on page-refresh, for maintaining the visual information of the game-state. */
+export function render_collection(entities) {
+    // console.log("entities:", entities);
+  
+    // iteratively rendering each card, in order...
+    for (let entity of entities) {
+      render_card(entity);
+    }
 }
