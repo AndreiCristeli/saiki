@@ -4,20 +4,22 @@
 @import url("header.css");
 @import url("info_dialog.css");
 @import url("new_game.css");
+@import url("navigation_bar.css");
+@import url("footer.css");
 
 * {
   box-sizing: border-box;
   font-family: Arial, sans-serif;
+  padding: 0px;
 }
 
 body {
-  margin: 0;
+  margin: 0px;
   background: var(--backgorund);
   color: var(--primary-text);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -36,19 +38,6 @@ h2 {
   width: 140px;
   height: 60px;
   object-fit: cover;  /* To "crop" the image keeping the aspect ratio. */
-}
-
-.translateBox {
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  position: absolute;
-  padding: 4px;
-  border-radius: 8px;
-  background: #ddd;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  top: 4px;
-  right: 4px;
 }
 
 .prompt-box {
@@ -118,24 +107,21 @@ input:focus {
 
 .cards-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   width: 100%;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   gap: 1rem;
 }
 
 
 .footer-info {
-  position: fixed;
   border: none;
-  bottom: 1rem;
-  right: 1rem;
-  background: #a3dfff;
-  border-radius: 50%;
-  height: 32px;
-  width: 32px;
+  background: #cccccc9d;
+  border-radius: 10%;
+  height: 30px;
+  width: 30px;
   display: flex;
   align-items: center;
   justify-content: center;

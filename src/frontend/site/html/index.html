@@ -19,18 +19,22 @@
 
 <body>
 
-  <!-- translate -->
-  <select class="translateBox">
-    <option value="pt">Português</option>
-    <option value="en">English</option>
-  </select>
-
   <!-- TODO: Add Navigation Bar (To select Entity type, etc.) -->
+  <nav class="menu">
+    <ul class="select-mode">
+      <li class="menu-item diaryText">Diário</li>
+      <li class="menu-item trueOrFalseText">Verdadeiro ou Falso</li>
+      <li class="menu-item customText">Personalizado</li>
+    </ul>
+  </nav>
 
   <header class="app-header">
     <a href="/">
       <img src="/static/assets/img_saiki_logo.svg" class="saiki-logo" alt="Saiki">
     </a>
+    
+    <!-- Info -->
+    <button class="footer-info">?</button>
   </header>
   
   <h2>Qual é o algoritmo do dia?</h2>
@@ -53,9 +57,6 @@
   
   <!-- Div de ancoragem para os novos card's -->
   <div class="cards-container"></div>
-
-  <!-- Info -->
-  <button class="footer-info">i</button>
 
   <dialog class="infoDialog">
     <h1 class="howToPlayTitle">Como jogar</h1>
@@ -112,6 +113,13 @@
     <button class="closeDialog" aria-label="Fechar">&times;</button>
   </dialog>
 
+  <footer class="footer">
+    <!-- translate -->
+    <select class="translateBox">
+      <option value="pt">Português</option>
+      <option value="en">English</option>
+    </select>
+  </footer>
 
   <script type="module" src="/static/site/scripts/main.js"></script>
 </body>

@@ -9,7 +9,9 @@
 const resources = {
   pt: {
     translation: {
-      title: "Saiki",
+      diary: "Diário",
+      trueOrFalse: "Verdadeiro ou Falso",
+      custom: "Personalizado",
       question: "Qual é o algoritmo do dia?",
       inputPlaceholder: "Escreva aqui",
       attempts: "Tentativas: ",
@@ -33,7 +35,9 @@ const resources = {
   },
   en: {
     translation: {
-      title: "saiki",
+      diary: "Diary",
+      trueOrFalse: "True or False",
+      custom: "Custom",
       question: "What is today's algorithm?",
       inputPlaceholder: "Type here",
       attempts: "Attempts: ",
