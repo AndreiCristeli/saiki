@@ -15,12 +15,14 @@ i18next.init({
 	});
 
 function updateContent() {
-	document.querySelector('h1').textContent = i18next.t('title');
-  	document.querySelector('p').textContent = i18next.t('question');
+		document.querySelector('.diaryText').textContent = i18next.t('diary');
+  	document.querySelector('.trueOrFalseText').textContent = i18next.t('trueOrFalse');
+  	document.querySelector('.customText').textContent = i18next.t('custom');
+  	document.querySelector('h2').textContent = i18next.t('question');
   	document.querySelector('.Input').placeholder = i18next.t('inputPlaceholder');
   	document.querySelector('.attempts-label').textContent = i18next.t('attempts');
 
-  	const labels = document.querySelectorAll('.label li');
+  	const labels = document.querySelectorAll('.hint-labels li');
   	const keys = [
     	'categoryInfoTitle',
     	'yearInfoTitle',
