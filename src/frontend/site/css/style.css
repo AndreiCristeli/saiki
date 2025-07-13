@@ -6,6 +6,7 @@
 @import url("new_game.css");
 @import url("navigation_bar.css");
 @import url("footer.css");
+@import url("hints.css");
 
 * {
   box-sizing: border-box;
@@ -56,7 +57,7 @@ input[type="text"] {
   background: var(--input-background);
   border: solid 2px black;
   border-radius: 20px;
-  width: 90%;
+  width: 40vw;
   max-width: 400px;
   text-align: center;
   font-size: 1rem;

@@ -9,6 +9,7 @@ Encryption and Coding module.
 """
 
 import hashlib
+from typing import Iterable
 
 
 def prf(data: bytes) -> int:
@@ -150,9 +151,6 @@ def b64_encoding_max(string_size: int) -> int:
     return (1 << (8 * max_of_bytes)) - 1
 
 
-from typing import Iterable
-
-
 def int_list_to_b64(__iterable: Iterable[int], string_size: int) -> str:
     return "".join(int_to_base64(v, string_size) for v in __iterable)
 
@@ -166,61 +164,78 @@ def b64_to_int_list(b64_str, string_size: int) -> list[int]:
     return list(map(lambda s: base64_to_int(s), b64s))
 
 
-def __assert_b64_full_correctness(string_size: int) -> None:
-
-    n_max: int = b64_encoding_max(string_size)
-
-    for ç in range(n_max):
-        b_64: str = int_to_base64(ç, string_size)
-        assert base64_to_int(b_64) == ç
-
-    return None
+"""
+    Testing
+"""
 
 
-def __test_b64_encoding() -> None:
+class EncTest(object):
+    """Tests the module."""
 
-    overflow_values: list[tuple[int, int]] = [
-        # (256, 2), (4096, 3), ...
-        (b64_encoding_max(ç) + 1, ç) for ç in range(2, 17)
-    ]
+    def __init__(self):
+        self.test()
 
-    # testing overflow
-    for values in overflow_values:
-        values: tuple[int, int]
+    @staticmethod
+    def test() -> None:
+        EncTest.__test_permutation_enc()
+        EncTest.__test_b64_encoding()
+        EncTest.__assert_b64_full_correctness(string_size=4)
+    
+    @staticmethod
+    def __assert_b64_full_correctness(string_size: int) -> None:
+        """Asserts the encoding-decoding scheme for all sizes for the string size used in the application."""
 
-        try:
-            int_to_base64(* values)
-            raise AssertionError(* values)
+        n_max: int = b64_encoding_max(string_size)
 
-        except ValueError:
-            pass
+        for ç in range(n_max):
+            b_64: str = int_to_base64(ç, string_size)
+            assert base64_to_int(b_64) == ç
 
-    assert base64_to_int(int_to_base64(4, 4)) == 4
+        return None
 
-    x = [1, 2, 3, 4]
-    y = int_list_to_b64(x, 4)
-    print(y)
-    z = b64_to_int_list(y, 4)
-    print(z)
-    assert x == z
+    @staticmethod
+    def __test_b64_encoding() -> None:
 
-    return None
+        overflow_values: list[tuple[int, int]] = [
+            # (256, 2), (4096, 3), ...
+            (b64_encoding_max(ç) + 1, ç) for ç in range(2, 17)
+        ]
 
+        # testing overflow
+        for values in overflow_values:
+            values: tuple[int, int]
 
-def __test_permutation_enc() -> None:
-    k = 250
-    key_data = "user_key1"
+            try:
+                int_to_base64(* values)
+                raise AssertionError(* values)
 
-    print("(key, hide, recovered)")
-    for i in range(k):
-        h = permute(i, key_data, k)
-        r = unpermute(h, key_data, k)
+            except ValueError:
+                pass
 
-        # print(f"({i}, {h}, {r})")
-        assert i == r
+        assert base64_to_int(int_to_base64(4, 4)) == 4
+
+        x = [1, 2, 3, 4]
+        y = int_list_to_b64(x, 4)
+        print(y)
+        z = b64_to_int_list(y, 4)
+        print(z)
+        assert x == z
+
+        return None
+
+    @staticmethod
+    def __test_permutation_enc() -> None:
+        k = 250
+        key_data = "user_key1"
+
+        print("(key, hide, recovered)")
+        for i in range(k):
+            h = permute(i, key_data, k)
+            r = unpermute(h, key_data, k)
+
+            # print(f"({i}, {h}, {r})")
+            assert i == r
 
 
 if __name__ == "__main__":
-    __test_permutation_enc()
-    __test_b64_encoding()
-    __assert_b64_full_correctness(string_size=4)
+    EncTest.test()

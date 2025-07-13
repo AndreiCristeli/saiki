@@ -9,21 +9,40 @@
 
 import { api } from "./api.js"
 import { input_keydown, new_game_click } from "./input_handler.js"; 
+import { render_card, render_collection } from "./renderer.js"
 
-let number_attempts = 0; // Temporaly saved as a global shared variable.
+
+export let number_attempts = 0; // Temporaly saved as a global shared variable.
 let victory = false; // Temporaly saved as a global shared variable.
 // TODO: Structure a frontend Player data-structure.
 
-import { render_card } from "./renderer.js"
 
 export const ATTEMPT_RC = {
     SUCCESS: 0,
     REPEATED_ANSWER: 1,
     NOT_FOUND: 2,
-    VICTORY: 3
+    VICTORY: 3,
 };
 
-async function __backend_attempt(user_input, entity_type){
+function attempt_count_update(div_attempts) {
+    // Updating attempt count.
+    ++ number_attempts;
+    div_attempts.textContent = `${number_attempts}`;
+}
+
+/** Loads the attempt game state screen. 
+    Called on page-show. */
+export function load_game_state_screen(event, __on_load_response) {
+    
+    let div_attempts = document.querySelector('.attempts-field');
+        
+    render_collection(__on_load_response["entities"]);
+	number_attempts = __on_load_response["tries"] - 1;
+
+    attempt_count_update(div_attempts);
+}
+
+async function __backend_attempt(user_input, entity_type) {
     // Search in database passing entity_type and user_input.
 
     let attempt;
@@ -38,7 +57,7 @@ async function __backend_attempt(user_input, entity_type){
 
 export function verify_repeat(user_input){
     const card_container = document.querySelector('.cards-container');
-
+    
     for(let card of card_container.children){
         if(card.querySelector(".card-header").textContent.toLowerCase() === user_input){
             return true;
@@ -62,29 +81,23 @@ export async function process_attempt(user_input, div_attempts, entity_type){
     // TODO: Treat invalid entry case.
     // Idea: Only call process_attempt if there's a 'first suggestion' when Suggestion is implemented.
 
-    // Updating attempt count.
-    number_attempts++;
-    div_attempts.textContent = `${number_attempts}`;
-    
-    // Get player victory logic from backend.
-    let card_class = `card ${attempt.type}`;
-    console.log(`Card Class = ${card_class}`);
+    // 
+    attempt_count_update(div_attempts);
 
     // Add a new card corresponding to user's attempt.
-    
-    render_card(attempt, card_class);
+    render_card(attempt);
 
-    if(attempt.type === "correct"){
+    if (attempt.guessed === "correct") {
         victory = true;
         return ATTEMPT_RC.VICTORY;
     }
-
+    
     return ATTEMPT_RC.SUCCESS;
 }
 
 export function win_condition(input) {
   input.disabled = true;
-
+    
   /*
   Diary mode
   input.style.border = "2px solid green";
