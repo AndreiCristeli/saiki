@@ -24,3 +24,6 @@ class JogadorForm(forms.ModelForm):
 class JogadorLoginForm(forms.Form):
     name_user = forms.CharField(label="Nome de Usuário")
     password = forms.CharField(widget=forms.PasswordInput, label="Senha")
+    
+class MessageForm(forms.Form):
+    texto = forms.CharField(widget=forms.Textarea(attrs={'rows': 3, 'placeholder': 'Digite sua mensagem...'}), max_length=1000)

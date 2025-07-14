@@ -108,10 +108,13 @@ def read_root1(req) -> JsonResponse:
 
 
 #-------------------------------------------------------------------------------------------
-from .forms import JogadorForm, JogadorLoginForm
-from .models import Jogador
+from .forms import JogadorForm, JogadorLoginForm, MessageForm
+from .models import Jogador, Session, message, chat
 from django.contrib import messages
 from django.contrib.auth import login
+from django.utils import timezone
+import time
+
 
 def jogador_login(request):
     if request.method == "POST":
@@ -171,3 +174,102 @@ def jogador_create(request):
 
 def jogador_success(request):
     return HttpResponse("Jogador criado com sucesso!")
+
+
+def criar_sessao(request):
+    if not request.user.is_authenticated:
+        return redirect('login')  # ou outra view
+
+    jogador = Jogador.objects.get(user=request.user)
+
+    # Gera chave única com name_user + timestamp
+    timestamp = int(time.time())
+    public_key = f"{jogador.name_user}_{timestamp}"
+
+    # Cria a sessão (chat será criado automaticamente no save())
+    sessao = Session.objects.create(
+        public_key=public_key,
+        root_player=jogador,
+    )
+
+    return redirect('ver_sessao', sessao_id=sessao.id)
+
+from django.shortcuts import render, get_object_or_404, redirect
+
+def ver_sessao(request, sessao_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    jogador = Jogador.objects.get(user=request.user)
+    sessao = get_object_or_404(Session, id=sessao_id)
+
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid() and sessao.status:
+            texto = form.cleaned_data['texto']
+
+            # Cria a mensagem com o remetente
+            nova_msg = message.objects.create(sender=jogador, texto=texto)
+
+            # Define todos com acesso ao chat como destinatários, incluindo o próprio sender
+            destinatarios = sessao.players.all()  # ou: sessao.chat.participants.all() se preferir
+            nova_msg.receivers.set(destinatarios)
+            nova_msg.save()
+
+            # Adiciona a mensagem ao chat
+            sessao.chat.add_message(nova_msg)
+
+            # Garante que todos os jogadores estejam nos participantes do chat
+            sessao.chat.participants.add(*destinatarios)
+
+            return redirect('ver_sessao', sessao_id=sessao.id)
+
+    else:
+        form = MessageForm()
+
+    tempo_corrente = timezone.now() - sessao.data_inicio if sessao.status else sessao.session_time
+    mensagens = sessao.chat.messages.order_by('timestamp')
+
+    return render(request, 'sessao.html', {
+        'sessao': sessao,
+        'jogador': jogador,
+        'mensagens': mensagens,
+        'tempo_corrente': tempo_corrente,
+        'form': form,
+    })
+    
+def encerrar_sessao(request, sessao_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    sessao = get_object_or_404(Session, id=sessao_id)
+    if request.user == sessao.root_player.user:
+        sessao.end_session()
+
+    return redirect('ver_sessao', sessao_id=sessao_id)
+
+def entrar_sessao(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    if request.method == 'POST':
+        chave = request.POST.get('chave_publica')
+        jogador = Jogador.objects.get(user=request.user)
+
+        try:
+            sessao = Session.objects.get(public_key=chave, status=True)
+        except Session.DoesNotExist:
+            messages.error(request, "Sessão não encontrada ou inativa.")
+            return redirect('painel_jogador')
+
+        # Adiciona o jogador à sessão e ao chat se ainda não estiver
+        if jogador not in sessao.players.all():
+            sessao.players.add(jogador)
+        if jogador not in sessao.active_players.all():
+            sessao.active_players.add(jogador)
+        if jogador not in sessao.chat.participants.all():
+            sessao.chat.participants.add(jogador)
+
+        return redirect('ver_sessao', sessao_id=sessao.id)
+
+    return redirect('painel_jogador')

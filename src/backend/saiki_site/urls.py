@@ -26,6 +26,13 @@ urlpatterns: list[URLPattern | URLResolver] = [
     path('jogador/sucesso/', views.jogador_success, name='jogador_success'), 
     path('login/', views.jogador_login, name='jogador_login'),
     path('register/', views.jogador_create, name='jogador_register'),
-    path('painel/', views.painel_jogador, name='painel_jogador')
+    path('painel/', views.painel_jogador, name='painel_jogador'),
+    path('criar-sessao/', views.criar_sessao, name='criar_sessao'),
+    path('sessao/<int:sessao_id>/', views.ver_sessao, name='ver_sessao'),
+    path('sessao/<int:sessao_id>/encerrar/', views.encerrar_sessao, name='encerrar_sessao'),
+    path('entrar-sessao/', views.entrar_sessao, name='entrar_sessao'),
+
+
+
 
 ]
