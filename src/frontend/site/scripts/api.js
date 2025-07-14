@@ -1,15 +1,17 @@
 /** 
- * @file frontend/site/script/api.js
+ * @file frontend/site/scripts/api.js
  * 
  * @author AndreiCristeli
  * @author HexagonalUniverse
  * @author victorxaviercosta
  * 
- * @version 0.1
+ * @version 0.2
  */
 
+/** API base IP from where to make backend requests */
 const API_BASE = "http://localhost:8000/api";
 
+/** API interface for requesting backend information */
 export async function api(endpoint, method = "GET", body = null) {
 	const options = {
     	method: method,

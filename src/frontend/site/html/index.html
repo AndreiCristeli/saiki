@@ -12,14 +12,14 @@
   <script defer src="/static/dependencies/katex/contrib/auto-render.min.js"
   onload="renderMathInElement(document.body);"></script>
 
-  <!-- translate -->
+  <!-- Translate scripts -->
   <script src="/static/site/scripts/locales.js"></script>
   <script src="https://unpkg.com/i18next@22.4.10/i18next.min.js"></script>
 </head>
 
 <body>
 
-  <!-- TODO: Add Navigation Bar (To select Entity type, etc.) -->
+  <!-- TODO: Add Elements in Navigation Bar (To select Entity type, for exemple.) -->
   <nav class="menu">
     <ul class="select-mode">
       <li class="menu-item diaryText">Diário</li>
@@ -37,16 +37,20 @@
     <button class="footer-info">?</button>
   </header>
   
+  <!--  -->
   <h2>Qual é o algoritmo do dia?</h2>
+  
+  <!-- Input and Hints Container -->
   <div class="input-hint">
     <input type="text" placeholder="Escreva aqui" class="Input">
   </div>
-
+  
   <!-- Label for players -->
   <div class="attempts">
     <div class="attempts-label">Tentativas: </div> <div class="attempts-field">0</div>
   </div>
   
+  <!-- Entity attributes labels -->
   <ul class="hint-labels">
     <li>Categoria</li>
     <li>Ano</li>
@@ -57,9 +61,10 @@
     <li>Generalidade</li>
   </ul>
   
-  <!-- Div de ancoragem para os novos card's -->
+  <!-- Ancor div for new cards -->
   <div class="cards-container"></div>
 
+  <!-- Help and Information Dialogs -->
   <dialog class="infoDialog">
     <h1 class="howToPlayTitle">Como jogar</h1>
     <p class="howToPlayDesc">Você deve adivinhar o algoritmo do dia se baseando nas pistas.</p> 

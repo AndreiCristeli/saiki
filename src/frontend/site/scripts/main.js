@@ -1,28 +1,30 @@
 /** 
- * @file 	frontend/site/script/main.js
+ * @file 	frontend/site/scripts/main.js
  * 
  * @author 	AndreiCristeli
  * @author 	victorxaviercosta
  * 
- * @version 0.1
+ * @version 0.2
  */
 
-import * as ih from "./input_handler.js";
+import * as input_handler from "./input_handler.js";
 import { changeLanguage } from "./translate.js";
 import { api } from "./api.js";
-import { load_game_state_screen } from "./attempt.js"
+import { load_game_state_screen } from "./attempt.js";
 
 
-// This function runs when the entire page (all HTML, CSS, sripts, images and resouces) is completely loaded.
+/** This function runs when the entire page (all HTML, CSS, sripts, images and resouces) is completely loaded.
+ *  Basically Starts all the relevant Event Listener's logics to their respective HTML element.
+ */
 window.onload = function () {
 	window.addEventListener("pageshow", (event) => on_page_show(event));
 	
 	const input = document.querySelector('.Input');
 	const div_attempts = document.querySelector('.attempts-field');
-	input.addEventListener('keydown', (event) => ih.input_keydown(event, input, div_attempts));
+	input.addEventListener('keydown', (event) => input_handler.input_keydown(event, input, div_attempts));
 	
 	const button = document.querySelector('.footer-info');
-	button.addEventListener('click', (event) => ih.info_click(event, button));
+	button.addEventListener('click', (event) => input_handler.info_click(event, button));
 	
 	const select_language = document.querySelector('.translateBox');
 	select_language.addEventListener('change', (event) => changeLanguage(select_language.value));
@@ -30,29 +32,25 @@ window.onload = function () {
 	const closeBtn = document.querySelector('.closeDialog');
 	if (closeBtn) {
 		const dialog = document.querySelector('.infoDialog');
-		closeBtn.addEventListener('click', (event) => ih.close_info_dialog(event, dialog));
+		closeBtn.addEventListener('click', (event) => input_handler.close_info_dialog(event, dialog));
 	}
 	
-	// deletes the hint box when the input is out-of-focus.
+	// Deletes the hint box when the input box is out-of-focus.
   	document.querySelector(".Input").addEventListener('blur', function () {
 	  let hints_container = document.querySelector(".hints");
       try {
           hints_container.remove();
           input_hint_div.removeChild(hints_container);
       } catch (NotFoundError) {
-			
+			// blank - No exception action needed.
       }
   })
 };
 
+//function remove
+
 /**	Updates the visual information of the page, on load / refresh */
 async function on_page_show(event) {
-	/* ?
-	if (event.persisted) {
-		console.log("Loaded from cache");
-	}
-	*/
-	
 	let response;
 	
     try {
@@ -62,7 +60,7 @@ async function on_page_show(event) {
         console.log(error);
     }
 	
-	// rendering it.
+	// Rendering it.
 	load_game_state_screen(event, response);
 	
     return response;
