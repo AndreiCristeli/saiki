@@ -22,7 +22,7 @@ export function showPokemonDialog() {
   	const modal = document.createElement("dialog");
   	modal.className = "pokemon-dialog";
   	modal.innerHTML = `
-    	<a href="https://monkepo.online/" target="_blank"> <img src="https://monkepo.online/img/monkepo.png" alt="Girl in a jacket"> </a>
+    	<a href="https://monkepo.online/" target="_blank"> <img src="https://monkepo.online/img/monkepo.png" alt="Monképo"> </a>
     	<button class="closeDialog milvus" aria-label="Fechar">&times;</button>
   	`;
   	document.body.appendChild(modal);

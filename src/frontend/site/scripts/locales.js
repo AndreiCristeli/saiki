@@ -35,7 +35,7 @@ const resources = {
   },
   en: {
     translation: {
-      diary: "Diary",
+      diary: "Daily",
       trueOrFalse: "True or False",
       custom: "Custom",
       question: "What is today's algorithm?",

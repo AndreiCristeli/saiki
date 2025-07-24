@@ -7,11 +7,22 @@
  * @version 0.2
  */
 
-import * as input_handler from "./input_handler.js";
+import { InputHandler } from "./input_handler.js";
+import { Renderer } from "./renderer.js";
 import { changeLanguage } from "./translate.js";
 import { api } from "./api.js";
-import { load_game_state_screen } from "./attempt.js";
 
+/**
+ *  Structure:
+ * 		InputHandler {
+ * 			AttemptsHandler -> <Renderer>
+ * 			Hints -> <Renderer>
+ * 		}
+ * 
+ */
+
+let renderer = new Renderer()
+let input_handler = new InputHandler(renderer)
 
 /** This function runs when the entire page (all HTML, CSS, sripts, images and resouces) is completely loaded.
  *  Basically Starts all the relevant Event Listener's logics to their respective HTML element.
@@ -21,7 +32,7 @@ window.onload = function () {
 	
 	const input = document.querySelector('.Input');
 	const div_attempts = document.querySelector('.attempts-field');
-	input.addEventListener('keydown', (event) => input_handler.input_keydown(event, input, div_attempts));
+	input.addEventListener('keydown', (event) => input_handler.input_keydown(event, input));
 	
 	const button = document.querySelector('.footer-info');
 	button.addEventListener('click', (event) => input_handler.info_click(event, button));
@@ -61,7 +72,7 @@ async function on_page_show(event) {
     }
 	
 	// Rendering it.
-	load_game_state_screen(event, response);
+	input_handler.attempt_handler.load_game_state_screen(event, response);
 	
     return response;
 }	

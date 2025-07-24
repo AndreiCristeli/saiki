@@ -16,7 +16,7 @@
 
     --separator: #323337;
     --bg-hints-container: #323337b5;
-    --bg-hints: #44464b;
+    --bg-hints: #44464bb5;
 }
 
 .correct-color { background-color: var(--correct-color); }
