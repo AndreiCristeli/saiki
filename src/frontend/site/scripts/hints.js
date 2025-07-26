@@ -36,6 +36,7 @@ export class Hints {
     /** Hides the hint's div element (Removing it) */
     hide(){
         this.renderer.remove_hints_container();
+        this.displaying = false;
     }
     
     /** Display's the list of suggestions gotten from backend. */
@@ -48,11 +49,11 @@ export class Hints {
             this.renderer.render_hints(this.the_hints, this.selected_hint);
         }
         
-        return
+        this.displaying = true;
     }
     
     move_hint_selection(direction) {
-        let hints_len = this.the_hints.length()
+        let hints_len = this.the_hints.length
 
         switch (direction) {
             case "up":
@@ -68,7 +69,8 @@ export class Hints {
                 break;
     
             default:
-    
         }
+
+        this.renderer.update_hints(this.the_hints, this.selected_hint);
     }
 }

@@ -16,9 +16,11 @@
     width: 100%;
     margin-top: 3px;
     z-index: 999;
+    border-radius: 5px;
 }
 
 .hint_item {
+    background-color: #00000000;
     text-align: left;
     cursor: pointer;
     text-transform: capitalize;
@@ -30,8 +32,9 @@
     padding: .5rem;
 }
 
-.hint_item .selected {
+.hint_item.selected {
     background-color: var(--bg-hints);
+    color: rgb(175, 207, 235);
     text-align: left;
     cursor: pointer;
     text-transform: capitalize;

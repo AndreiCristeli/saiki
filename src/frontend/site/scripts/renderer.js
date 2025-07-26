@@ -101,17 +101,41 @@ export class Renderer {
 		hints_container.className = "hints"
 		
 		// @TODO organize it.
+
+		console.log(`selected = ${selected}`);
 		
 		// adding each hint row.
 		for (let name of hints) {
 			// each hint row...
 			const hint_item = document.createElement('div');
 			hint_item.className = "hint_item";
+
+			if (name == hints[selected]) {
+				hint_item.className = hint_item.className + " selected"
+				console.log(`selected name = ${name}`);
+			}
+
 			hint_item.innerText = name;
 			hints_container.appendChild(hint_item);
 		}
 		
 		input_hint_div.appendChild(hints_container);
+	}
+
+	update_hints(hints, selected){
+		const hints_container = document.querySelector('.hints');
+		console.log(`Updating hints container`);
+
+		// adding each hint row.
+		for (let child of hints_container.childNodes) {
+			// each hint row...
+			child.className = "hint_item";
+			
+			if (child.innerText == hints[selected]) {
+				child.className = child.className + " selected"
+				console.log(`new selected name = ${child.innerText}`);
+			}
+		}
 	}
 
 	/** Bulk-loads a collection of entities.

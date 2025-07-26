@@ -29,7 +29,7 @@ export class InputHandler {
 
 	// Event handler for keydown on the input text box
 	async input_keydown(event, input) {
-		const user_input = this.#__normalize_input(event.target.value); 
+		let user_input = this.#__normalize_input(event.target.value); 
 		// console.log(`Nomalized Input: ${user_input}`);
 	
 		// In the case there's no input in the text-box
@@ -44,11 +44,17 @@ export class InputHandler {
 	
 		}else if (event.key == "ArrowUp") {
 			console.log("arrowUp");
+			this.hints.move_hint_selection("up");
 			
 		}else if (event.key == "ArrowDown") {
 			console.log("arrowDown");
+			this.hints.move_hint_selection("down");
 		
 		} else if (event.key === 'Enter') {
+			if (this.hints.displaying){
+				user_input = this.hints.the_hints[this.hints.selected_hint].toLowerCase();
+			}
+
 			this.hints.hide(); // Hinding the Hints
 	
 			  if (user_input === "milvus"){

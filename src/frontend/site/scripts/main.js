@@ -48,14 +48,12 @@ window.onload = function () {
 	
 	// Deletes the hint box when the input box is out-of-focus.
   	document.querySelector(".Input").addEventListener('blur', function () {
-	  let hints_container = document.querySelector(".hints");
       try {
-          hints_container.remove();
-          input_hint_div.removeChild(hints_container);
-      } catch (NotFoundError) {
+			input_handler.hints.hide();
+      	} catch (NotFoundError) {
 			// blank - No exception action needed.
-      }
-  })
+      	}
+  	})
 };
 
 //function remove
