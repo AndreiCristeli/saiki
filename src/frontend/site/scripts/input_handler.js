@@ -44,16 +44,16 @@ export class InputHandler {
 			//console.log(event.key);
 			this.hints.display(user_input);
 	
-		}else if (event.key == "ArrowUp") {
+		}else if ((event.key == "ArrowUp") && this.hints.is_displaying()) {
 			console.log("arrowUp");
 			this.hints.move_hint_selection("up");
 			
-		}else if (event.key == "ArrowDown") {
+		}else if ((event.key == "ArrowDown") && this.hints.is_displaying()) {
 			console.log("arrowDown");
 			this.hints.move_hint_selection("down");
 		
 		} else if (event.key === 'Enter') {
-			if (this.hints.displaying){
+			if (this.hints.is_displaying() === true){
 				user_input = this.hints.the_hints[this.hints.selected_hint].toLowerCase();
 			}
 

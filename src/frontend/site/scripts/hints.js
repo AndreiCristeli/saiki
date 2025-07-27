@@ -11,15 +11,21 @@ import { Renderer } from "./renderer.js";
 import { api } from "./api.js";
 
 export class Hints {
+    #displaying;
+
     constructor(renderer){
         this.renderer = renderer
 
         this.the_hints = [];
         this.selected_hint_index = 0;
 
-        this.displaying = false;
+        this.#displaying = false;
     }
     
+    is_displaying(){
+        return this.#displaying;
+    }
+
     /** Handles backend hints request returning the backend's offered list of suggestions */
     async __get_backend_hints(input) {
         let response;
@@ -36,7 +42,7 @@ export class Hints {
     /** Hides the hint's div element (Removing it) */
     hide(){
         this.renderer.remove_hints_container();
-        this.displaying = false;
+        this.#displaying = false;
     }
     
     /** Display's the list of suggestions gotten from backend. */
@@ -44,12 +50,14 @@ export class Hints {
         this.the_hints = await this.__get_backend_hints(user_input);
         console.log(this.the_hints);
 
-        if (this.the_hints){
+        if (this.the_hints.length){
             this.selected_hint = 0;
             this.renderer.render_hints(this.the_hints, this.selected_hint);
+            this.#displaying = true;
+            return;
         }
-        
-        this.displaying = true;
+
+        this.hide();
     }
     
     move_hint_selection(direction) {

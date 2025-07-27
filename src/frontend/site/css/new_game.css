@@ -16,7 +16,7 @@
 }
 
 .btn_new_game {
-  background-color: #4CAF50;
+  background-color: var(--confirm-color);
   color: white;    
   border: none;
   width: 45%; 

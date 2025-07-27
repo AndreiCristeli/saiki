@@ -17,6 +17,7 @@ from django.db.models import CharField, IntegerField
 from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import User
+
 #------------------------------------------------Model Algorithm---------------------------------------------------------------------
 class Model_Algorithm(models.Model):
     """Represents an algorithm; the entity."""

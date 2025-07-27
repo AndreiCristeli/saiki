@@ -9,3 +9,10 @@
     padding: 1.5rem;
     border-bottom: 1px solid var(--separator);
 }
+
+.app-header.register {
+    gap: 1rem;
+    width: 100vw;
+    padding: 1.5rem;
+    border-bottom: 0px;
+}
