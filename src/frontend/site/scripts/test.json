@@ -3,7 +3,7 @@
     "name": "Bubble Sort",
     "type": "Algorithm",
     "data": {
-      "category": ["Sorting", "camarada"],
+      "category": "Sorting",
       "year": 1960,
       "average_time_complexity": "O(n^2)",
       "auxiliary_space_complexity": "O(1)",

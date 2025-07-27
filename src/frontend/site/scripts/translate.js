@@ -3,67 +3,84 @@
  * 
  * @author AndreiCristeli
  * 
- * @version 0.1
+ * @version 0.2
  */
 
 i18next.init({
     lng: 'pt', // Initial language
     debug: true,
-  	resources
-	}, function(err, t) {
-  		updateContent();
-	});
+    resources
+}, function(err, t) {
+    if (document.readyState === 'loading') {
+        document.addEventListener("DOMContentLoaded", updateContent);
+    } else {
+        updateContent();
+    }
+});
 
 function updateContent() {
-		document.querySelector('.diaryText a').textContent = i18next.t('diary');
-  	document.querySelector('.trueOrFalseText a').textContent = i18next.t('trueOrFalse');
-  	document.querySelector('.customText a').textContent = i18next.t('custom');
-  	document.querySelector('.index_question').textContent = i18next.t('question');
-  	document.querySelector('.Input').placeholder = i18next.t('inputPlaceholder');
-  	document.querySelector('.attempts-label').textContent = i18next.t('attempts');
+    safeTextContent('.diaryText a', i18next.t('diary'));
+    safeTextContent('.trueOrFalseText a', i18next.t('trueOrFalse'));
+    safeTextContent('.customText a', i18next.t('custom'));
 
-  	const labels = document.querySelectorAll('.hint-labels li');
-  	const keys = [
-    	'categoryInfoTitle',
-    	'yearInfoTitle',
-    	'timeInfoTitle',
-    	'spaceInfoTitle',
-    	'structureInfoTitle',
-    	'solutionInfoTitle',
-    	'generalityInfoTitle'
-  	];
+    safeTextContent('.index_question', i18next.t('index_question'));
+    safeTextContent('.custom_question', i18next.t('custom_question'));
 
-  	labels.forEach((el, idx) => {
-    	el.textContent = i18next.t(keys[idx]);
-  	});
+    const input = document.querySelector('.Input');
+    if (input) input.placeholder = i18next.t('inputPlaceholder');
 
-  	document.querySelector('.howToPlayTitle').textContent = i18next.t('howToPlay');
-  	document.querySelector('.howToPlayDesc').textContent = i18next.t('description');
+    safeTextContent('.attempts-label', i18next.t('attempts'));
 
-  	document.querySelector('.categoryTitle').textContent = i18next.t('categoryInfoTitle');
-  	document.querySelector('.categoryText').textContent = i18next.t('categoryInfoText');
+    const labels = document.querySelectorAll('.hint-labels li');
+    const keys = [
+        'categoryInfoTitle',
+        'yearInfoTitle',
+        'timeInfoTitle',
+        'spaceInfoTitle',
+        'structureInfoTitle',
+        'solutionInfoTitle',
+        'generalityInfoTitle'
+    ];
 
-  	document.querySelector('.yearTitle').textContent = i18next.t('yearInfoTitle');
-  	document.querySelector('.yearText').textContent = i18next.t('yearInfoText');
+    labels.forEach((el, idx) => {
+        if (el) el.textContent = i18next.t(keys[idx]);
+    });
 
-  	document.querySelector('.timeTitle').textContent = i18next.t('timeInfoTitle');
-  	document.querySelector('.timeText').textContent = i18next.t('timeInfoText');
+    safeTextContent('.howToPlayTitle', i18next.t('howToPlay'));
+    safeTextContent('.howToPlayDesc', i18next.t('description'));
 
-  	document.querySelector('.spaceTitle').textContent = i18next.t('spaceInfoTitle');
-  	document.querySelector('.spaceText').textContent = i18next.t('spaceInfoText');
+    safeTextContent('.categoryTitle', i18next.t('categoryInfoTitle'));
+    safeTextContent('.categoryText', i18next.t('categoryInfoText'));
 
-  	document.querySelector('.structureTitle').textContent = i18next.t('structureInfoTitle');
-  	document.querySelector('.structureText').textContent = i18next.t('structureInfoText');
+    safeTextContent('.yearTitle', i18next.t('yearInfoTitle'));
+    safeTextContent('.yearText', i18next.t('yearInfoText'));
 
-  	document.querySelector('.solutionTitle').textContent = i18next.t('solutionInfoTitle');
-  	document.querySelector('.solutionText').textContent = i18next.t('solutionInfoText');
+    safeTextContent('.timeTitle', i18next.t('timeInfoTitle'));
+    safeTextContent('.timeText', i18next.t('timeInfoText'));
 
-  	document.querySelector('.generalityTitle').textContent = i18next.t('generalityInfoTitle');
-  	document.querySelector('.generalityText').textContent = i18next.t('generalityInfoText');
+    safeTextContent('.spaceTitle', i18next.t('spaceInfoTitle'));
+    safeTextContent('.spaceText', i18next.t('spaceInfoText'));
+
+    safeTextContent('.structureTitle', i18next.t('structureInfoTitle'));
+    safeTextContent('.structureText', i18next.t('structureInfoText'));
+
+    safeTextContent('.solutionTitle', i18next.t('solutionInfoTitle'));
+    safeTextContent('.solutionText', i18next.t('solutionInfoText'));
+
+    safeTextContent('.generalityTitle', i18next.t('generalityInfoTitle'));
+    safeTextContent('.generalityText', i18next.t('generalityInfoText'));
+}
+
+// Função auxiliar para evitar erro se o seletor não encontrar o elemento
+function safeTextContent(selector, text) {
+    const el = document.querySelector(selector);
+    if (el) {
+        el.textContent = text;
+    }
 }
 
 export function changeLanguage(lang) {
-	i18next.changeLanguage(lang, () => {
-    	updateContent();
-  	});
+    i18next.changeLanguage(lang, () => {
+        updateContent();
+    });
 }

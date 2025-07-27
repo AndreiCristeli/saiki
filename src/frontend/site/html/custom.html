@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Saiki - Personalizada</title>
   <link rel="stylesheet" href="/static/site/css/style.css">
+  <link rel="shortcut icon" href="/static/assets/favicon.ico" type="image/x-icon">
 
   <!-- katex dependencies -->
   <link rel="stylesheet" href="/static/dependencies/katex/katex.min.css">
@@ -17,7 +18,7 @@
   <script src="https://unpkg.com/i18next@22.4.10/i18next.min.js"></script>
 </head>
 
-<body data-mode="custom">
+<body data-page="custom">
 
   <!-- TODO: Add Elements in Navigation Bar (To select Entity type, for exemple.) -->
   <nav class="menu">
@@ -38,8 +39,29 @@
   </header>
   
   <!--  -->
-  <h2>Tá personalizado mano...</h2>
-
+  <h2 class="custom_question">Qual é o algoritmo?</h2>
+  
+  <!-- Input and Hints Container -->
+  <div class="input-hint">
+    <input type="text" placeholder="Escreva aqui" class="Input">
+  </div>
+  
+  <!-- Label for players -->
+  <div class="attempts">
+    <div class="attempts-label">Tentativas: </div> <div class="attempts-field">0</div>
+  </div>
+  
+  <!-- Entity attributes labels -->
+  <ul class="hint-labels">
+    <li>Categoria</li>
+    <li>Ano</li>
+    <li>Complexidade Temporal Média</li>
+    <li>Complexidade Espacial Auxiliar</li>
+    <li>Estrutura de Dados</li>
+    <li>Solução</li>
+    <li>Generalidade</li>
+  </ul>
+  
   <!-- Ancor div for new cards -->
   <div class="cards-container"></div>
 
@@ -99,8 +121,15 @@
     <button class="closeDialog" aria-label="Fechar">&times;</button>
   </dialog>
 
-  <script type="module" src="/static/site/scripts/main.js"></script>
+  <footer class="footer">
+    <!-- translate -->
+    <select class="translateBox">
+      <option value="pt">Português</option>
+      <option value="en">English</option>
+    </select>
+  </footer>
+
+  <script type="module" src="/static/site/scripts/main_guess.js"></script>
 </body>
 
 </html>
- 

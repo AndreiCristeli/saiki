@@ -30,6 +30,8 @@ export class InputHandler {
 	// Event handler for keydown on the input text box
 	async input_keydown(event, input) {
 		let user_input = this.#__normalize_input(event.target.value); 
+		const current_page = document.body.dataset.page;
+	
 		// console.log(`Nomalized Input: ${user_input}`);
 	
 		// In the case there's no input in the text-box
@@ -71,7 +73,7 @@ export class InputHandler {
 				case ATTEMPT_RC.NOT_FOUND:
 					break;
 				case ATTEMPT_RC.VICTORY: // Win Condition.
-					win_condition(input, this);
+					win_condition(input, this, current_page);
 	
 				default:
 					input.value = '';
@@ -116,36 +118,30 @@ export class InputHandler {
 	}
 }
 
-
-
 // TODO: rethink where these methods (win_condition and reset_game should go)
 
 /** Handles the Player's win condition. */
-function win_condition(input, input_handler) {
+function win_condition(input, input_handler, current_page) {
     input.disabled = true;
-    
-    /*
-    Daily mode
-    input.style.border = "2px solid green";
-    input.style.backgroundColor = "#e0ffe0";
-    input.style.color = "#004400";
-    input.placeholder = "Parabéns! Você venceu! 🎉";
-    */
 
     // Adding New Game Div Element.
     const div = document.createElement("div");
     div.textContent = "Parabéns! Você venceu! 🎉";
     div.className = "div_new_game";
 
-    // Adding New Game Button.
-    const btn = document.createElement("button");
-    btn.textContent = "Novo Jogo";
-    btn.className = "btn_new_game";
-    btn.addEventListener("click", (event) => input_handler.new_game_click(event, btn));
-
-    // Appending New Game's Button as a Child of New Game Div.
-    div.appendChild(btn);
-    input.parentNode.replaceChild(div, input);
+		// Only permisse in custom game
+		if(current_page === "custom") {
+			// Adding New Game Button.
+    	const btn = document.createElement("button");
+    	btn.textContent = "Novo Jogo";
+    	btn.className = "btn_new_game";
+    	btn.addEventListener("click", (event) => input_handler.new_game_click(event, btn));
+			
+			// Appending New Game's Button as a Child of New Game Div.
+    	div.appendChild(btn);
+		}
+		
+		input.parentNode.replaceChild(div, input);
 }
 
 /** Resets the Player's Game State in the frontend context. */
