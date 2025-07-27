@@ -102,7 +102,7 @@ export class Renderer {
 		
 		// @TODO organize it.
 
-		console.log(`selected = ${selected}`);
+		// console.log(`selected = ${selected}`);
 		
 		// adding each hint row.
 		for (let name of hints) {
@@ -112,7 +112,7 @@ export class Renderer {
 
 			if (name == hints[selected]) {
 				hint_item.className = hint_item.className + " selected"
-				console.log(`selected name = ${name}`);
+				// console.log(`selected name = ${name}`);
 			}
 
 			hint_item.innerText = name;

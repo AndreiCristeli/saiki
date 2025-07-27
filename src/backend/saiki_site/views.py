@@ -175,3 +175,13 @@ def jogador_create(request):
 
 def jogador_success(request):
     return HttpResponse("Jogador criado com sucesso!")
+
+
+def serve_custom_mode(request):
+    return render(request, 'custom.html')
+
+def serve_daily_mode(request):
+    return render(request, 'index.html')
+
+def serve_tof_mode(request):
+    return render(request, 'trueOrFalse.html')

@@ -41,15 +41,15 @@ export class InputHandler {
 		}
 	
 		if (/^[a-zA-z]$/.test(event.key)) { // Using RegExp for validating if entry is a letter.
-			//console.log(event.key);
+			// console.log(event.key);
 			this.hints.display(user_input);
 	
 		}else if ((event.key == "ArrowUp") && this.hints.is_displaying()) {
-			console.log("arrowUp");
+			// console.log("arrowUp");
 			this.hints.move_hint_selection("up");
 			
 		}else if ((event.key == "ArrowDown") && this.hints.is_displaying()) {
-			console.log("arrowDown");
+			// console.log("arrowDown");
 			this.hints.move_hint_selection("down");
 		
 		} else if (event.key === 'Enter') {

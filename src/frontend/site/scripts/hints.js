@@ -48,7 +48,7 @@ export class Hints {
     /** Display's the list of suggestions gotten from backend. */
     async display(user_input) {
         this.the_hints = await this.__get_backend_hints(user_input);
-        console.log(this.the_hints);
+        // console.log(this.the_hints);
 
         if (this.the_hints.length){
             this.selected_hint = 0;
