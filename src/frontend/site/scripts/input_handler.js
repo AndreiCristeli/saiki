@@ -105,6 +105,15 @@ export class InputHandler {
 			});
 		}
 	}  
+
+	choice_click(event, button) { 
+		console.log("Botão clicado:", button.textContent);
+		if (button.textContent === "Verdá") {
+			console.log("Você escolheu Verdadeiro.");
+		} else {
+			console.log("Você escolheu Falso.");
+		}
+	}
 }
 
 

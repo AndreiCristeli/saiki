@@ -129,3 +129,38 @@ input:focus {
   font-size: 1.5rem;
   cursor: pointer;
 }
+
+.div_choice {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.button_choice {
+  background-color: white;
+  color: black;    
+  border: none;
+  width: 10rem; 
+  align-self: center;
+  padding: 12px 20px;
+  border: solid white 1px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button_choice:hover {
+  background-color: greenyellow;
+  transform: scale(1.05);
+}
+
+.button_choice:active {
+  transform: scale(0.98);
+}

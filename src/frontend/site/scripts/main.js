@@ -56,8 +56,6 @@ window.onload = function () {
   	})
 };
 
-//function remove
-
 /**	Updates the visual information of the page, on load / refresh */
 async function on_page_show(event) {
 	let response;
