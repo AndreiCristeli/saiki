@@ -36,5 +36,7 @@
 
 .menu-item.active {
   opacity: 100%;
-  font-weight: bold
+  font-weight: bold;
+  pointer-events: none;  
+  cursor: default;
 }

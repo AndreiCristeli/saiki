@@ -29,7 +29,18 @@ let input_handler = new InputHandler(renderer)
  */
 window.onload = function () {
 	window.addEventListener("pageshow", (event) => on_page_show(event));
-	
+	const currentPage = document.body.dataset.page;
+
+	const menuItems = document.querySelectorAll(".menu-item");
+
+	menuItems.forEach(item => {
+		if (item.dataset.page === currentPage) {
+			item.classList.add("active");
+		} else {
+			item.classList.remove("active"); // útil se for SPA
+		}
+	});
+
 	const input = document.querySelector('.Input');
 	const div_attempts = document.querySelector('.attempts-field');
 	input.addEventListener('keydown', (event) => input_handler.input_keydown(event, input));

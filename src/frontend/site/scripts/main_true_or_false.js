@@ -15,6 +15,18 @@ let renderer = new Renderer()
 let input_handler = new InputHandler(renderer)
 
 window.onload = function () {
+	const currentPage = document.body.dataset.page;
+
+	const menuItems = document.querySelectorAll(".menu-item");
+
+	menuItems.forEach(item => {
+		if (item.dataset.page === currentPage) {
+			item.classList.add("active");
+		} else {
+			item.classList.remove("active"); // útil se for SPA
+		}
+	});
+
   const button = document.querySelector('.footer-info');
 	button.addEventListener('click', (event) => input_handler.info_click(event, button));
 
