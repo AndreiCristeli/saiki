@@ -28,3 +28,4 @@ bin/
 *temp/
 *.ls
 *.sqlite3
+src/backend/db.sqlite3
