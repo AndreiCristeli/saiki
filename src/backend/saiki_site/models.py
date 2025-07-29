@@ -22,6 +22,7 @@ from django.contrib.auth.models import User
 class Model_Algorithm(models.Model):
     """Represents an algorithm; the entity."""
 
+    year = IntegerField()
     name = CharField(max_length=32)
     year = IntegerField()
     category = CharField(max_length=32)

@@ -22,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_llg%7#7w$!nt)u&@qlga$(@l(y9v))iye46*5@_%w4souu6ha'
+SECRET_KEY: str = 'django-insecure-_llg%7#7w$!nt)u&@qlga$(@l(y9v))iye46*5@_%w4souu6ha'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG: bool = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS: list = []
 
 
 # Application definition
@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    "saiki_site",
+
+    # Saiki APPs.
+    "saiki_site", "saiki_data",
 ]
 
 MIDDLEWARE = [
@@ -76,13 +78,13 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'saiki_django.wsgi.application'
+WSGI_APPLICATION: str = 'saiki_django.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
+DATABASES: dict = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
@@ -93,7 +95,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = [
+AUTH_PASSWORD_VALIDATORS: list[dict] = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
@@ -112,30 +114,30 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE: str = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE: str = 'UTC'
 
-USE_I18N = True
+USE_I18N: bool = True
 
-USE_TZ = True
+USE_TZ: bool = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "/static/"
+STATIC_URL: str = "/static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 from os import path
 
-STATICFILES_DIRS = [
+STATICFILES_DIRS: list = [
     path.join(BASE_DIR, "../frontend/"),
 ]
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD: str = 'django.db.models.BigAutoField'
 
 
 """ Cross-Origin Resource Sharing
@@ -150,4 +152,3 @@ CORS_ALLOWED_ORIGINS: list[str] = [
 # Allow cookies to be sent
 CORS_ALLOW_CREDENTIALS: bool = True
 SESSION_COOKIE_SECURE: bool = False     # HTTP
-

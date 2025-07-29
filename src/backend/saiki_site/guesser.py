@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
 from .entities import HistoricalEntity
+from saiki_data.database import saiki_database, Algorithm
 
 
 @dataclass(init=True, repr=True, eq=False, frozen=False, slots=True)
@@ -219,33 +220,24 @@ class GuessState:
 class Guesser(object):
     """Handles the Guess game mode inner logical structure."""
 
-    __static_json_data_stream: list[dict]
-
     def __init__(self) -> None:
         """Initializes the guesser state."""
 
-        from os import path
-
-        data_path: str = path.join(path.dirname(__file__), "test.json")
-
-        # Currently, the database fetch is mocked.
-        with open(data_path, "r", encoding="utf-8") as file:
-            self.__static_json_data_stream: list[dict] = json.load(file)
-
-        for entry in self.__static_json_data_stream:
-            entry: dict = entry["data"]
-            print("entry:", entry)
-
-            for data_field in entry:
-                if not isinstance(entry[data_field], list):
-                    # then we have to list it.
-                    entry[data_field] = [entry[data_field]]
+        ...
 
     def fetch_entity(self, entity_name: str) -> tuple[None | dict, int]:
         """Fetches an entity by its name on the data pool."""
 
         entity_name: str = entity_name.lower()
+        return saiki_database.fetch_algorithm(entity_name)
 
+        try:
+            algorithm: Algorithm = saiki_database.fetch_algorithm(entity_name)
+
+        except KeyError:
+            return None, - 1
+
+        # old~
         for i, entity in enumerate(self.__static_json_data_stream):
             # @TODO: to abstract and improve comparison!
             if entity["name"].lower() == entity_name:
@@ -265,7 +257,7 @@ class Guesser(object):
             return state
 
         # choosing an entity at random; uniform distribution...
-        state.selected = randint(0, len(self.__static_json_data_stream) - 1)
+        state.selected = randint(0, len(saiki_database) - 1)
 
         # encrypting it
         from .enc import permute
@@ -278,7 +270,8 @@ class Guesser(object):
             :param index: The 0-based index.
             :return: The json dictionary associated with the entity entry.
             :raises TypeError: If the index is out of the bounds."""
-        return self.__static_json_data_stream[index]
+        return saiki_database.get_entity(index)
+        # return self.__static_json_data_stream[index]
 
     def fetch_entity2(self, entity_name: str) -> tuple[None | HistoricalEntity, int]:
         """Fetches an entity by its name on the data pool.
@@ -293,11 +286,12 @@ class Guesser(object):
 
     def get_entity2(self, index: int) -> HistoricalEntity:
 
-        entity: dict = self.__static_json_data_stream[index]
+        # entity: dict = self.__static_json_data_stream[index]
+        entity: dict = self.get_entity(index)
         return HistoricalEntity.from_type(entity["type"].lower(), entity["name"], ** entity["data"])
 
     def match_name(self, state: GuessState, name: str) -> list[str]:
-        """Matches an entity name over the collection. Returns a list of possible results. """
+        """Matches an entity name over the collection. Returns a list of possible results."""
 
         from difflib import get_close_matches
         from typing import Iterable
@@ -307,7 +301,7 @@ class Guesser(object):
 
         attempt_names: list[str] = state.attempted_names
         name_list: Iterable[str] = filter(
-            lambda x: x not in attempt_names, map(lambda x: x["name"], self.__static_json_data_stream)
+            lambda x: x not in attempt_names, map(lambda x: x["name"], saiki_database.get_all())
         )
         matches: list[str] = get_close_matches(name, name_list, n=max_query_results, cutoff=cutoff)
 
