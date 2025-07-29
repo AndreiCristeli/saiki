@@ -10,7 +10,8 @@ import json
 from dataclasses import dataclass
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
-from .entities import HistoricalEntity
+# from .entities import HistoricalEntity
+from .models import HistoricalEntity
 
 
 @dataclass(init=True, repr=True, eq=False, frozen=False, slots=True)
@@ -216,107 +217,66 @@ class GuessState:
         return response_json
 
 
-class Guesser(object):
+class Guesser:
     """Handles the Guess game mode inner logical structure."""
 
-    __static_json_data_stream: list[dict]
-
-    def __init__(self) -> None:
-        """Initializes the guesser state."""
-
-        from os import path
-
-        data_path: str = path.join(path.dirname(__file__), "test.json")
-
-        # Currently, the database fetch is mocked.
-        with open(data_path, "r", encoding="utf-8") as file:
-            self.__static_json_data_stream: list[dict] = json.load(file)
-
-        for entry in self.__static_json_data_stream:
-            entry: dict = entry["data"]
-            print("entry:", entry)
-
-            for data_field in entry:
-                if not isinstance(entry[data_field], list):
-                    # then we have to list it.
-                    entry[data_field] = [entry[data_field]]
+    def __init__(self):
+        self.entities = list(HistoricalEntity.objects.all())
 
     def fetch_entity(self, entity_name: str) -> tuple[None | dict, int]:
-        """Fetches an entity by its name on the data pool."""
-
-        entity_name: str = entity_name.lower()
-
-        for i, entity in enumerate(self.__static_json_data_stream):
-            # @TODO: to abstract and improve comparison!
-            if entity["name"].lower() == entity_name:
-                return entity, i
-
-        return None, - 1
+        entity_name = entity_name.lower()
+        for i, entity in enumerate(self.entities):
+            if entity.name.lower() == entity_name:
+                return {
+                    "name": entity.name,
+                    "type": entity.type,
+                    "data": entity.data
+                }, i
+        return None, -1
 
     def select_entity(self, state: GuessState) -> GuessState:
-        """Collapses the entity selection; chooses one from the data pool as the correct.
-            :param state: The current player's guess mode state.
-            :return: the new state after the selection. The parameter is modified.
-        """
-
         from random import randint
+        from .enc import permute
 
         if state.selected is not None:
             return state
 
-        # choosing an entity at random; uniform distribution...
-        state.selected = randint(0, len(self.__static_json_data_stream) - 1)
-
-        # encrypting it
-        from .enc import permute
+        state.selected = randint(0, len(self.entities) - 1)
         state.selected = permute(state.selected, state.key, 1000)
-
         return state
 
-    def get_entity(self, index: int) -> dict[str, str | list]:
-        """Retrieves an entity by its index in the data pool.
-            :param index: The 0-based index.
-            :return: The json dictionary associated with the entity entry.
-            :raises TypeError: If the index is out of the bounds."""
-        return self.__static_json_data_stream[index]
-
-    def fetch_entity2(self, entity_name: str) -> tuple[None | HistoricalEntity, int]:
-        """Fetches an entity by its name on the data pool.
-        Alternative version, that returns the HistoricalEntity object."""
-
-        for i, entity in enumerate(self.__static_json_data_stream):
-            print(f"entity[{i}]: {entity}")
-            if entity["name"].lower() == entity_name:
-                return HistoricalEntity.from_type(entity["type"].lower(), entity_name, ** entity["data"]), i
-
-        return None, - 1
+    def get_entity(self, index: int) -> dict:
+        entity = self.entities[index]
+        return {
+            "name": entity.name,
+            "type": entity.type,
+            "data": entity.data
+        }
 
     def get_entity2(self, index: int) -> HistoricalEntity:
+        return self.entities[index]
 
-        entity: dict = self.__static_json_data_stream[index]
-        return HistoricalEntity.from_type(entity["type"].lower(), entity["name"], ** entity["data"])
+    def fetch_entity2(self, entity_name: str) -> tuple[None | HistoricalEntity, int]:
+        entity_name = entity_name.lower()
+        for i, entity in enumerate(self.entities):
+            if entity.name.lower() == entity_name:
+                return entity, i
+        return None, -1
 
     def match_name(self, state: GuessState, name: str) -> list[str]:
-        """Matches an entity name over the collection. Returns a list of possible results. """
-
         from difflib import get_close_matches
-        from typing import Iterable
 
-        max_query_results: int = 5
-        cutoff: float = 0.35
+        name_list = [
+            entity.name for entity in self.entities
+            if entity.name not in state.attempted_names
+        ]
 
-        attempt_names: list[str] = state.attempted_names
-        name_list: Iterable[str] = filter(
-            lambda x: x not in attempt_names, map(lambda x: x["name"], self.__static_json_data_stream)
-        )
-        matches: list[str] = get_close_matches(name, name_list, n=max_query_results, cutoff=cutoff)
-
-        return matches
+        return get_close_matches(name, name_list, n=5,cutoff=0.35)
 
 
 """Global initialization"""
 
-guesser: Guesser = Guesser()
+guesser = None
 
 if __name__ == "__main__":
     ...

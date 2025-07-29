@@ -10,6 +10,16 @@ from django.db import models
 from django.db.models import CharField, IntegerField
 from django.http import JsonResponse
 
+from django.contrib.postgres.fields import ArrayField  # Ou use JSONField
+
+class HistoricalEntity(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    type = models.CharField(max_length=50)
+    data = models.JSONField()  # Usa JSONField para armazenar o campo "data" como está
+
+    def __str__(self):
+        return self.name 
+
 
 class Model_Algorithm(models.Model):
     """Represents an algorithm; the entity."""

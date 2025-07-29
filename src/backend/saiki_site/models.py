@@ -4,8 +4,6 @@ backend/saiki_site/models.py
 Django models used by the site.
 """
 
-from django.db import models
-
 
 """
 (Initially on src/backend/db/models.py. 
@@ -184,3 +182,13 @@ class Session(models.Model):
     class Meta:
         verbose_name = "Session"
         verbose_name_plural = "Sessions"
+
+from django.contrib.postgres.fields import ArrayField  # Ou use JSONField
+
+class HistoricalEntity(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    type = models.CharField(max_length=50)
+    data = models.JSONField()  # Usa JSONField para armazenar o campo "data" como está
+
+    def __str__(self):
+        return self.name 
