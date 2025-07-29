@@ -4,12 +4,10 @@ backend/saiki_site/views.py
 Viewing configuration for saiki_site Django's application.
 """
 
-from django.shortcuts import render, redirect
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from .entities import HistoricalEntity
 from .guesser import guesser, GuessState
 from typing import Any
 import json
@@ -118,7 +116,7 @@ def read_root1(req) -> JsonResponse:
 
 #-------------------------------------------------------------------------------------------
 from .forms import JogadorForm, JogadorLoginForm, MessageForm
-from .models import Jogador, Session, message, chat
+from .models import Jogador, Session, message
 from django.contrib import messages
 from django.contrib.auth import login
 from django.utils import timezone
@@ -159,7 +157,6 @@ def painel_jogador(request):
 
 
 from django.contrib.auth.models import User
-from django.contrib.auth.hashers import make_password
 
 
 def jogador_create(request):

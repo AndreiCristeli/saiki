@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from abc import abstractmethod, ABC
-from typing import Any
+from typing import Any, Iterator
 
 
 class HistoricalEntity(ABC):
@@ -26,7 +26,17 @@ class HistoricalEntity(ABC):
     def type_name(self) -> str:
         return "entity"
 
-    def __init__(self, name: str, ** kwargs) -> None:
+    def __iter__(self) -> Iterator:
+        """Iterates over the data fields of the entity."""
+
+        # @TODO: Frontend is accounting for the keys in sorted order, such that the set approach doesn't work...
+        # return iter(self._json_dict.keys() - {"name"})
+
+        # !! The following approach is only valid while we don't no other entity than algorithms.
+        return iter(["category", "year", "average_time_complexity", "auxiliary_space_complexity", "data_structure",
+                     "kind_of_solution", "generality"])
+
+    def __init__(self, name: str, **kwargs) -> None:
         self._json_dict: dict[str, str | list] = {
             "name": name
         }
@@ -75,19 +85,22 @@ class HistoricalEntity(ABC):
 
     @staticmethod
     def from_type(entity_type: str, *args, **kwargs) -> HistoricalEntity:
-        """Returns an Entity from the specified type."""
+        """Returns an HistoricalEntity from the specified type."""
 
         possible_entities_type: dict[str, type] = {
             "algorithm": Algorithm,
         }
 
         if entity_type not in possible_entities_type:
-            raise ValueError("...")
+            raise ValueError(f"Not a possible entity type.")
 
-        return possible_entities_type[entity_type](
-            *args,
-            **kwargs,
-        )
+        # callbacks the type constructor.
+        return possible_entities_type[entity_type](*args, **kwargs, )
+
+    @staticmethod
+    def from_json_mock_data(__json_data: dict) -> HistoricalEntity:
+        """OBS: Mocked. Temporary."""
+        return HistoricalEntity.from_type(__json_data["type"].lower(), __json_data["name"], **__json_data["data"])
 
 
 class Algorithm(HistoricalEntity):
@@ -97,7 +110,7 @@ class Algorithm(HistoricalEntity):
     def type_name(self) -> str:
         return "algorithm"
 
-    def __init__(self, name: str, ** kwargs) -> None:
+    def __init__(self, name: str, **kwargs) -> None:
 
         fields: list[str] = ["category", "year", "average_time_complexity", "auxiliary_space_complexity",
                              "data_structure", "kind_of_solution", "generality"]
@@ -111,7 +124,7 @@ class Algorithm(HistoricalEntity):
         if fields:
             raise KeyError("arrombado2")
 
-        super().__init__(name, ** kwargs)
+        super().__init__(name, **kwargs)
 
 
 if __name__ == "__main__":

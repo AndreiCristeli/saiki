@@ -13,7 +13,7 @@ from django.db.models import CharField, IntegerField
 from django.http import JsonResponse
 
 
-class Algorithm(models.Model):
+class ModelAlgorithm(models.Model):
     """Represents an algorithm; the entity."""
 
     name: CharField = CharField(max_length=32)
@@ -40,11 +40,11 @@ class Algorithm(models.Model):
         return JsonResponse(data)
 
     @staticmethod
-    def from_json(json_dict: dict) -> Algorithm:
+    def from_json(json_dict: dict) -> ModelAlgorithm:
         if json_dict["type"] != "Algorithm":
             raise ValueError
 
-        return Algorithm.objects.create(
+        return ModelAlgorithm.objects.create(
             name=json_dict["name"],
             category=json_dict["data"]["category"],
             year=json_dict["data"]["year"],
@@ -61,13 +61,13 @@ class Algorithm(models.Model):
 
 # Testing.
 if __name__ == "__main__":
-    example_algorithm = Algorithm(name="Merge sort",
-                                  year=1945,
-                                  category="Sorting",
-                                  time_complexity="O(n log n)",
-                                  space_complexity="O(n)",
-                                  data_structure=["array"],
-                                  solution_kind="exact",
-                                  generality="general-purpose")
+    example_algorithm = ModelAlgorithm(name="Merge sort",
+                                       year=1945,
+                                       category="Sorting",
+                                       time_complexity="O(n log n)",
+                                       space_complexity="O(n)",
+                                       data_structure=["array"],
+                                       solution_kind="exact",
+                                       generality="general-purpose")
 
     print(example_algorithm)
