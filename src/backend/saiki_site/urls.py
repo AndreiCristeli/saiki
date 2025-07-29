@@ -10,13 +10,14 @@ from . import views
 
 
 urlpatterns: list[URLPattern | URLResolver] = [
+
+    # Frontend views.
     path("", views.FrontendView.serve_frontend),
+    path("custom/", views.FrontendView.serve_custom_mode, name='custom'),
+    path("daily/", views.FrontendView.serve_daily_mode, name='daily'),
+    path("tof/", views.FrontendView.serve_tof_mode, name='tof'),
 
-    path("custom/", views.serve_custom_mode, name='custom'),
-    path("daily/", views.serve_daily_mode, name='daily'),
-    path("tof/", views.serve_tof_mode, name='tof'),
-
-    # Guess mode requests
+    # Guess mode requests.
     path("api/guess/hint/", views.GuessView.request_hint),
     path("api/guess/entity/", views.GuessView.request_entity),
     path("api/guess/load/", views.GuessView.request_load),

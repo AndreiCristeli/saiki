@@ -18,10 +18,8 @@ class FrontendView(object):
 
     @staticmethod
     def serve_frontend(req) -> HttpResponse:
-        """Provides the frontend main page.
-
-            @TODO: This method can and may have variations concerning the different web pages."""
-
+        """Provides the frontend main page."""
+        
         from os import path
 
         # inferring the request...
@@ -33,6 +31,18 @@ class FrontendView(object):
         # opening and sending the HTML over
         with open(index_path, encoding="utf-8") as index:
             return HttpResponse(index.read(), content_type="text/html")
+
+    @staticmethod
+    def serve_custom_mode(request):
+        return render(request, 'custom.html')
+
+    @staticmethod
+    def serve_daily_mode(request):
+        return render(request, 'index.html')
+
+    @staticmethod
+    def serve_tof_mode(request):
+        return render(request, 'trueOrFalse.html')
 
 
 class GuessView(object):
@@ -103,14 +113,6 @@ class GuessView(object):
 
         guess_state: GuessState = GuessState.from_request(req)
         return guess_state.get_collection(data)
-
-
-def read_root1(req) -> JsonResponse:
-    return JsonResponse(
-        {
-            "msg": "Helicóptero"
-        }
-    )
 
 
 
@@ -186,14 +188,6 @@ def jogador_success(request):
     return HttpResponse("Jogador criado com sucesso!")
 
 
-def serve_custom_mode(request):
-    return render(request, 'custom.html')
-
-def serve_daily_mode(request):
-    return render(request, 'index.html')
-
-def serve_tof_mode(request):
-    return render(request, 'trueOrFalse.html')
 
 def criar_sessao(request):
     if not request.user.is_authenticated:

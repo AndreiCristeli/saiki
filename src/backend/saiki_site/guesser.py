@@ -11,6 +11,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
 from saiki_data.entities import HistoricalEntity
 from saiki_data.database import saiki_entities
+from core.enc import int_list_to_b64, b64_to_int_list, permute, unpermute, generate_key
 
 
 @dataclass(init=True, repr=True, eq=False, frozen=False, slots=True)
@@ -32,7 +33,6 @@ class GuessState:
         key: None | str = request.COOKIES.get("key")
 
         if key is None:
-            from .enc import generate_key
             key: str = generate_key()
             assert len(key) == 64
 
@@ -50,7 +50,6 @@ class GuessState:
             if not b64_array:
                 raise TypeError
 
-            from .enc import b64_to_int_list
             attempted: list[int] = b64_to_int_list(b64_array, 4)
 
         except TypeError:
@@ -83,7 +82,6 @@ class GuessState:
             b64_v: str = int_to_base64(v, 4)
             response_json.set_cookie(f"A#", b64_v, secure=False, httponly=True, samesite="Lax")
         """
-        from .enc import int_list_to_b64
         response_json.set_cookie(f"A#", int_list_to_b64(self.attempted, 4), secure=False, httponly=True, samesite="Lax")
 
         return response_json
@@ -94,7 +92,6 @@ class GuessState:
         if not isinstance(attempt_index, int):
             raise TypeError
 
-        from .enc import permute
         self.attempted.append(
             permute(attempt_index, self.key, 1000)
         )
@@ -103,7 +100,6 @@ class GuessState:
 
     @property
     def __real_indexes(self) -> list[int]:
-        from .enc import unpermute
         return list(map(lambda x: unpermute(x, self.key, 1000), self.attempted))
 
     @property
@@ -146,7 +142,6 @@ class GuessState:
         guesser.select_entity(self)
 
         # the entity that is marked to be solved by the player.
-        from .enc import unpermute
         real_selected_index: int = unpermute(self.selected, self.key, 1000)
         correct_entity: HistoricalEntity = saiki_entities[real_selected_index]
 
@@ -262,7 +257,6 @@ class Guesser(object):
         state.selected = randint(0, len(saiki_entities) - 1)
 
         # encrypting it
-        from .enc import permute
         state.selected = permute(state.selected, state.key, 1000)
 
         return state

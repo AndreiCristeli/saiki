@@ -1,12 +1,12 @@
 """
 backend/saiki_site/entities.py
 
-@TODO
+Stores the interface historical entities.
+Interaction externally to this module must be made via them.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from abc import abstractmethod, ABC
 from typing import Any, Iterator
 
@@ -99,7 +99,7 @@ class HistoricalEntity(ABC):
 
     @staticmethod
     def from_json_mock_data(__json_data: dict) -> HistoricalEntity:
-        """OBS: Mocked. Temporary."""
+        """@TODO OBS: Mocked. Temporary."""
         return HistoricalEntity.from_type(__json_data["type"].lower(), __json_data["name"], **__json_data["data"])
 
 
@@ -117,12 +117,12 @@ class Algorithm(HistoricalEntity):
 
         for key in kwargs:
             if key not in fields:
-                raise KeyError("arrombado1")
+                raise KeyError(f"Invalid key: {key}")
 
             fields.pop(fields.index(key))
 
         if fields:
-            raise KeyError("arrombado2")
+            raise KeyError(f"Missing keys: {fields}")
 
         super().__init__(name, **kwargs)
 
