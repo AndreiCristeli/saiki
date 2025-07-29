@@ -20,11 +20,12 @@ It's like Wordle, but focused on CS.
 
 Below is an example of the game in action:
 
-![Game Screenshot](./imgs/img_game.JPG)
+![Game Screenshot](./docs/imgs/saiki-example.png)
 
-In this example, the player made two attempts:
-- First attempt: `bubble sort` → incorrect (several red or yellow fields)
-- Second attempt: `merge sort` → correct (all fields green)
+In this example, the player made three attempts:
+- First attempt: `Bubble Sort` → incorrect - several red (incorrect) fields and a yellow (partially correct) field
+- Second attempt: `Merge Sort` → incorrect - some red fields
+- Tird attempt: `Radix Sort` → correct - all fields green
 
 ---
 
@@ -49,22 +50,28 @@ In this example, the player made two attempts:
 
 ## Technologies Used
 
-- **Frontend**: HTML5, JavaScript (...)
-- **Midend**: Python (Django) (...)
-- **Backend**: Python (Django) (...)
-- **Game Logic**: Client-side validation and comparison with algorithm data (...)
-- **Data Format**: Algorithms defined in structured JSON format (...)
+- **Frontend**: HTML5, JavaScript
+- **Midend**: Python (Django)
+- **Backend**: Python (Django)
 
 ---
 
 ## How to Run the Project
 
+### Run Locally:
 1. **Clone the repository**
-   ```bash
-   git clone https://github.com/AndreiCristeli/saiki.git
-   cd saiki
-   (...)
+  ```bash
+  git clone https://github.com/AndreiCristeli/saiki.git
+  cd saiki
+  ```
 
+2. **Run the MakeFile script**
+  ```
+  make run-django
+  ```
+  this should start a local server in your localhost.
+
+3. **Connect to `localhost:8000`\* in your prefered browser**
 
 ## Releases Notes
 
@@ -79,4 +86,4 @@ Realizada através de requisições entre scripts em javascript (frontend) e pyt
  
 ### Usabilidade:
 * Jogo de advinhação simples:
-O jogo de advinhação está disponível para os algoritmos de ordenação.
+Atualmente, o jogo de advinhação está disponível para os algoritmos de ordenação.
