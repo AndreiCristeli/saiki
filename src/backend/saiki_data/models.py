@@ -11,6 +11,7 @@ from __future__ import annotations
 from django.db import models
 from django.db.models import CharField, IntegerField
 from django.http import JsonResponse
+from . import entities
 
 
 class ModelAlgorithm(models.Model):
@@ -33,6 +34,7 @@ class ModelAlgorithm(models.Model):
             "category": self.category,
             "design_paradigm": self.design_paradigm,
             "generality": self.generality,
+            "data_structure": self.data_structure,
             "temporal_complexity": self.temporal_complexity,
             "spatial_complexity": self.spatial_complexity,
             "solution_type": self.solution_type,
@@ -56,9 +58,9 @@ class ModelAlgorithm(models.Model):
             generality=json_dict["data"]["generality"],
         )
 
-    def to_historical_entity(self) -> ModelAlgorithm:
-        return ModelAlgorithm(
-            name=self.name,
+    def to_historical_entity(self) -> entities.Algorithm:
+        return entities.Algorithm(
+            name=str(self.name),
             year=self.year,
             category=self.category,
             average_time_complexity=self.temporal_complexity,

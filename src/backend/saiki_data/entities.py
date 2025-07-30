@@ -26,6 +26,9 @@ class HistoricalEntity(ABC):
     def type_name(self) -> str:
         return "entity"
 
+    def __repr__(self):
+        return self.name
+
     def __iter__(self) -> Iterator:
         """Iterates over the data fields of the entity."""
 
@@ -36,7 +39,7 @@ class HistoricalEntity(ABC):
         return iter(["category", "year", "average_time_complexity", "auxiliary_space_complexity", "data_structure",
                      "kind_of_solution", "generality"])
 
-    def __init__(self, name: str, **kwargs) -> None:
+    def __init__(self, name: str, ** kwargs) -> None:
         self._json_dict: dict[str, str | list] = {
             "name": name
         }
@@ -110,8 +113,7 @@ class Algorithm(HistoricalEntity):
     def type_name(self) -> str:
         return "algorithm"
 
-    def __init__(self, name: str, **kwargs) -> None:
-
+    def __init__(self, name: str, ** kwargs) -> None:
         fields: list[str] = ["category", "year", "average_time_complexity", "auxiliary_space_complexity",
                              "data_structure", "kind_of_solution", "generality"]
 
@@ -124,7 +126,8 @@ class Algorithm(HistoricalEntity):
         if fields:
             raise KeyError(f"Missing keys: {fields}")
 
-        super().__init__(name, **kwargs)
+        super().__init__(name, ** kwargs)
+
 
 
 if __name__ == "__main__":
