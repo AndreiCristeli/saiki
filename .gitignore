@@ -27,5 +27,14 @@ bin/
 ### Temporaries ###
 *temp/
 *.ls
+
+### Database ###
 *.sqlite3
 src/backend/db.sqlite3
+
+**/migrations/*.py
+**/migrations/*.pyc
+!**/migrations/__init__.py
+
+# this one is important being propagated.
+src/backend/saiki_data_db.sqlite3

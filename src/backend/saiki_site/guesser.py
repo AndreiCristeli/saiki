@@ -155,9 +155,9 @@ class GuessState:
         try:
             match_entity, match_entity_index = guesser.fetch(entity_name)
 
-        except KeyError:
+        except KeyError as ke:
             # couldn't find the entity. returns empty.
-            print("COULDN'T FIND!")
+            print(f"COULDN'T FIND!", ke)
             return response
 
         # at least it was found on the database...
@@ -276,7 +276,7 @@ class Guesser(object):
         attempt_names: list[str] = state.attempted_names
         name_list: Iterable[str] = filter(
             lambda x: x not in attempt_names,
-            map(lambda x: x["name"], saiki_entities)    # entity names.
+            saiki_entities    # entity names.
         )
         matches: list[str] = get_close_matches(name, name_list, n=max_query_results, cutoff=cutoff)
 

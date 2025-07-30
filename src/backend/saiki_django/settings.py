@@ -81,15 +81,25 @@ TEMPLATES = [
 WSGI_APPLICATION: str = 'saiki_django.wsgi.application'
 
 
-# Database
+"""
+    Databases
+"""
+
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES: dict = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    },
+
+    "saiki_data_db": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "saiki_data_db.sqlite3",
     }
 }
+
+DATABASES_ROUTERS = ["saiki_django.routers.SaikiDataRouter"]
 
 
 # Password validation

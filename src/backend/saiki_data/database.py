@@ -8,7 +8,7 @@ Interaction externally to this module must be made via them.
 import json
 from typing import Iterator, Iterable
 
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 from .models import ModelAlgorithm
 from .entities import HistoricalEntity
@@ -20,25 +20,51 @@ class SaikiEntityDatabase(object):
 
     __slots__: list[str] = [
         "__static_json_data_stream",
-        "__entities"
+        "__entities",
+        "__entity_names"
     ]
 
     __static_json_data_stream: list[dict]
 
     def __init__(self) -> None:
+
+        # self.__load_entities()    # <- Deprecated
+        # self.__load_static_json_data_stream() # <- Deprecated
+        self.__load_entity_names()
+
+    def __load_entity_names(self) -> None:
+        """Step #3 in migrating to DB usage.
+
+        Load all the entity names.
+        Attempts improving entity name approximated name in the backend by caching them."""
+
+        try:
+            self.__entity_names: list[str] = list(map(lambda x: x.name, ModelAlgorithm.objects.all()))
+
+        except Exception:
+            self.__entity_names: list = list()
+
+        print(self.__entity_names)
+
+    def __load_entities(self) -> None:
+        """Step #2 in migrating to DB usage. Obs: Deprecated."""
+
         try:
             __all_objects = list(ModelAlgorithm.objects.all())
             self.__entities = list(map(lambda x: x.to_historical_entity(), __all_objects))
 
         except Exception as e:
+            # something went wrong.
+            # @TODO: To identify the error.
             print(e)
             self.__entities: list = list()
 
         print(self.__entities)
-        
-        # Obs:
-        # Currently, the database fetch is mocked.
 
+    def __load_static_json_data_stream(self) -> None:
+        """Step #1 in migrating to DB usage. Obs: Deprecated."""
+
+        # For mocked database results.
         from os import path
         data_path: str = path.join(path.dirname(__file__), "test.json")
 
@@ -55,7 +81,7 @@ class SaikiEntityDatabase(object):
 
     def __len__(self) -> int:
         """Returns how many historical entities are there in the database."""
-        return len(self.__entities)
+        return ModelAlgorithm.objects.count()
 
     def __getitem__(self, item: int) -> HistoricalEntity:
         """`get_entity()` callback. Retrieves an entity by its index."""
@@ -65,7 +91,7 @@ class SaikiEntityDatabase(object):
         return self.get_entity(index=item)
     
     def all(self) -> Iterable[HistoricalEntity]:
-        return iter(self.__entities)
+        return iter(ModelAlgorithm.objects.all())
 
     def get_entity(self, index: int) -> HistoricalEntity:
         """Retrieves an entity by its index in the data pool.
@@ -76,15 +102,31 @@ class SaikiEntityDatabase(object):
         if index < 0 or index >= len(self):
             raise IndexError()
 
-        # @TODO: Replace mock with ModelAlgorithm interaction.
+        # !! old.
         # return HistoricalEntity.from_json_mock_data(self.__static_json_data_stream[index])
-        return self.__entities[index]
+        # return self.__entities[index]
+
+        try:
+            return ModelAlgorithm.objects.get(entity_id=index).to_historical_entity()
+
+        except ObjectDoesNotExist or MultipleObjectsReturned:
+            raise LookupError(f"DB Inconsistency")
 
     def fetch_entity(self, name: str) -> tuple[HistoricalEntity, int]:
-        """Attempts finding an entity on the database.
-        Returns it, as well as its index."""
+        """Attempts finding an entity on the database. Returns it, as well as its index.
+        Raises KeyError in case not finding."""
 
-        # @TODO: Replace mock with ModelAlgorithm interaction.
+        try:
+            the_model = ModelAlgorithm.objects.get(name__iexact=name)
+            return ModelAlgorithm.objects.get(name__iexact=name).to_historical_entity(), the_model.entity_id
+
+        except ObjectDoesNotExist:
+            raise KeyError(f"Didn't found entity with name {name}.")
+
+        except MultipleObjectsReturned:
+            raise KeyError(f"DB Inconsistency")
+
+        # !! old.
         for i, entity in enumerate(self.__entities):
             if entity["name"].lower() == name:
                 # return HistoricalEntity.from_json_mock_data(entity), i
@@ -92,19 +134,13 @@ class SaikiEntityDatabase(object):
 
         raise KeyError(f"Couldn't find entity with name '{name}'.")
 
-        try:
-            return ModelAlgorithm.objects.get(name=name)
-
-        except ObjectDoesNotExist:
-            raise KeyError(f"Didn't found alg. with name {name}.")
-
     def __iter__(self) -> Iterator[HistoricalEntity]:
-        """Iterates over all the entities."""
+        """Iterates over all the entity names."""
 
         # @TODO: Replace mock with ModelAlgorithm interaction.
         def __generate_entities() -> Iterator[HistoricalEntity]:
             """Generator over the static mocked data."""
-            for entity in self.__entities:
+            for entity in self.__entity_names:
                 yield entity
 
         return __generate_entities()

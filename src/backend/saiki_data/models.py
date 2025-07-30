@@ -14,8 +14,16 @@ from django.http import JsonResponse
 from . import entities
 
 
+class SaikiDB_Manager(models.Manager):
+    def get_queryset(self):
+        # assuring that `saiki_data_db` is used for this model.
+        return super().get_queryset().using("saiki_data_db")
+
+
 class ModelAlgorithm(models.Model):
     """Represents an algorithm; the entity."""
+
+    entity_id: IntegerField = IntegerField()
 
     name: CharField = CharField(max_length=32)
     year: IntegerField = IntegerField()
@@ -28,7 +36,11 @@ class ModelAlgorithm(models.Model):
     spatial_complexity: CharField = CharField(max_length=32)
     solution_type: CharField = CharField(max_length=32)
 
+    objects = SaikiDB_Manager()
+
     def to_json(self) -> JsonResponse:
+
+        # Note: doesn't propagate the ID to the JSON.
         data: dict[str, CharField] = {
             "name": self.name, "year": self.year,
             "category": self.category,
@@ -47,7 +59,11 @@ class ModelAlgorithm(models.Model):
         if json_dict["type"] != "Algorithm":
             raise ValueError
 
+        # ID is relative to the current count.
+        new_id: int = ModelAlgorithm.objects.count()
+
         return ModelAlgorithm.objects.create(
+            entity_id=new_id,
             name=json_dict["name"],
             category=json_dict["data"]["category"],
             year=json_dict["data"]["year"],

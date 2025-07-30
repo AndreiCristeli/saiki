@@ -46,7 +46,7 @@ class HistoricalEntity(ABC):
 
         for kw, v in kwargs.items():
             kw: str
-            self._json_dict[kw] = v
+            self._json_dict[kw]: str = v
 
     def __getitem__(self, item: str) -> str | list:
         """Returns the corresponding JSON item."""
