@@ -168,30 +168,12 @@ class GuessState:
             "guessed": "correct"
         }
 
-        if False:
-            # @TODO: Ponder about something of the sort.
-            checked = correct_entity.check(match_entity)
-            for field, value in checked.items():
-                response["data"][field] = item
-
-                if response["guessed"] == "correct":
-                    # if the response is correct up to now, it can potentially make the whole answer wrong.
-                    response["guessed"] = guess_type
-
-                elif response["guessed"] == "partial" and guess_type != "correct":
-                    # else, it can either be partial or wrong.
-                    response["guessed"] = guess_type
-
-                # wrong will be wrong...
+        checked: dict[str, tuple[list[str], str]] = match_entity.check(correct_entity)
 
         # iterating over the entity data fields...
-        for field in match_entity:
-
-            # if the field is correct, for all effects.
-            guess_type: str = correct_entity @ (field, match_entity[field])
-
-            # adding the respective field to the response...
-            response["data"][field] = [match_entity[field], guess_type]
+        for field, value in checked.items():
+            response["data"][field] = value
+            guess_type: str = value[1]
 
             if response["guessed"] == "correct":
                 # if the response is correct up to now, it can potentially make the whole answer wrong.
@@ -201,10 +183,9 @@ class GuessState:
                 # else, it can either be partial or wrong.
                 response["guessed"] = guess_type
 
-            # and wrong will be wrong...
+            # wrong will be wrong...
 
         self.add_attempt(match_entity_index)
-
         return response
 
     def guess(self, entity_name: str) -> JsonResponse:

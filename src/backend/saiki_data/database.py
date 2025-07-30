@@ -56,7 +56,8 @@ class SaikiEntityDatabase(object):
         except Exception as e:
             # something went wrong.
             # @TODO: To identify the error.
-            print(e)
+            raise e
+
             self.__entities: list = list()
 
         print(self.__entities)
@@ -138,6 +139,9 @@ class SaikiEntityDatabase(object):
         """Iterates over all the entity names."""
 
         # @TODO: Replace mock with ModelAlgorithm interaction.
+        # This method's behavior is mainly used for the entity name matching used in the guesser.
+        # As such, it can be substituted for a direct such search in the database.
+
         def __generate_entities() -> Iterator[HistoricalEntity]:
             """Generator over the static mocked data."""
             for entity in self.__entity_names:

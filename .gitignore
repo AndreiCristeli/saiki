@@ -29,11 +29,13 @@ bin/
 *.ls
 
 ### Database ###
+
+# ignore, in principle, all database files.
 *.sqlite3
 src/backend/db.sqlite3
 
-**/migrations/*.py
-**/migrations/*.pyc
+src/backend/saiki_site/migrations/*.py
+src/backend/saiki_site/migrations/*.pyc
 !**/migrations/__init__.py
 
 # this one is important being propagated.

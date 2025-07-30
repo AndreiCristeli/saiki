@@ -8,7 +8,7 @@ Interaction externally to this module must be made via them.
 from __future__ import annotations
 
 from abc import abstractmethod, ABC
-from typing import Any, Iterator
+from typing import Iterator, override
 
 
 class HistoricalEntity(ABC):
@@ -29,15 +29,12 @@ class HistoricalEntity(ABC):
     def __repr__(self):
         return self.name
 
+    @abstractmethod
     def __iter__(self) -> Iterator:
         """Iterates over the data fields of the entity."""
 
         # @TODO: Frontend is accounting for the keys in sorted order, such that the set approach doesn't work...
         # return iter(self._json_dict.keys() - {"name"})
-
-        # !! The following approach is only valid while we don't no other entity than algorithms.
-        return iter(["category", "year", "average_time_complexity", "auxiliary_space_complexity", "data_structure",
-                     "kind_of_solution", "generality"])
 
     def __init__(self, name: str, ** kwargs) -> None:
         self._json_dict: dict[str, str | list] = {
@@ -82,6 +79,29 @@ class HistoricalEntity(ABC):
 
         # A \\nsubset B
         return "wrong"
+
+    def check(self, other: HistoricalEntity) -> dict[str, tuple[list[str], str]]:
+        """Checks against other entity of the same type. So it does the comparison based on the assumption `other` is
+        correct.
+        :param other: Other compatible (should be at least of the same class as this) HistoricalEntity to compare with.
+        :returns: A dictionary mapping the fields comparing to it check - if it is "correct", "wrong" or "partial"
+        (ly correct)."""
+
+        if not isinstance(other, self.__class__):
+            raise TypeError()
+
+        response: dict[str, tuple[list[str], str]] = {}
+
+        for field in self:
+            field: str
+
+            # if the field is correct, for all effects.
+            guess_type: str = other @ (field, self[field])
+
+            # adding the respective field to the response...
+            response[field] = self[field], guess_type
+
+        return response
 
     @staticmethod
     def from_type(entity_type: str, *args, **kwargs) -> HistoricalEntity:
@@ -128,6 +148,12 @@ class Algorithm(HistoricalEntity):
 
         super().__init__(name, ** kwargs)
 
+    @override
+    def __iter__(self) -> Iterator:
+
+        # !! The following approach is only valid while we do not know other entity than algorithms.
+        return iter(["category", "year", "average_time_complexity", "auxiliary_space_complexity", "data_structure",
+                     "kind_of_solution", "generality"])
 
 
 if __name__ == "__main__":
