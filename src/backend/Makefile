@@ -28,8 +28,8 @@ run-uvicorn:
 
 # Running the Django server
 run-django:
-# @$(PYTHON) -m $(DJANGO_MANAGE_MODULE) runserver
-	@$(PYTHON) $(DJANGO_MANAGE) runserver
+	@$(PYTHON) -m $(DJANGO_MANAGE_MODULE) runserver
+# @$(PYTHON) $(DJANGO_MANAGE) runserver
 
 # Run migrations: makemigrations + migrate
 django-migrate:
