@@ -19,13 +19,16 @@ class SaikiEntityDatabase(object):
     @TODO: Singleton. Base-class."""
 
     __slots__: list[str] = [
-        "__static_json_data_stream"
+        "__static_json_data_stream",
+        "__entities"
     ]
 
     __static_json_data_stream: list[dict]
 
     def __init__(self) -> None:
-
+        self.__entities = list(ModelAlgorithm.objects.all()) 
+        print(self.__entities)
+        
         # Obs:
         # Currently, the database fetch is mocked.
 
@@ -53,6 +56,9 @@ class SaikiEntityDatabase(object):
             raise TypeError()
 
         return self.get_entity(index=item)
+    
+    def all(self) -> list[HistoricalEntity]:
+        return self.__entities
 
     def get_entity(self, index: int) -> HistoricalEntity:
         """Retrieves an entity by its index in the data pool.

@@ -161,7 +161,7 @@ class GuessState:
             return response
 
         # at least it was found on the database...
-
+        
         response: dict = {
             "name": match_entity["name"],
             "data": {},
