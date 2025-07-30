@@ -26,7 +26,7 @@ class SaikiEntityDatabase(object):
     __static_json_data_stream: list[dict]
 
     def __init__(self) -> None:
-        self.__entities = list(ModelAlgorithm.objects.all()) 
+        self.__entities = list(map(lambda x: x.to_historical_entity(), ModelAlgorithm.objects.all())) 
         print(self.__entities)
         
         # Obs:

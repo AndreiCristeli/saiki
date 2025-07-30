@@ -22,6 +22,7 @@ class ModelAlgorithm(models.Model):
     category: CharField = CharField(max_length=32)
     design_paradigm: CharField = CharField(max_length=32)
     generality: CharField = CharField(max_length=32)
+    data_structure: CharField = CharField(max_length=32)
     temporal_complexity: CharField = CharField(max_length=32)
     spatial_complexity: CharField = CharField(max_length=32)
     solution_type: CharField = CharField(max_length=32)
@@ -53,6 +54,18 @@ class ModelAlgorithm(models.Model):
             data_structure=json_dict["data"]["data_structure"],
             kind_of_solution=json_dict["data"]["kind_of_solution"],
             generality=json_dict["data"]["generality"],
+        )
+
+    def to_historical_entity(self) -> ModelAlgorithm:
+        return ModelAlgorithm(
+            name=self.name,
+            year=self.year,
+            category=self.category,
+            average_time_complexity=self.temporal_complexity,
+            auxiliary_space_complexity=self.spatial_complexity,
+            data_structure=self.data_structure,
+            kind_of_solution=self.solution_type,
+            generality=self.generality,
         )
 
     def __str__(self) -> str:

@@ -90,7 +90,7 @@ class HistoricalEntity(ABC):
         possible_entities_type: dict[str, type] = {
             "algorithm": Algorithm,
         }
-
+        
         if entity_type not in possible_entities_type:
             raise ValueError(f"Not a possible entity type.")
 
