@@ -58,13 +58,10 @@ class HistoricalEntity(ABC):
     def __matmul__(self, item: tuple[str, list]) -> str:
         """`compare_field` operator wrapper."""
 
-        if not isinstance(item, tuple) and len(item) == 2:
-            raise TypeError(0)
+        if not isinstance(item, tuple) and len(item) == 2 or not isinstance(item[1], list):
+            raise TypeError(f"Item: {item}")
 
-        elif not isinstance(item[1], list):
-            raise TypeError(1)
-
-        return self.compare_field(*item)
+        return self.compare_field(* item)
 
     def compare_field(self, field_name: str, field_item: list[str]) -> str:
         """Compares two entities fields for guessing, verifying if A \\subseteq B.
@@ -122,6 +119,9 @@ class Algorithm(HistoricalEntity):
                 raise KeyError(f"Invalid key: {key}")
 
             fields.pop(fields.index(key))
+
+            if not isinstance(kwargs[key], list):
+                kwargs[key] = [kwargs[key]]
 
         if fields:
             raise KeyError(f"Missing keys: {fields}")
