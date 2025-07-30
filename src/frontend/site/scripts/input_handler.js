@@ -28,9 +28,8 @@ export class InputHandler {
 	}
 
 	// Event handler for keydown on the input text box
-	async input_keydown(event, input) {
+	async input_keydown(event) {
 		let user_input = this.#__normalize_input(event.target.value); 
-		const current_page = document.body.dataset.page;
 	
 		// console.log(`Nomalized Input: ${user_input}`);
 	
@@ -54,30 +53,37 @@ export class InputHandler {
 		
 		} else if (event.key === 'Enter') {
 			if (this.hints.is_displaying() === true){
-				user_input = this.hints.the_hints[this.hints.selected_hint].toLowerCase();
+				user_input = this.#__normalize_input(this.hints.the_hints[this.hints.selected_hint]);
 			}
 
-			this.hints.hide(); // Hinding the Hints
+			await this.process_input(user_input);
+		}
+	}
+
+	async process_input(user_input){
+		let input_box = document.querySelector(".Input");
+		const current_page = document.body.dataset.page;
+		
+		this.hints.hide(); // Hinding the Hints
 	
-			  if (user_input === "milvus"){
-				eg.showMilvusDialog(); input.value = ''; return;
-	
-			  } else if (user_input === "pokemon" || user_input === "monkepo"){
-				eg.showPokemonDialog(); input.value = ''; return;
-			  }
-	
-			let attempt_rc = await this.attempt_handler.process_attempt(user_input, ENTITY_TYPE_PH);
-	
-			switch (attempt_rc) {
-				case ATTEMPT_RC.REPEATED_ANSWER: 
-				case ATTEMPT_RC.NOT_FOUND:
-					break;
-				case ATTEMPT_RC.VICTORY: // Win Condition.
-					win_condition(input, this, current_page);
-	
-				default:
-					input.value = '';
-			}
+		if (user_input === "milvus"){
+		eg.showMilvusDialog(); input_box.value = ''; return;
+
+		} else if (user_input === "pokemon" || user_input === "monkepo"){
+		eg.showPokemonDialog(); input_box.value = ''; return;
+		}
+
+		let attempt_rc = await this.attempt_handler.process_attempt(user_input, ENTITY_TYPE_PH);
+
+		switch (attempt_rc) {
+			case ATTEMPT_RC.REPEATED_ANSWER: 
+			case ATTEMPT_RC.NOT_FOUND:
+				break;
+			case ATTEMPT_RC.VICTORY: // Win Condition.
+				win_condition(input_box, this, current_page);
+
+			default:
+				input_box.value = '';
 		}
 	}
 
@@ -115,6 +121,11 @@ export class InputHandler {
 		} else {
 			console.log("Você escolheu Falso.");
 		}
+	}
+
+	async hint_click(event, hint_element) {
+		let user_input = this.#__normalize_input(hint_element.innerText);
+		await this.process_input(user_input);
 	}
 }
 

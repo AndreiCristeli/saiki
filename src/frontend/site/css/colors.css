@@ -4,7 +4,8 @@
     --info-color: #dce7fc;
     --highlight-color: #ffe347;
     --correct-color: #20cf80;
-    --partial-color: #ffe347;
+    /*--partial-color: #d79402;*/
+    --partial-color: #cea500;
     --wrong-color: #ce0030;
     
     --confirm-color: #4CAF50;

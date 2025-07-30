@@ -7,9 +7,11 @@
  * @version 0.1
  */
 
+import { InputHandler } from "./input_handler.js"
+
 export class Renderer {
 	constructor(){
-
+		this.input_handler = new InputHandler(this);
 	}
 
 	#render_katex(input_str, target_element) {
@@ -74,15 +76,16 @@ export class Renderer {
 		container.insertBefore(card, container.firstChild);
 	}
 
-	remove_hints_container() {
+	remove_hints_container(input_hint_div) {
 		let hints_container = document.querySelector(".hints");
 	
 		if (hints_container) { 
 			try {
 				hints_container.remove();
-				input_hint_div.removeChild(hints_container);
+				//input_hint_div.removeChild(hints_container);
+
 			} catch (NotFoundError) {
-				
+				console.log(`[ERROR]: Unnable to remove hints container: \n ${NotFoundError}`);
 			}
 		}
 	}
@@ -91,7 +94,7 @@ export class Renderer {
 	render_hints(hints, selected) {
 		const input_hint_div = document.querySelector(".input-hint");
 		
-		this.remove_hints_container();
+		this.remove_hints_container(input_hint_div);
 		
 		if (hints.length == 0)
 			return;
@@ -99,8 +102,6 @@ export class Renderer {
 		// re-creating hints container.
 		let hints_container = document.createElement('div');
 		hints_container.className = "hints"
-		
-		// @TODO organize it.
 
 		// console.log(`selected = ${selected}`);
 		
@@ -111,11 +112,18 @@ export class Renderer {
 			hint_item.className = "hint_item";
 
 			if (name == hints[selected]) {
-				hint_item.className = hint_item.className + " selected"
+				hint_item.className = hint_item.className + " selected";
 				// console.log(`selected name = ${name}`);
 			}
 
 			hint_item.innerText = name;
+			hint_item.addEventListener('click', (event) => this.input_handler.hint_click(event, hint_item));
+			hint_item.addEventListener('mouseenter', (event) => {
+    			hint_item.className = hint_item.className + " selected";
+			})
+			hint_item.addEventListener('mouseleave', (event) => {
+    			hint_item.className = "hint_item";
+			})
 			hints_container.appendChild(hint_item);
 		}
 		
@@ -124,7 +132,7 @@ export class Renderer {
 
 	update_hints(hints, selected){
 		const hints_container = document.querySelector('.hints');
-		console.log(`Updating hints container`);
+		// console.log(`Updating hints container`);
 
 		// adding each hint row.
 		for (let child of hints_container.childNodes) {
@@ -133,7 +141,7 @@ export class Renderer {
 			
 			if (child.innerText == hints[selected]) {
 				child.className = child.className + " selected"
-				console.log(`new selected name = ${child.innerText}`);
+				// console.log(`new selected name = ${child.innerText}`);
 			}
 		}
 	}

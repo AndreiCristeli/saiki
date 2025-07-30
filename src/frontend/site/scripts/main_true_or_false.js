@@ -7,12 +7,10 @@
  * @version 0.2
  */
 
-import { InputHandler } from "./input_handler.js";
 import { Renderer } from "./renderer.js";
 import { api } from "./api.js";
 
 let renderer = new Renderer()
-let input_handler = new InputHandler(renderer)
 
 window.onload = function () {
 	const currentPage = document.body.dataset.page;
@@ -28,16 +26,16 @@ window.onload = function () {
 	});
 
   const button = document.querySelector('.footer-info');
-	button.addEventListener('click', (event) => input_handler.info_click(event, button));
+	button.addEventListener('click', (event) => renderer.input_handler.info_click(event, button));
 
   const buttons = document.querySelectorAll('.button_choice');
   buttons.forEach(button => {
-    button.addEventListener('click', (event) => input_handler.choice_click(event, button));
+    button.addEventListener('click', (event) => renderer.input_handler.choice_click(event, button));
   });
 
   const closeBtn = document.querySelector('.closeDialog');
   if (closeBtn) {
     const dialog = document.querySelector('.infoDialog');
-    closeBtn.addEventListener('click', (event) => input_handler.close_info_dialog(event, dialog));
+    closeBtn.addEventListener('click', (event) => renderer.input_handler.close_info_dialog(event, dialog));
   }
 };
