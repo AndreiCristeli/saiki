@@ -34,6 +34,10 @@ def load_entities(__rpath: str):
 
     # creating the models.
     for eid, entry in enumerate(entries):
+        if isinstance(entry["data"]["data_structure"], list):
+            # if it is declared as list, then we join it with comma...
+            entry["data"]["data_structure"] = ",".join(entry["data"]["data_structure"])
+        
         ModelAlgorithm.objects.update_or_create(
             name=entry["name"],
             entity_id=eid,

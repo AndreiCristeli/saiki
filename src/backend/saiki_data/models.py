@@ -75,13 +75,15 @@ class ModelAlgorithm(models.Model):
         )
 
     def to_historical_entity(self) -> entities.Algorithm:
+        data_structure: str = self.data_structure
+        
         return entities.Algorithm(
             name=str(self.name),
             year=self.year,
             category=self.category,
             average_time_complexity=self.temporal_complexity,
             auxiliary_space_complexity=self.spatial_complexity,
-            data_structure=self.data_structure,
+            data_structure=data_structure.split(","),
             kind_of_solution=self.solution_type,
             generality=self.generality,
         )

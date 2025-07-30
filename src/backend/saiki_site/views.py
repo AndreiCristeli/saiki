@@ -34,15 +34,15 @@ class FrontendView(object):
 
     @staticmethod
     def serve_custom_mode(request):
-        return render(request, 'custom.html')
+        return render(request, "custom.html")
 
     @staticmethod
     def serve_daily_mode(request):
-        return render(request, 'index.html')
+        return render(request, "index.html")
 
     @staticmethod
     def serve_tof_mode(request):
-        return render(request, 'trueOrFalse.html')
+        return render(request, "trueOrFalse.html")
 
 
 class GuessView(object):
