@@ -1,3 +1,34 @@
+.background-darkness {
+  background: #00000061;
+  width: 100%;
+  height: 100cap;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.stats-dialog {
+  background: var(--stats-color);
+  border-radius: 20px;
+  padding: 10px;
+
+  position: fixed;
+  top: 35vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* empurra conteúdo para o topo e botão para baixo */
+  align-items: center;               /* centraliza horizontalmente */
+
+  height: 30vh;
+  width: 30%;
+  font-size: 1rem;
+  animation: emergir 0.8s ease-out forwards;
+  z-index: 1001;
+}
+
 .div_new_game {
   display: flex;
   flex-direction: column;
@@ -20,7 +51,9 @@
   color: white;    
   border: none;
   width: 45%; 
-  align-self: center;
+  margin-top: auto;          /* empurra pra baixo */
+  align-self: center;        /* centraliza horizontalmente */
+  margin-top: auto; 
   padding: 12px 20px;
   border-radius: 8px;
   font-size: 16px;

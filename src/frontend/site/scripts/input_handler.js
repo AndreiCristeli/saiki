@@ -67,12 +67,16 @@ export class InputHandler {
 		this.hints.hide(); // Hinding the Hints
 	
 		if (user_input === "milvus"){
-		eg.showMilvusDialog(); input_box.value = ''; return;
+			eg.showMilvusDialog(); input_box.value = ''; return;
 
 		} else if (user_input === "pokemon" || user_input === "monkepo"){
-		eg.showPokemonDialog(); input_box.value = ''; return;
+			eg.showPokemonDialog(); input_box.value = ''; return;
 		}
 
+		else if(user_input === "teste" ){
+			showStatistics(this); input_box.value = ''; return;
+		}
+		
 		let attempt_rc = await this.attempt_handler.process_attempt(user_input, ENTITY_TYPE_PH);
 
 		switch (attempt_rc) {
@@ -89,8 +93,7 @@ export class InputHandler {
 
 	// Event handler for when clicking on new game.
 	new_game_click(event, btn) {
-		const container = btn.closest(".div_new_game");
-		reset_game(container, this);
+		reset_game(this);
 	}
 
 	// Event handler for click on the info button.
@@ -129,48 +132,78 @@ export class InputHandler {
 	}
 }
 
+
 // TODO: rethink where these methods (win_condition and reset_game should go)
+
+function showStatistics(input_handler, container) {
+	const test = document.createElement("div");
+	test.className = "background-darkness";
+	const modal = document.createElement("dialog");
+  	modal.className = "stats-dialog";
+  	modal.innerHTML = `
+		<p>Estatísticas da partida:</p>
+
+		<button class="closeDialog stats" aria-label="Fechar">&times;</button>
+  	`;
+	  
+	const btn = document.createElement("button");
+	btn.textContent = "Novo Jogo";
+	btn.className = "btn_new_game";
+	btn.addEventListener("click", () => {
+		modal.remove(); // destroy when closed
+		test.remove();
+		reset_game(input_handler);
+	});
+
+	modal.appendChild(btn);
+	test.appendChild(modal);
+	document.body.appendChild(test);
+
+  	modal.querySelector(".closeDialog.stats").addEventListener("click", () => {
+		modal.remove(); // destroy when closed
+		test.remove();
+  	});
+}
 
 /** Handles the Player's win condition. */
 function win_condition(input, input_handler, current_page) {
     input.disabled = true;
 
-    // Adding New Game Div Element.
+	// Adding New Game Div Element.
     const div = document.createElement("div");
     div.textContent = "Parabéns! Você venceu! 🎉";
     div.className = "div_new_game";
 
-		// Only permisse in custom game
-		if(current_page === "custom") {
-			// Adding New Game Button.
-    	const btn = document.createElement("button");
-    	btn.textContent = "Novo Jogo";
-    	btn.className = "btn_new_game";
-    	btn.addEventListener("click", (event) => input_handler.new_game_click(event, btn));
+	// Only permisse in custom game
+	if(current_page === "custom") {
+		showStatistics(input_handler);
+	}
 			
-			// Appending New Game's Button as a Child of New Game Div.
-    	div.appendChild(btn);
-		}
-		
-		input.parentNode.replaceChild(div, input);
+	input.parentNode.replaceChild(div, input);
 }
 
 /** Resets the Player's Game State in the frontend context. */
-function reset_game(container, input_handler) {
+function reset_game(input_handler) {
     // Recreating input box.
-    const new_input = document.createElement("input");
-    new_input.type = "text";
-    new_input.className = "Input";
-    new_input.placeholder = "Escreva aqui";
-    new_input.autocomplete = "off";
-    new_input.disabled = false;
-    new_input.value = "";
+	let new_input = document.querySelector("input");
+	const container = document.querySelector(".div_new_game");
 
-    new_input.addEventListener("keydown", (event) =>
-        input_handler.input_keydown(event, new_input)
-    );
-
-    container.parentNode.replaceChild(new_input, container);
+	console.log(` container = ${container}`);
+	if (new_input == null){
+		new_input = document.createElement("input");
+		new_input.type = "text";
+		new_input.className = "Input";
+		new_input.placeholder = "Escreva aqui";
+		new_input.autocomplete = "off";
+		new_input.disabled = false;
+		new_input.value = "";
+	
+		new_input.addEventListener("keydown", (event) =>
+			input_handler.input_keydown(event, new_input)
+		);
+		
+		container.parentNode.replaceChild(new_input, container);
+	}
 
     // Reseting control variables
     input_handler.attempt_handler.number_attempts = 0;
