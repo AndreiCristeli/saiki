@@ -67,6 +67,7 @@ In this example, the player made three attempts:
 
 2. **Run the MakeFile script**
   ```
+  .venv\Scripts\activate
   make run-django
   ```
   this should start a local server in your localhost.
