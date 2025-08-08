@@ -66,9 +66,19 @@ In this example, the player made three attempts:
   ```
 
 2. **Run the MakeFile script**
+
+  *Linux Version* 
+  ```
+  python -m venv .venv
+  make run-django
+
+  ```
+
+  *Windows Version*
   ```
   .venv\Scripts\activate
   make run-django
+
   ```
   this should start a local server in your localhost.
 
