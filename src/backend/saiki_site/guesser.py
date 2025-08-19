@@ -188,7 +188,22 @@ class GuessState:
         self.add_attempt(match_entity_index)
         return response
 
-    def guess(self, entity_name: str) -> JsonResponse:
+    def guess_diary(self, entity_name: str) -> JsonResponse:
+        """Checks the fields of the player's guessing. Updates the guessing state (through the response).
+
+        :param entity_name: Name of the entity being guessed.
+        :returns: Returns the entity guessing response."""
+
+        response = self.__check_entity(entity_name)
+        response_json: JsonResponse = JsonResponse(response)
+
+        to_reset_cookies: bool = response["guessed"] == "correct" if "guessed" in response else False
+        self.set_cookie(response_json, to_reset_cookies)
+
+        return response_json
+    
+    # Feito agora
+    def guess_tof(self, entity_name: str) -> JsonResponse:
         """Checks the fields of the player's guessing. Updates the guessing state (through the response).
 
         :param entity_name: Name of the entity being guessed.

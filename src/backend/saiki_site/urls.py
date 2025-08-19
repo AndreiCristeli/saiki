@@ -21,9 +21,13 @@ urlpatterns: list[URLPattern | URLResolver] = [
     path("api/guess/hint/", views.GuessView.request_hint),
     path("api/guess/entity/", views.GuessView.request_entity),
     path("api/guess/load/", views.GuessView.request_load),
+    
+    # ToF mode requests.
+    path("api/true-or-false/start/", views.TrueOrFalseView.start_game),
+    path("api/true-or-false/answer/", views.TrueOrFalseView.submit_answer),
 
     # Models URLS
-    path('jogador/novo/', views.jogador_create, name='jogador_create'),
+    path('jogador/novoa', views.jogador_create, name='jogador_create'),
     path('jogador/sucesso/', views.jogador_success, name='jogador_success'), 
     path('login/', views.jogador_login, name='jogador_login'),
     path('register/', views.jogador_create, name='jogador_register'),

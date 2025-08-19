@@ -9,8 +9,16 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from .guesser import guesser, GuessState
-from typing import Any
+# from typing import Any
 import json
+import uuid
+from typing import Any, Dict, List
+# from django.http import WSGIRequest
+import random
+from django.utils import timezone
+
+from os import path
+
 
 
 class FrontendView(object):
@@ -20,7 +28,6 @@ class FrontendView(object):
     def serve_frontend(req) -> HttpResponse:
         """Provides the frontend main page."""
         
-        from os import path
 
         # inferring the request...
         print(type(req), req)
@@ -98,7 +105,7 @@ class GuessView(object):
 
         # guess_state: GuessState = GuessState.from_request(req)
         # return GuessView.__check_fields(guess_state, entity)
-        return GuessState.from_request(req).guess(entity)
+        return GuessState.from_request(req).guess_diary(entity)
 
     @staticmethod
     @csrf_exempt
@@ -113,6 +120,466 @@ class GuessView(object):
 
         guess_state: GuessState = GuessState.from_request(req)
         return guess_state.get_collection(data)
+    
+
+
+
+
+
+
+
+
+
+
+# class TrueOrFalseState:
+#     """Manages the state of a True or False game session."""
+    
+#     def __init__(self, session_data: Dict[str, Any]):
+#         self.session_data = session_data
+    
+#     @classmethod
+#     def create_session(cls, request: WSGIRequest, game_session: Dict[str, Any]) -> 'TrueOrFalseState':
+#         """Create a new game session and save to cookies."""
+#         state = cls(game_session)
+        
+#         # Salvar no cookie (similar ao GuessState)
+#         response = HttpResponse()
+#         response.set_cookie(
+#             f'tof_session_{game_session["session_id"]}',
+#             json.dumps(game_session),
+#             max_age=3600  # 1 hora
+#         )
+        
+#         return state
+    
+#     @classmethod
+#     def from_request(cls, request: WSGIRequest, session_id: str) -> 'TrueOrFalseState':
+#         """Load game session from cookies."""
+#         cookie_key = f'tof_session_{session_id}'
+        
+#         if cookie_key not in request.COOKIES:
+#             raise ValueError("Sessão não encontrada")
+        
+#         try:
+#             print("from request chamado")
+#             print(cookie_key)
+#             session_data = json.loads(request.COOKIES[cookie_key])
+#             return cls(session_data)
+#         except json.JSONDecodeError:
+#             raise ValueError("Dados da sessão corrompidos")
+    
+#     def process_answer(self, question_index: int, user_answer: bool) -> Dict[str, Any]:
+#         """Process a user's answer to a question."""
+        
+#         if(self.session_data):
+#             print("Session data existe")
+#             # print(self.session_data)
+#         else:
+#             print("Session data MORREU")
+        
+#         # Verificar se a questão existe
+#         if question_index >= len(self.session_data['questions']):
+#             raise ValueError("Índice de questão inválido")
+        
+#         question = self.session_data['questions'][question_index]
+        
+#         # Verificar se já foi respondida
+#         if str(question_index) in self.session_data['answers']:
+#             return {
+#                 'is_correct': self.session_data['answers'][str(question_index)] == question['correct_answer'],
+#                 'correct_answer': question['correct_answer'],
+#                 'session': self.session_data,
+#                 'already_answered': True
+#             }
+        
+#         # Validar resposta
+#         is_correct = TrueOrFalseGameLogic.validate_answer(question, user_answer)
+        
+#         # Atualizar estado
+#         self.session_data['answers'][str(question_index)] = user_answer
+#         self.session_data['answered_questions'] += 1
+        
+#         if is_correct:
+#             self.session_data['score'] += 1
+#         print("Score agora:")
+#         print(self.session_data['score'])
+        
+#         # Salvar estado atualizado no cookie seria feito aqui
+#         # (você pode implementar um método update_cookie similar ao GuessState)
+        
+#         return {
+#             'is_correct': is_correct,
+#             'correct_answer': question['correct_answer'],
+#             'session': self.session_data,
+#             'already_answered': False
+#         }
+
+
+
+
+
+class TrueOrFalseGameLogic:
+    """Contains the game logic for True or False mode."""
+
+    @classmethod
+    def generate_questions(cls, count: int = 10) -> List[Dict[str, Any]]:
+        """Generate random true/false questions about algorithms."""
+        questions = []
+        # questions_path = "../../../data/tf_template.json"
+        questions_path: str = path.join(path.dirname(__file__), "../../../data/tf_template.json")
+        
+        with open(questions_path, 'r', encoding='utf-8') as file:
+            all_questions = json.load(file)
+                    
+        for i in range(count):            
+            choice = random.choice(all_questions)
+                        
+            question = {
+                'area': choice['area'],
+                'question': choice['pergunta'],
+                'correct_answer': choice['resposta']
+            }
+            
+            questions.append(question)
+        
+        return questions
+
+    @classmethod
+    def validate_answer(cls, question: Dict[str, Any], user_answer: bool) -> bool:
+        """Validate if the user's answer is correct."""
+        return user_answer == question['correct_answer']
+
+
+
+# class TrueOrFalseView(object):
+#     """Handles the view of the True or False game mode."""
+
+#     @staticmethod
+#     def empty() -> JsonResponse:
+#         """Represents an empty JSON response."""
+#         return JsonResponse({})
+
+#     @staticmethod
+#     @csrf_exempt
+#     def start_game(req: WSGIRequest) -> JsonResponse:
+#         """Starts a new True or False game session, via POST."""
+        
+#         if req.method != "POST":
+#             return TrueOrFalseView.empty()
+
+#         try:
+#             # ... (código para gerar session_id, questions, game_session) ...
+#             # ...
+#             session_id = str(uuid.uuid4())
+#             questions = TrueOrFalseGameLogic.generate_questions(5)
+#             # print("Enviando questions: ")
+#             # print(questions)
+#             game_session = {
+#                 'session_id': session_id,
+#                 'questions': questions,
+#                 'answers': {},
+#                 'score': 0,
+#                 'answered_questions': 0,
+#                 'total_questions': len(questions),
+#                 'created_at': timezone.now().isoformat()
+#             }
+            
+#             # 1. Crie o objeto de resposta PRIMEIRO
+#             response = JsonResponse(game_session)
+            
+#             # 2. Defina o cookie NESSE objeto de resposta
+#             response.set_cookie(
+#                 key=f'tof_session_{session_id}',
+#                 value=json.dumps(game_session),
+#                 max_age=3600, # 1 hora
+#                 httponly=True, # Boa prática de segurança
+#                 samesite='Lax'
+#             )
+            
+#             # 3. Retorne o objeto de resposta que agora contém os dados E o cookie
+#             return response
+            
+#         except Exception as e:
+#             print(f"Erro ao iniciar jogo True or False: {e}")
+#             return JsonResponse({'error': 'Erro interno do servidor'}, status=500)
+
+#     @staticmethod
+#     @csrf_exempt
+#     def submit_answer(req: WSGIRequest) -> JsonResponse:
+#         """Processes the submission of an answer, via POST."""
+        
+#         if req.method != "POST":
+#             return TrueOrFalseView.empty()
+
+#         try:
+#             data: dict = json.loads(req.body)
+            
+#             # Extrair dados da requisição
+#             session_id: str = data.get("session_id")
+#             question_index: int = data.get("question_index")
+#             user_answer: bool = data.get("answer")
+            
+#             if not all([
+#                 isinstance(session_id, str),
+#                 isinstance(question_index, int),
+#                 isinstance(user_answer, bool)
+#             ]):
+#                 raise ValueError("Dados inválidos")
+
+#         except (TypeError, KeyError, ValueError, json.JSONDecodeError) as e:
+#             print(f"Erro ao processar dados: {e}")
+#             return JsonResponse({'error': 'Dados inválidos'}, status=400)
+
+#         try:
+#             # Recuperar estado do jogo
+#             print("que requisição é essa")
+#             print(req)
+#             tof_state = TrueOrFalseState.from_request(req, session_id)
+            
+#             # Processar resposta
+#             result = tof_state.process_answer(question_index, user_answer)
+            
+#             return JsonResponse(result)
+            
+#         except Exception as e:
+#             print(f"Erro ao processar resposta: {e}")
+#             return JsonResponse({'error': 'Sessão não encontrada'}, status=404)
+
+
+"""
+Correções para o sistema True or False
+"""
+
+class TrueOrFalseState:
+    """Manages the state of a True or False game session."""
+    
+    def __init__(self, session_data: Dict[str, Any]):
+        self.session_data = session_data
+        self.session_id = session_data.get('session_id')
+    
+    @classmethod
+    def from_request(cls, request: WSGIRequest, session_id: str) -> 'TrueOrFalseState':
+        """Load game session from cookies."""
+        cookie_key = f'tof_session_{session_id}'
+        
+        if cookie_key not in request.COOKIES:
+            raise ValueError("Sessão não encontrada")
+        
+        try:
+            # print(f"Recuperando cookie: {cookie_key}")
+            session_data = json.loads(request.COOKIES[cookie_key])
+            return cls(session_data)
+        except json.JSONDecodeError as e:
+            print(f"Erro ao decodificar JSON do cookie: {e}")
+            raise ValueError("Dados da sessão corrompidos")
+    
+    def update_cookie(self, response: HttpResponse) -> HttpResponse:
+        """Atualiza o cookie com o estado atual da sessão."""
+        cookie_key = f'tof_session_{self.session_id}'
+        response.set_cookie(
+            key=cookie_key,
+            value=json.dumps(self.session_data),
+            max_age=3600,  # 1 hora
+            httponly=True,
+            samesite='Lax'
+        )
+        return response
+    
+    def process_answer(self, question_index: int, user_answer: bool) -> Dict[str, Any]:
+        """Process a user's answer to a question."""
+        
+        # Debug
+        # print(f"Processing answer for question {question_index}")
+        # print(f"Current session data: {self.session_data}")
+        
+        # Verificar se a questão existe
+        if question_index >= len(self.session_data['questions']):
+            raise ValueError("Índice de questão inválido")
+        
+        question = self.session_data['questions'][question_index]
+        
+        # Converter question_index para string para usar como chave
+        question_key = str(question_index)
+        
+        # Verificar se já foi respondida
+        if question_key in self.session_data['answers']:
+            return {
+                'is_correct': self.session_data['answers'][question_key] == question['correct_answer'],
+                'correct_answer': question['correct_answer'],
+                'already_answered': True,
+                'score': self.session_data['score'],
+                'answered_questions': self.session_data['answered_questions'],
+                'total_questions': self.session_data['total_questions']
+            }
+        
+        # Validar resposta
+        is_correct = user_answer == question['correct_answer']
+        
+        # Atualizar estado
+        self.session_data['answers'][question_key] = user_answer
+        self.session_data['answered_questions'] += 1
+        
+        if is_correct:
+            self.session_data['score'] += 1
+        
+        # print(f"Score atualizado: {self.session_data['score']}")
+        # print(f"Respostas até agora: {self.session_data['answers']}")
+        
+        return {
+            'is_correct': is_correct,
+            'correct_answer': question['correct_answer'],
+            'already_answered': False,
+            'score': self.session_data['score'],
+            'answered_questions': self.session_data['answered_questions'],
+            'total_questions': self.session_data['total_questions']
+        }
+
+
+class TrueOrFalseView(object):
+    """Handles the view of the True or False game mode."""
+
+    @staticmethod
+    def empty() -> JsonResponse:
+        """Represents an empty JSON response."""
+        return JsonResponse({})
+
+    @staticmethod
+    @csrf_exempt
+    def start_game(req: WSGIRequest) -> JsonResponse:
+        """Starts a new True or False game session, via POST."""
+        
+        if req.method != "POST":
+            return TrueOrFalseView.empty()
+
+        try:
+            session_id = str(uuid.uuid4())
+            questions = TrueOrFalseGameLogic.generate_questions(5)
+            
+            # print(f"Iniciando nova sessão: {session_id}")
+            # print(f"Número de questões geradas: {len(questions)}")
+            
+            game_session = {
+                'session_id': session_id,
+                'questions': questions,
+                'answers': {},  # Dicionário vazio para armazenar respostas
+                'score': 0,
+                'answered_questions': 0,
+                'total_questions': len(questions),
+                'created_at': timezone.now().isoformat()
+            }
+            
+            # Criar resposta com dados do jogo
+            response_data = {
+                'session_id': session_id,
+                'questions': questions,
+                'total_questions': len(questions),
+                'message': 'Jogo iniciado com sucesso'
+            }
+            
+            response = JsonResponse(response_data)
+            
+            # Definir cookie com a sessão completa
+            response.set_cookie(
+                key=f'tof_session_{session_id}',
+                value=json.dumps(game_session),
+                max_age=3600,  # 1 hora
+                httponly=True,
+                samesite='Lax'
+            )
+            
+            return response
+            
+        except Exception as e:
+            print(f"Erro ao iniciar jogo True or False: {e}")
+            import traceback
+            traceback.print_exc()
+            return JsonResponse({'error': 'Erro interno do servidor'}, status=500)
+
+    @staticmethod
+    @csrf_exempt
+    def submit_answer(req: WSGIRequest) -> JsonResponse:
+        """Processes the submission of an answer, via POST."""
+        
+        if req.method != "POST":
+            return TrueOrFalseView.empty()
+
+        try:
+            data: dict = json.loads(req.body)
+            
+            # Extrair dados da requisição
+            session_id: str = data.get("session_id")
+            question_index: int = data.get("question_index")
+            user_answer: bool = data.get("answer")
+            
+            # print(f"Recebido: session_id={session_id}, question_index={question_index}, answer={user_answer}")
+            
+            # Validação de tipos
+            if session_id is None or not isinstance(session_id, str):
+                raise ValueError("session_id inválido ou ausente")
+            if question_index is None or not isinstance(question_index, int):
+                raise ValueError("question_index inválido ou ausente")
+            if user_answer is None or not isinstance(user_answer, bool):
+                raise ValueError("answer deve ser um booleano")
+
+        except (TypeError, KeyError, ValueError, json.JSONDecodeError) as e:
+            print(f"Erro ao processar dados: {e}")
+            return JsonResponse({'error': f'Dados inválidos: {str(e)}'}, status=400)
+
+        try:
+            # Recuperar estado do jogo
+            tof_state = TrueOrFalseState.from_request(req, session_id)
+            
+            # Processar resposta
+            result = tof_state.process_answer(question_index, user_answer)
+            
+            # IMPORTANTE: Criar resposta e atualizar cookie
+            response = JsonResponse(result)
+            response = tof_state.update_cookie(response)
+            
+            return response
+            
+        except ValueError as e:
+            print(f"Erro de validação: {e}")
+            return JsonResponse({'error': str(e)}, status=404)
+        except Exception as e:
+            print(f"Erro inesperado ao processar resposta: {e}")
+            import traceback
+            traceback.print_exc()
+            return JsonResponse({'error': 'Erro ao processar resposta'}, status=500)
+
+    @staticmethod
+    @csrf_exempt
+    def get_results(req: WSGIRequest) -> JsonResponse:
+        """Retorna os resultados finais do jogo."""
+        
+        if req.method != "POST":
+            return TrueOrFalseView.empty()
+        
+        try:
+            data: dict = json.loads(req.body)
+            session_id: str = data.get("session_id")
+            
+            if not session_id:
+                raise ValueError("session_id não fornecido")
+            
+            # Recuperar estado do jogo
+            tof_state = TrueOrFalseState.from_request(req, session_id)
+            
+            # Preparar resultados detalhados
+            results = {
+                'final_score': tof_state.session_data['score'],
+                'total_questions': tof_state.session_data['total_questions'],
+                'answered_questions': tof_state.session_data['answered_questions'],
+                'percentage': round((tof_state.session_data['score'] / tof_state.session_data['total_questions']) * 100, 2),
+                'answers': tof_state.session_data['answers'],
+                'questions': tof_state.session_data['questions']
+            }
+            
+            return JsonResponse(results)
+            
+        except Exception as e:
+            print(f"Erro ao obter resultados: {e}")
+            return JsonResponse({'error': 'Erro ao obter resultados'}, status=500)
 
 
 
@@ -286,3 +753,5 @@ def entrar_sessao(request):
         return redirect('ver_sessao', sessao_id=sessao.id)
 
     return redirect('painel_jogador')
+
+
