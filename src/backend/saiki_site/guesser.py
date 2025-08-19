@@ -252,14 +252,33 @@ class Guesser(object):
         from typing import Iterable
 
         max_query_results: int = 5
-        cutoff: float = 0.35
+        cutoff: float = 0.3
 
+        """
         attempt_names: list[str] = state.attempted_names
         name_list: Iterable[str] = filter(
             lambda x: x not in attempt_names,
             saiki_entities    # entity names.
         )
+
         matches: list[str] = get_close_matches(name, name_list, n=max_query_results, cutoff=cutoff)
+        """
+
+
+        def get_names_by_prefix(prefix: str, names: list[str]) -> list[str]:
+            prefix = prefix.strip().lower()
+            print(f"prefix: {prefix}")
+            return [name for name in names if name.lower().startswith(prefix)]
+
+        attempt_names: list[str] = state.attempted_names
+        name_list: list[str] = list(filter(
+            lambda x: x not in attempt_names,
+            saiki_entities    # entity names.
+        ))
+        matches: list[str] = get_names_by_prefix(name, name_list)
+
+        print(f"name_list: {name_list}")
+        print(f"matches: {matches}")
 
         return matches
 
