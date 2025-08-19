@@ -22,6 +22,8 @@ export async function api(endpoint, method = "GET", body = null) {
     	options.body = JSON.stringify(body);
   	}
 
+	console.log(`${API_BASE}${endpoint}`);
+
   	const res = await fetch(`${API_BASE}${endpoint}`, options);
   	if (!res.ok) {
     	const err = await res.json().catch(() => ({}));

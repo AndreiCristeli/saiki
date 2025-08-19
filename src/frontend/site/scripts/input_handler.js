@@ -9,7 +9,10 @@
 
 import { AttemptsHandler, ATTEMPT_RC } from "./attempt.js"
 import { Hints } from "./hints.js"
+
 import * as eg from "./easter_eggs.js"
+
+import { api } from "./api.js"
 
 // TODO: Handle entity_type properly according to user's selection.
 const ENTITY_TYPE_PH = "Algorithm"
@@ -18,6 +21,11 @@ export class InputHandler {
 	constructor(renderer){
 		this.hints = new Hints(renderer)
 		this.attempt_handler = new AttemptsHandler(renderer)
+
+		
+		this.current_game_session = null;
+		this.current_question_index = 0;
+		this.renderer = renderer;
 	}
 	
 	// Normalizes user's input.
@@ -88,10 +96,178 @@ export class InputHandler {
 	}
 
 	// Event handler for when clicking on new game.
-	new_game_click(event, btn) {
+	// Função para novo jogo (serve para ambos os modos)
+	async new_game_click(event, btn) {
 		const container = btn.closest(".div_new_game");
+		const currentPage = document.body.dataset.page;
+		
+		// Usar a função reset_game adaptada
 		reset_game(container, this);
+		
+		// Se for True or False, iniciar novo jogo automaticamente
+		if (currentPage === "true_or_false") {
+			try {
+				await this.start_new_tof_game();
+			} catch (error) {
+				console.error('Erro ao iniciar novo jogo:', error);
+			}
+		}
 	}
+
+	// Função específica para True or False
+	// async start_new_tof_game() {
+	// 	try {
+	// 		const response = await api('/true-or-false/start');
+	// 		console.log(response)
+	// 		console.log(response.data)
+	// 		this.current_game_session = response.data;
+	// 		this.current_question_index = 0;
+			
+	// 		// Renderizar as questões
+	// 		this.renderer.render_tof_questions(this.current_game_session.questions);
+	// 		this.update_tof_game_ui();
+			
+	// 	} catch (error) {
+	// 		console.error('Erro ao iniciar jogo True or False:', error);
+	// 		throw error;
+	// 	}
+	// }
+
+	async start_new_tof_game() {
+		try {
+			console.log('Fazendo chamada para API...');
+			const response = await api("/true-or-false/start/", 'POST');
+			
+			// DEBUG COMPLETO
+			console.log('=== RESPOSTA DA API ===');
+			console.log('Tipo da resposta:', typeof response);
+			console.log('Resposta completa:', response);
+			
+			// Verificar propriedades disponíveis
+			// if (typeof response === 'object' && response !== null) {
+			// 	console.log('Propriedades disponíveis:', Object.keys(response));
+				
+			// 	// Verificar propriedades específicas
+			// 	console.log('response.questions:', response.questions);
+			// 	console.log('response.game_session:', response.game_session);
+			// 	console.log('response.data:', response.data);
+			// 	console.log('response.session_data:', response.session_data);
+			// 	console.log('response.questions_list:', response.questions_list);
+			// }
+			
+			// Tentar encontrar questions em diferentes locais
+			let gameData = null;
+			let questionsFound = false;
+			
+			if (response.questions) {
+				console.log('questions encontrado em response.questions');
+				gameData = response;
+				questionsFound = true;
+			}
+			// } else if (response.game_session && response.game_session.questions) {
+			// 	console.log('questions encontrado em response.game_session.questions');
+			// 	gameData = response.game_session;
+			// 	questionsFound = true;
+			// } else if (response.session_data && response.session_data.questions) {
+			// 	console.log('questions encontrado em response.session_data.questions');
+			// 	gameData = response.session_data;
+			// 	questionsFound = true;
+			// } else if (response.data && response.data.questions) {
+			// 	console.log('questions encontrado em response.data.questions');
+			// 	gameData = response.data;
+			// 	questionsFound = true;
+			// }
+			
+			this.current_game_session = gameData;
+
+			this.current_question_index = 0;
+
+			// Renderizar as questões
+			this.renderer.render_tof_questions(this.current_game_session.questions);
+
+			// this.renderer.create_new_game_button("body");
+
+			this.update_tof_game_ui();
+			
+			console.log('Jogo iniciado com sucesso!');
+
+		} catch (error) {
+			console.error('Erro ao iniciar jogo True or False:', error);
+			throw error;
+		}
+	}
+
+
+	update_tof_game_ui() {
+        const session = this.current_game_session;
+
+        // Elementos do placar e progresso
+        const scoreField = document.querySelector('.score-field');
+        const currentField = document.querySelector('.current-question');
+        const totalField = document.querySelector('.total-questions');
+
+        // Elementos do card da questão
+        const questionCard = document.querySelector('.tof-question-card'); // Card principal da questão
+        const algorithmNameEl = document.querySelector('.tof-question-algorithm');
+        const factsContainerEl = document.querySelector('.tof-question-facts');
+        
+        // Se a sessão do jogo não existir (ex: jogo resetado), limpa a UI.
+        if (!session) {
+            if (scoreField) scoreField.textContent = '0';
+            if (currentField) currentField.textContent = '0';
+            if (totalField) totalField.textContent = '10'; // Ou o total padrão
+            if (algorithmNameEl) algorithmNameEl.textContent = 'Aguardando novo jogo...';
+            if (factsContainerEl) factsContainerEl.innerHTML = '';
+            if (questionCard) questionCard.style.display = 'none';
+            return;
+        }
+
+        // Atualiza o placar e o progresso
+        if (scoreField) scoreField.textContent = session.score;
+        if (currentField) currentField.textContent = session.answered_questions;
+        if (totalField) totalField.textContent = session.total_questions;
+
+        // Pega a questão atual
+        const currentQuestion = session.questions[this.current_question_index];
+
+        // Se o jogo acabou (não há mais questões para mostrar)
+        if (!currentQuestion) {
+            if (algorithmNameEl) algorithmNameEl.textContent = 'Fim de Jogo!';
+            if (factsContainerEl) factsContainerEl.innerHTML = '<p>Parabéns pela sua pontuação!</p>';
+            // Desabilitar botões de escolha
+            document.querySelectorAll('.button_choice').forEach(btn => btn.disabled = true);
+            return;
+        }
+
+        // Mostra o card da questão
+        if (questionCard) questionCard.style.display = 'block';
+
+        // Atualiza o conteúdo do card com os dados da questão atual
+        if (algorithmNameEl) {
+            algorithmNameEl.textContent = `Sobre o algoritmo: ${currentQuestion.algorithm_name}`;
+        }
+        
+        if (factsContainerEl) {
+            // Limpa os fatos da questão anterior
+            factsContainerEl.innerHTML = '';
+            
+            // Cria a lista de fatos da questão atual (excluindo chaves que não são 'fatos')
+            const factKeys = Object.keys(currentQuestion).filter(key => 
+                !['algorithm_name', 'correct_answer'].includes(key)
+            );
+
+            const ul = document.createElement('ul');
+            factKeys.forEach(key => {
+                const li = document.createElement('li');
+                // Formata a chave para ficar mais legível (ex: 'time_complexity' -> 'Time Complexity')
+                const formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                li.innerHTML = `<strong>${formattedKey}:</strong> ${currentQuestion[key]}`;
+                ul.appendChild(li);
+            });
+            factsContainerEl.appendChild(ul);
+        }
+	}
+
 
 	// Event handler for click on the info button.
 	info_click(event, button) {
@@ -114,19 +290,201 @@ export class InputHandler {
 		}
 	}  
 
-	choice_click(event, button) { 
-		console.log("Botão clicado:", button.textContent);
-		if (button.textContent === "Verdá") {
-			console.log("Você escolheu Verdadeiro.");
-		} else {
-			console.log("Você escolheu Falso.");
-		}
-	}
+	// choice_click(event, button) { 
+	// 	console.log("Botão clicado:", button.textContent);
+	// 	if (button.textContent === "Verdá") {
+	// 		console.log("Você escolheu Verdadeiro.");
+	// 	} else {
+	// 		console.log("Você escolheu Falso.");
+	// 	}
+	// }
 
 	async hint_click(event, hint_element) {
 		let user_input = this.#__normalize_input(hint_element.innerText);
 		await this.process_input(user_input);
 	}
+
+	// Simplificar a função choice_click para usar a infraestrutura existente
+	choice_click(event, button) { 
+		console.log("Botão clicado:", button.textContent);
+		
+		let answer;
+		if (button.textContent.includes("Verdá") || button.textContent === "Verdadeiro") {
+			answer = true;
+		} else {
+			answer = false;
+		}
+		
+		this.process_global_tof_answer(answer);
+	}
+
+	// Nova função para processar resposta global
+	async process_global_tof_answer(answer) {
+		try {
+			// Se não há sessão ativa, iniciar uma nova
+			if (!this.current_game_session) {
+				await reset_game();
+			}
+			
+			// Submeter resposta para a questão atual
+			if (this.current_question_index < this.current_game_session.questions.length) {
+				console.log("Enviando resposta...");
+				console.log(this.current_question_index);
+				await this.submit_answer(this.current_question_index, answer);
+				this.current_question_index++;
+				
+				// Verificar se o jogo terminou
+				if (this.current_question_index >= this.current_game_session.questions.length) {
+					this.handle_game_end();
+				}
+			}
+		} catch (error) {
+			console.error('Erro ao processar resposta:', error);
+		}
+	}
+
+	// // Submeter resposta
+	// async submit_answer(question_index, answer) {
+	// 	try {
+	// 		let entity = {session_id: this.current_game_session.session_id,
+	// 			question_index: question_index,
+	// 			answer: answer}
+	// 		const response = await api('/true-or-false/answer/', 'POST', entity);
+			
+	// 		// response JÁ é o objeto JSON diretamente
+	// 		console.log('Response to submit:', response);
+			
+	// 		// Atualizar sessão local (response não tem .data)
+	// 		this.current_game_session = response.session || response; // Dependendo da estrutura
+			
+	// 		// Atualizar UI da questão
+	// 		this.renderer.update_tof_question_ui(
+	// 			question_index, 
+	// 			response.is_correct, 
+	// 			answer, 
+	// 			response.correct_answer
+	// 		);
+
+	// 		if(response.is_correct){
+	// 			console.log("Está correta");
+	// 			this.current_game_session.score++;
+	// 			console.log(this.current_game_session.score);
+	// 		}
+	// 		console.log("Aumenta questões");
+	// 		this.current_game_session.answered_questions++;
+	// 		console.log(this.current_game_session.answered_questions);
+			
+	// 		this.update_game_ui();
+			
+	// 	} catch (error) {
+	// 		console.error('Erro ao submeter resposta:', error);
+	// 		throw error;
+	// 	}
+	// }
+
+	// Adicione estes logs na função submit_answer para diagnosticar:
+	async submit_answer(question_index, answer) {
+		try {
+			// console.log('=== ANTES DE ENVIAR ===');
+			// console.log('Score antes:', this.current_game_session.score);
+			// console.log('Answered antes:', this.current_game_session.answered_questions);
+			
+			let entity = {
+				session_id: this.current_game_session.session_id,
+				question_index: question_index,
+				answer: answer
+			}
+			
+			const response = await api('/true-or-false/answer/', 'POST', entity);
+			
+			// console.log('=== RESPOSTA DA API ===');
+			// console.log('Response completa:', response);
+			// console.log('response.score:', response.score);
+			// console.log('response.answered_questions:', response.answered_questions);
+			// console.log('response.session:', response.session);
+
+			// Use apenas os dados do servidor:
+			if (response) {
+				// console.log('=== ATUALIZANDO COM SESSION ===');
+				this.current_game_session.score = response.score;
+				this.current_game_session.answered_questions = response.answered_questions;
+				this.current_game_session.total_questions = response.total_questions;
+			}
+
+			// Atualizar UI da questão
+			this.renderer.update_tof_question_ui(
+				question_index, 
+				response.is_correct, 
+				answer, 
+				response.correct_answer
+			);
+						
+			this.update_game_ui();
+
+		} catch (error) {
+			console.error('Erro ao submeter resposta:', error);
+			throw error;
+		}
+	}
+
+	// Atualizar UI do jogo
+	update_game_ui() {
+		const scoreField = document.querySelector('.score-field');
+		const currentField = document.querySelector('.current-question');
+		const totalField = document.querySelector('.total-questions');
+		
+		if (scoreField) scoreField.textContent = this.current_game_session.score;
+		if (currentField) currentField.textContent = this.current_game_session.answered_questions;
+		if (totalField) totalField.textContent = this.current_game_session.total_questions;
+	}
+
+	// Lidar com fim de jogo
+	handle_game_end() {
+		const score = this.current_game_session.score;
+		const total = this.current_game_session.total_questions;
+		
+		setTimeout(() => {
+			alert(`Jogo finalizado! Pontuação: ${score}/${total}`);
+			// Opcionalmente, mostrar botão de novo jogo
+			this.show_new_game_option();
+		}, 500);
+	}
+
+	// Mostrar opção de novo jogo
+	show_new_game_option() {
+		const container = document.querySelector('.div_choice');
+		if (container) {
+			const newGameDiv = document.createElement('div');
+			newGameDiv.className = 'div_new_game';
+			newGameDiv.innerHTML = `
+				<p>Parabéns! Jogo finalizado! 🎉</p>
+				<button class="btn_new_game">Novo Jogo</button>
+			`;
+			
+			const newGameBtn = newGameDiv.querySelector('.btn_new_game');
+			newGameBtn.addEventListener('click', () => restart_game());
+			
+			container.parentNode.insertBefore(newGameDiv, container.nextSibling);
+		}
+	}
+
+	// // Reiniciar jogo
+	// async restart_game() {
+	// 	// Limpar estado atual
+	// 	this.current_game_session = null;
+	// 	this.current_question_index = 0;
+		
+	// 	// Remover div de novo jogo
+	// 	const newGameDiv = document.querySelector('.div_new_game');
+	// 	if (newGameDiv) newGameDiv.remove();
+		
+	// 	// Limpar container de cards
+	// 	const cardsContainer = document.querySelector('.cards-container');
+	// 	if (cardsContainer) cardsContainer.innerHTML = '';
+		
+	// 	// Iniciar novo jogo
+	// 	await this.start_new_game();
+	// }
 }
 
 // TODO: rethink where these methods (win_condition and reset_game should go)
@@ -155,9 +513,31 @@ function win_condition(input, input_handler, current_page) {
 		input.parentNode.replaceChild(div, input);
 }
 
+
+
 /** Resets the Player's Game State in the frontend context. */
 function reset_game(container, input_handler) {
-    // Recreating input box.
+    const currentPage = document.body.dataset.page;
+    
+    // Limpeza comum para ambos os modos
+    const cardsContainer = document.querySelector(".cards-container");
+    if (cardsContainer) {
+        cardsContainer.innerHTML = "";
+    }
+    
+    if (currentPage === "diary") {
+        // Lógica específica do modo diário
+        reset_diary_mode(container, input_handler);
+        
+    } else if (currentPage === "true_or_false") {
+        // Lógica específica do modo True or False
+        reset_tof_mode(container, input_handler);
+    }
+}
+
+// Função específica para resetar modo diário
+function reset_diary_mode(container, input_handler) {
+    // Recreating input box (código original)
     const new_input = document.createElement("input");
     new_input.type = "text";
     new_input.className = "Input";
@@ -175,14 +555,33 @@ function reset_game(container, input_handler) {
     // Reseting control variables
     input_handler.attempt_handler.number_attempts = 0;
 
-    // Reseting attempt's counter.
+    // Reseting attempt's counter
     if (input_handler.attempt_handler.div_attempts) {
         input_handler.attempt_handler.div_attempts.textContent = `${input_handler.attempt_handler.number_attempts}`;
     }
+}
 
-    // Removing all card elements from cards container.
-    const cardsContainer = document.querySelector(".cards-container");
-    if (cardsContainer) {
-        cardsContainer.innerHTML = "";
+// Função específica para resetar modo True or False
+function reset_tof_mode(container, input_handler) {
+    // Remover div de "novo jogo" se existir
+    if (container && container.classList.contains('div_new_game')) {
+        container.remove();
     }
+    
+    // Reset das variáveis do True or False
+    input_handler.current_game_session = null;
+    input_handler.current_question_index = 0;
+    
+    // Reset do score display
+    const scoreField = document.querySelector('.score-field');
+    const currentField = document.querySelector('.current-question');
+    const totalField = document.querySelector('.total-questions');
+    
+    if (scoreField) scoreField.textContent = '0';
+    if (currentField) currentField.textContent = '0';
+    if (totalField) totalField.textContent = '10';
+    
+    // Reabilitar botões de escolha
+    const choiceButtons = document.querySelectorAll('.button_choice');
+    choiceButtons.forEach(btn => btn.disabled = false);
 }

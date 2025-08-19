@@ -156,4 +156,138 @@ export class Renderer {
 			this.render_card(entity);
 		}
 	}
+
+
+	// Adicionar à classe Renderer
+
+	// Renderizar questões do True or False
+	render_tof_questions(questions) {
+		
+		const container = document.querySelector('.cards-container');
+		
+		if (!container) {
+			console.error('Container .cards-container não encontrado!');
+			return;
+		}
+
+		container.innerHTML = ''; // Limpar container
+		
+		questions.forEach((question, index) => {
+			this.render_tof_card(question, index);
+		});
+	}
+
+	// Renderizar card de questão True or False
+	render_tof_card(question, index) {
+		console.log('Question object:', question);
+		
+		const card = document.createElement('div');
+		card.className = 'algorithm-card';
+		card.id = `tof-card-${index}`;
+		
+		card.innerHTML = `
+			<div class="card-header">
+				<div class="algorithm-name">${question.area}</div>
+			</div>
+
+			<div class="card-content">
+				<div class="info-row">
+					<span class="info-label">Pergunta:</span>
+					<span class="info-value">${question.question}</span>
+				</div>
+			</div>
+			<div class="user-answer">
+				<button class="answer-btn true-btn" data-question="${index}" data-answer="true">
+					Verdadeiro
+				</button>
+				<button class="answer-btn false-btn" data-question="${index}" data-answer="false">
+					Falso
+				</button>
+			</div>
+		`;
+		
+		// Adicionar event listeners para botões individuais
+		const answerBtns = card.querySelectorAll('.answer-btn');
+		answerBtns.forEach(btn => {
+			btn.addEventListener('click', (e) => {
+				const questionIndex = parseInt(e.target.dataset.question);
+				const answer = e.target.dataset.answer === 'true';
+				// this.input_handler.submit_answer(questionIndex, answer);
+				this.input_handler.process_global_tof_answer(answer);
+			});
+		});
+		
+		const container = document.querySelector('.cards-container');
+		container.appendChild(card);
+	}
+
+	// Atualizar UI da questão após resposta
+	update_tof_question_ui(questionIndex, isCorrect, userAnswer, correctAnswer) {
+		const card = document.getElementById(`tof-card-${questionIndex}`);
+		if (!card) return;
+		
+		const buttons = card.querySelectorAll('.answer-btn');
+		
+		// Desabilitar todos os botões
+		buttons.forEach(btn => btn.disabled = true);
+		
+		buttons.forEach(btn => {
+			const btnAnswer = btn.dataset.answer === 'true';
+			
+			// Marcar resposta do usuário
+			if (btnAnswer === userAnswer) {
+				btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+			}
+			
+			// Sempre mostrar a resposta correta
+			if (btnAnswer === correctAnswer) {
+				btn.classList.add('correct');
+			}
+		});
+		
+		// Adicionar classe ao card para indicar que foi respondido
+		card.classList.add('answered');
+		if (isCorrect) {
+			card.classList.add('correct-answer');
+		} else {
+			card.classList.add('incorrect-answer');
+		}
+	}
+
+	// Criar botão "Novo Jogo"
+	create_new_game_button(containerSelector = "body") {
+		// Verifica se já existe um botão para não duplicar
+		// let existingBtn = document.querySelector(".new-game-btn");
+		// if (existingBtn) {
+		// 	console.warn("Botão Novo Jogo já existe.");
+		// 	return existingBtn;
+		// }
+
+		// Criar botão
+		const newGameBtn = document.createElement("button");
+		newGameBtn.className = "new-game-btn";
+		newGameBtn.id = "new-game-btn";
+		newGameBtn.textContent = "Novo Jogo";
+
+		// Adicionar ao container
+		const container = document.querySelector(containerSelector);
+		if (!container) {
+			console.error("Container para o botão não encontrado:", containerSelector);
+			return null;
+		}
+		container.appendChild(newGameBtn);
+
+		// Registrar evento de clique
+		newGameBtn.addEventListener("click", async () => {
+			console.log("Clique detectado no botão Novo Jogo!");
+			try {
+				await this.input_handler.start_new_tof_game();
+			} catch (e) {
+				console.error("Erro ao iniciar novo jogo:", e);
+			}
+		});
+
+		return newGameBtn;
+	}
+
 }

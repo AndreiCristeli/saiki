@@ -40,13 +40,42 @@
   
   <h2>É verdade ou mentira?</h2>
 
+
+
+  <!-- Score display -->
+  <div class="score-display">
+    <div>Pontuação: <span class="score-field">0</span></div>
+    <div>Questões: <span class="current-question">0</span>/<span class="total-questions">10</span></div>
+  </div>
+
+  <!-- Global answer buttons
   <div class="div_choice">
+    <button class="button_choice" id="true-btn">Verdadeiro</button>
+    <button class="button_choice" id="false-btn">Falso</button>
+  </div> -->
+
+  <!-- Loading indicator -->
+  <div class="loading" id="loading" style="display: none;">
+    <div class="spinner"></div>
+    <p>Carregando questões...</p>
+  </div>
+
+
+
+  <!-- <div class="div_choice">
     <button class="button_choice">Verdá</button>
     <button class="button_choice">Fá</button>
-  </div>
+  </div> -->
+
+
 
   <!-- Ancor div for new cards -->
   <div class="cards-container"></div>
+
+  <!-- New game button -->
+  <!-- <button class="new-game-btn" id="new-game-btn">Novo Jogo</button> -->
+
+
 
   <!-- Help and Information Dialogs -->
   <dialog class="infoDialog">
@@ -100,10 +129,23 @@
       BubbleSort ordena quaisquer vetores desordenados, sem restrições. (Geral)
       RadixSort só pode ordenar vetores de números inteiros. (Específica)
     </p>
-    
     <button class="closeDialog" aria-label="Fechar">&times;</button>
+  </dialog>
+
+  <footer class="footer">
+    <select class="translateBox">
+      <option value="pt">Português</option>
+      <option value="en">English</option>
+    </select>
+  </footer>
+
+  <script type="module" src="/static/site/scripts/main_true_or_false.js"></script>
+</body>
+</html>
+
+    <!-- <button class="closeDialog" aria-label="Fechar">&times;</button>
 
   <script type="module" src="/static/site/scripts/main_true_or_false.js"></script>
 </body>
 
-</html>
+</html> -->

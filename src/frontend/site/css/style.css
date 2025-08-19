@@ -165,3 +165,123 @@ input:focus {
 .button_choice:active {
   transform: scale(0.98);
 }
+
+
+
+
+
+/* True or False specific styles */
+.algorithm-card {
+    background: var(--card-bg, #1e293b);
+    border: 1px solid var(--border-color, #334155);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.algorithm-card.answered {
+    opacity: 0.8;
+}
+
+.algorithm-card.correct-answer {
+    border-color: var(--success-color, #10b981);
+}
+
+.algorithm-card.incorrect-answer {
+    border-color: var(--error-color, #ef4444);
+}
+
+.card-header {
+    border-bottom: 1px solid var(--border-color, #334155);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.algorithm-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color, #6366f1);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 600;
+    color: var(--secondary-color, #f59e0b);
+}
+
+.info-value {
+    font-family: 'Courier New', monospace;
+    background: rgba(99, 102, 241, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.user-answer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color, #334155);
+}
+
+.answer-btn {
+    padding: 8px 16px;
+    border: 2px solid;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.true-btn {
+    border-color: var(--success-color, #10b981);
+    color: var(--success-color, #10b981);
+}
+
+.false-btn {
+    border-color: var(--error-color, #ef4444);
+    color: var(--error-color, #ef4444);
+}
+
+.answer-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+}
+
+.answer-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.answer-btn.correct {
+    background: var(--success-color, #10b981);
+    color: white;
+    border-color: var(--success-color, #10b981);
+}
+
+.answer-btn.incorrect {
+    background: var(--error-color, #ef4444);
+    color: white;
+    border-color: var(--error-color, #ef4444);
+}
+
+.score-display {
+    text-align: center;
+    margin: 20px 0;
+    padding: 15px;
+    background: var(--card-bg, #1e293b);
+    border-radius: 8px;
+    border: 1px solid var(--border-color, #334155);
+}
