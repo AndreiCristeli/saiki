@@ -16,14 +16,17 @@ window.onload = function () {
 	const currentPage = document.body.dataset.page;
 
 	const menuItems = document.querySelectorAll(".menu-item");
-
+  
 	menuItems.forEach(item => {
-		if (item.dataset.page === currentPage) {
-			item.classList.add("active");
+    if (item.dataset.page === currentPage) {
+      item.classList.add("active");
 		} else {
-			item.classList.remove("active"); // útil se for SPA
+      item.classList.remove("active"); // útil se for SPA
 		}
 	});
+  
+  const nav_logout = document.querySelector(".logout-btn");
+  nav_logout.addEventListener("click", () => renderer.input_handler.logout_click());
 
   const button = document.querySelector('.footer-info');
 	button.addEventListener('click', (event) => renderer.input_handler.info_click(event, button));

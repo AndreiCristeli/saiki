@@ -46,15 +46,18 @@ window.onload = function () {
 	input.addEventListener('keydown', (event) => renderer.input_handler.input_on_keydown(event));
 	
 	const button = document.querySelector('.footer-info');
-	button.addEventListener('click', (event) => renderer.input_handler.info_click(event, button));
+	button.addEventListener('click', () => renderer.input_handler.info_click());
 	
 	const select_language = document.querySelector('.translateBox');
-	select_language.addEventListener('change', (event) => changeLanguage(select_language.value));
+	select_language.addEventListener('change', () => changeLanguage(select_language.value));
+
+	const nav_logout = document.querySelector(".logout-btn");
+	nav_logout.addEventListener("click", () => renderer.input_handler.logout_click());
 
 	const closeBtn = document.querySelector('.closeDialog');
 	if (closeBtn) {
 		const dialog = document.querySelector('.infoDialog');
-		closeBtn.addEventListener('click', (event) => renderer.input_handler.close_info_dialog(event, dialog));
+		closeBtn.addEventListener('click', () => renderer.input_handler.close_info_dialog(dialog));
 	}
 
 	// Deletes the hint box when the input box is out-of-focus.

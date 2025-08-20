@@ -10,6 +10,7 @@
 import { AttemptsHandler, ATTEMPT_RC } from "./attempt.js"
 import { Hints } from "./hints.js"
 import * as eg from "./easter_eggs.js"
+import { api } from "./api.js";
 
 // TODO: Handle entity_type properly according to user's selection.
 const ENTITY_TYPE_PH = "Algorithm"
@@ -98,7 +99,7 @@ export class InputHandler {
 	}
 
 	// Event handler for click on the info button.
-	info_click(event, button) {
+	info_click() {
 		const dialog = document.querySelector('.infoDialog');
 		if (dialog) {
 			dialog.showModal();
@@ -106,7 +107,7 @@ export class InputHandler {
 	}
 
 	// Event handler for click on the close button of the info dialog.
-	close_info_dialog(event, dialog) {
+	close_info_dialog(dialog) {
 		if(dialog) {
 			dialog.style.animation = 'desvanecer 0.8s ease-out forwards';
 
@@ -132,6 +133,10 @@ export class InputHandler {
 		console.log("CLICK!!!");
 		this.user_input = this.#__normalize_input(hint_element.innerText);
 		await this.process_input();
+	}
+
+	logout_click(){
+		api("/logout/");
 	}
 }
 

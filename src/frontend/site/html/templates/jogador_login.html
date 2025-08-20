@@ -57,11 +57,9 @@
             <p>Não tem conta? <a href="{% url 'jogador_register' %}">Cadastre-se aqui</a></p>
 
             {% if messages %}
-                <ul>
                 {% for message in messages %}
-                    <li>{{ message }}</li>
+                    <p>{{ message }}</p>
                 {% endfor %}
-                </ul>
             {% endif %}
         </div>
     </section>
