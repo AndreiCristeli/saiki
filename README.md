@@ -76,6 +76,7 @@ In this example, the player made three attempts:
 
   *Windows Version*
   ```
+  python -m venv .venv
   .venv\Scripts\activate
   make run-django
 
