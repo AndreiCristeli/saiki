@@ -33,12 +33,6 @@ window.onload = function () {
     const button = document.querySelector('.footer-info');
     button.addEventListener('click', (event) => renderer.input_handler.info_click(event, button));
 
-    // Choice buttons (Verdadeiro/Falso)
-    // const buttons = document.querySelectorAll('.button_choice');
-    // buttons.forEach(button => {
-    //     button.addEventListener('click', (event) => renderer.input_handler.choice_click(event, button));
-    // });
-
     // Close dialog button
     const closeBtn = document.querySelector('.closeDialog');
     if (closeBtn) {
@@ -48,23 +42,6 @@ window.onload = function () {
 
     const select_language = document.querySelector('.translateBox');
     select_language.addEventListener('change', (event) => changeLanguage(select_language.value));
-
-    // New game button
-    // const newGameBtn = document.querySelector('.new-game-btn');
-    // console.log("Botão encontrado?", newGameBtn);
-
-    // if (newGameBtn) {
-    //   newGameBtn.addEventListener('click', async () => {
-    //     console.log("Clique detectado!");
-    //     try {
-    //       await initializeGame();
-    //     } catch (e) {
-    //       console.error("Erro ao iniciar novo jogo:", e);
-    //     }
-    //   });
-    // } else {
-    //   console.warn("Botão '.new-game-btn' não encontrado no DOM!");
-    // }
 
     // Inicializar jogo automaticamente
     initializeGame();

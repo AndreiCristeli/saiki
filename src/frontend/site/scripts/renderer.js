@@ -158,9 +158,6 @@ export class Renderer {
 		}
 	}
 
-
-	// Adicionar à classe Renderer
-
 	// Renderizar questões do True or False
 	render_tof_questions(questions) {
 		
@@ -225,6 +222,7 @@ export class Renderer {
 	// Atualizar UI da questão após resposta
 	update_tof_question_ui(questionIndex, isCorrect, userAnswer, correctAnswer) {
 		const card = document.getElementById(`tof-card-${questionIndex}`);
+		// console.log(questionIndex);
 		if (!card) return;
 		
 		const buttons = card.querySelectorAll('.answer-btn');
@@ -257,12 +255,6 @@ export class Renderer {
 
 	// Criar botão "Novo Jogo"
 	create_new_game_button(containerSelector = "body") {
-		// Verifica se já existe um botão para não duplicar
-		// let existingBtn = document.querySelector(".new-game-btn");
-		// if (existingBtn) {
-		// 	console.warn("Botão Novo Jogo já existe.");
-		// 	return existingBtn;
-		// }
 
 		// Criar botão
 		const newGameBtn = document.createElement("button");

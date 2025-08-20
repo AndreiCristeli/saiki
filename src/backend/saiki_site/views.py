@@ -389,8 +389,11 @@ class TrueOrFalseState:
         """Process a user's answer to a question."""
         
         # Debug
-        # print(f"Processing answer for question {question_index}")
+        print(f"Processing answer for question {question_index}")
         # print(f"Current session data: {self.session_data}")
+        
+        # Colocar um print para ver se o question_index tá certo
+        # print(question_index)
         
         # Verificar se a questão existe
         if question_index >= len(self.session_data['questions']):

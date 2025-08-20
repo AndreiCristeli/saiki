@@ -117,25 +117,6 @@ export class InputHandler {
 		}
 	}
 
-	// Função específica para True or False
-	// async start_new_tof_game() {
-	// 	try {
-	// 		const response = await api('/true-or-false/start');
-	// 		console.log(response)
-	// 		console.log(response.data)
-	// 		this.current_game_session = response.data;
-	// 		this.current_question_index = 0;
-			
-	// 		// Renderizar as questões
-	// 		this.renderer.render_tof_questions(this.current_game_session.questions);
-	// 		this.update_tof_game_ui();
-			
-	// 	} catch (error) {
-	// 		console.error('Erro ao iniciar jogo True or False:', error);
-	// 		throw error;
-	// 	}
-	// }
-
 	async start_new_tof_game() {
 		try {
 			console.log('Fazendo chamada para API...');
@@ -146,18 +127,6 @@ export class InputHandler {
 			console.log('Tipo da resposta:', typeof response);
 			console.log('Resposta completa:', response);
 			
-			// Verificar propriedades disponíveis
-			// if (typeof response === 'object' && response !== null) {
-			// 	console.log('Propriedades disponíveis:', Object.keys(response));
-				
-			// 	// Verificar propriedades específicas
-			// 	console.log('response.questions:', response.questions);
-			// 	console.log('response.game_session:', response.game_session);
-			// 	console.log('response.data:', response.data);
-			// 	console.log('response.session_data:', response.session_data);
-			// 	console.log('response.questions_list:', response.questions_list);
-			// }
-			
 			// Tentar encontrar questions em diferentes locais
 			let gameData = null;
 			let questionsFound = false;
@@ -167,19 +136,6 @@ export class InputHandler {
 				gameData = response;
 				questionsFound = true;
 			}
-			// } else if (response.game_session && response.game_session.questions) {
-			// 	console.log('questions encontrado em response.game_session.questions');
-			// 	gameData = response.game_session;
-			// 	questionsFound = true;
-			// } else if (response.session_data && response.session_data.questions) {
-			// 	console.log('questions encontrado em response.session_data.questions');
-			// 	gameData = response.session_data;
-			// 	questionsFound = true;
-			// } else if (response.data && response.data.questions) {
-			// 	console.log('questions encontrado em response.data.questions');
-			// 	gameData = response.data;
-			// 	questionsFound = true;
-			// }
 			
 			this.current_game_session = gameData;
 
@@ -187,8 +143,6 @@ export class InputHandler {
 
 			// Renderizar as questões
 			this.renderer.render_tof_questions(this.current_game_session.questions);
-
-			// this.renderer.create_new_game_button("body");
 
 			this.update_tof_game_ui();
 			
@@ -299,20 +253,6 @@ export class InputHandler {
 		await this.process_input();
 	}
 
-	// Simplificar a função choice_click para usar a infraestrutura existente
-	choice_click(event, button) { 
-		console.log("Botão clicado:", button.textContent);
-		
-		let answer;
-		if (button.textContent.includes("Verdá") || button.textContent === "Verdadeiro") {
-			answer = true;
-		} else {
-			answer = false;
-		}
-		
-		this.process_global_tof_answer(answer);
-	}
-
 	// Nova função para processar resposta global
 	async process_global_tof_answer(answer) {
 		try {
@@ -338,52 +278,9 @@ export class InputHandler {
 		}
 	}
 
-	// // Submeter resposta
-	// async submit_answer(question_index, answer) {
-	// 	try {
-	// 		let entity = {session_id: this.current_game_session.session_id,
-	// 			question_index: question_index,
-	// 			answer: answer}
-	// 		const response = await api('/true-or-false/answer/', 'POST', entity);
-			
-	// 		// response JÁ é o objeto JSON diretamente
-	// 		console.log('Response to submit:', response);
-			
-	// 		// Atualizar sessão local (response não tem .data)
-	// 		this.current_game_session = response.session || response; // Dependendo da estrutura
-			
-	// 		// Atualizar UI da questão
-	// 		this.renderer.update_tof_question_ui(
-	// 			question_index, 
-	// 			response.is_correct, 
-	// 			answer, 
-	// 			response.correct_answer
-	// 		);
-
-	// 		if(response.is_correct){
-	// 			console.log("Está correta");
-	// 			this.current_game_session.score++;
-	// 			console.log(this.current_game_session.score);
-	// 		}
-	// 		console.log("Aumenta questões");
-	// 		this.current_game_session.answered_questions++;
-	// 		console.log(this.current_game_session.answered_questions);
-			
-	// 		this.update_game_ui();
-			
-	// 	} catch (error) {
-	// 		console.error('Erro ao submeter resposta:', error);
-	// 		throw error;
-	// 	}
-	// }
-
 	// Adicione estes logs na função submit_answer para diagnosticar:
 	async submit_answer(question_index, answer) {
 		try {
-			// console.log('=== ANTES DE ENVIAR ===');
-			// console.log('Score antes:', this.current_game_session.score);
-			// console.log('Answered antes:', this.current_game_session.answered_questions);
-			
 			let entity = {
 				session_id: this.current_game_session.session_id,
 				question_index: question_index,
@@ -391,16 +288,9 @@ export class InputHandler {
 			}
 			
 			const response = await api('/true-or-false/answer/', 'POST', entity);
-			
-			// console.log('=== RESPOSTA DA API ===');
-			// console.log('Response completa:', response);
-			// console.log('response.score:', response.score);
-			// console.log('response.answered_questions:', response.answered_questions);
-			// console.log('response.session:', response.session);
 
 			// Use apenas os dados do servidor:
 			if (response) {
-				// console.log('=== ATUALIZANDO COM SESSION ===');
 				this.current_game_session.score = response.score;
 				this.current_game_session.answered_questions = response.answered_questions;
 				this.current_game_session.total_questions = response.total_questions;
@@ -413,6 +303,7 @@ export class InputHandler {
 				answer, 
 				response.correct_answer
 			);
+			console.log()
 						
 			this.update_game_ui();
 
@@ -440,15 +331,21 @@ export class InputHandler {
 		
 		setTimeout(() => {
 			alert(`Jogo finalizado! Pontuação: ${score}/${total}`);
-			// Opcionalmente, mostrar botão de novo jogo
-			// this.show_new_game_option();
+			
+			// Mostrar botão de novo jogo
+			const newGameDiv = this.show_new_game_option();
+
+			// 👉 Se a div foi criada, rolar até ela
+			if (newGameDiv) {
+				document.body.scrollIntoView({ behavior: "smooth" });
+			}
 		}, 500);
 	}
 
 	// Mostrar opção de novo jogo
 	show_new_game_option() {
-		const container = document.querySelector('.div_choice');
-		if (container) {
+    const container = document.querySelector('.cards-container');
+    if (container) {
 			const newGameDiv = document.createElement('div');
 			newGameDiv.className = 'div_new_game';
 			newGameDiv.innerHTML = `
@@ -457,29 +354,14 @@ export class InputHandler {
 			`;
 			
 			const newGameBtn = newGameDiv.querySelector('.btn_new_game');
-			newGameBtn.addEventListener('click', () => restart_game());
+			newGameBtn.addEventListener('click', () => reset_game(container, this));
 			
-			container.parentNode.insertBefore(newGameDiv, container.nextSibling);
-		}
-	}
+			container.parentNode.append(newGameDiv, container);
 
-	// // Reiniciar jogo
-	// async restart_game() {
-	// 	// Limpar estado atual
-	// 	this.current_game_session = null;
-	// 	this.current_question_index = 0;
-		
-	// 	// Remover div de novo jogo
-	// 	const newGameDiv = document.querySelector('.div_new_game');
-	// 	if (newGameDiv) newGameDiv.remove();
-		
-	// 	// Limpar container de cards
-	// 	const cardsContainer = document.querySelector('.cards-container');
-	// 	if (cardsContainer) cardsContainer.innerHTML = '';
-		
-	// 	// Iniciar novo jogo
-	// 	await this.start_new_game();
-	// }
+			return newGameDiv;
+    }
+    return null;
+	}
 }
 
 // TODO: rethink where these methods (win_condition and reset_game should go)
@@ -508,8 +390,6 @@ function win_condition(input, input_handler, current_page) {
 		input.parentNode.replaceChild(div, input);
 }
 
-
-
 /** Resets the Player's Game State in the frontend context. */
 function reset_game(container, input_handler) {
     const currentPage = document.body.dataset.page;
@@ -522,11 +402,11 @@ function reset_game(container, input_handler) {
      
 	if (currentPage === "true_or_false") {
         // Lógica específica do modo True or False
-        reset_tof_mode(container, input_handler);
+        reset_tof_mode(cardsContainer, input_handler);
 
 	} else if (currentPage === "custom") {
         // Lógica específica do modo Personalizado
-        reset_custom_mode(container, input_handler);
+        reset_custom_mode(cardsContainer, input_handler);
     }
 }
 
@@ -558,10 +438,11 @@ function reset_custom_mode(container, input_handler) {
 // Função específica para resetar modo True or False
 function reset_tof_mode(container, input_handler) {
     // Remover div de "novo jogo" se existir
-    if (container && container.classList.contains('div_new_game')) {
-        container.remove();
+    const oldDiv = document.querySelector(".div_new_game");
+    if (oldDiv) {
+        oldDiv.remove();
     }
-    
+
     // Reset das variáveis do True or False
     input_handler.current_game_session = null;
     input_handler.current_question_index = 0;
@@ -578,4 +459,9 @@ function reset_tof_mode(container, input_handler) {
     // Reabilitar botões de escolha
     const choiceButtons = document.querySelectorAll('.button_choice');
     choiceButtons.forEach(btn => btn.disabled = false);
+
+    // Agora sim: iniciar novo jogo chamando a função da classe
+    input_handler.start_new_tof_game().then(resultado => {
+    	console.log("Resultado:", resultado);
+	});
 }
