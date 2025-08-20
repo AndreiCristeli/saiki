@@ -19,6 +19,7 @@ const ENTITY_TYPE_PH = "Algorithm"
 
 export class InputHandler {
 	constructor(renderer){
+		this.user_input = "";
 		this.hints = new Hints(renderer)
 		this.attempt_handler = new AttemptsHandler(renderer)
 
@@ -26,9 +27,6 @@ export class InputHandler {
 		this.current_game_session = null;
 		this.current_question_index = 0;
 		this.renderer = renderer;
-		this.user_input = "";
-		this.hints = new Hints(renderer);
-		this.attempt_handler = new AttemptsHandler(renderer);
 	}
 	
 	// Normalizes user's input.
@@ -296,27 +294,10 @@ export class InputHandler {
 		}
 	}  
 
-	// Click event handler for when clicking on True or False buttons.
-	choice_click(event, button) { 
-		console.log("Botão clicado:", button.textContent);
-		if (button.textContent === "Verdá") {
-			console.log("Você escolheu Verdadeiro.");
-		} else {
-			console.log("Você escolheu Falso.");
-		}
-	}
-	// choice_click(event, button) { 
-	// 	console.log("Botão clicado:", button.textContent);
-	// 	if (button.textContent === "Verdá") {
-	// 		console.log("Você escolheu Verdadeiro.");
-	// 	} else {
-	// 		console.log("Você escolheu Falso.");
-	// 	}
-	// }
-
 	async hint_click(event, hint_element) {
-		let user_input = this.#__normalize_input(hint_element.innerText);
-		await this.process_input(user_input);
+		console.log("CLICK!!!");
+		this.user_input = this.#__normalize_input(hint_element.innerText);
+		await this.process_input();
 	}
 
 	// Simplificar a função choice_click para usar a infraestrutura existente
