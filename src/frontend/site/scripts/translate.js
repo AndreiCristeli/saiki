@@ -25,6 +25,7 @@ function updateContent() {
 
     safeTextContent('.index_question', i18next.t('index_question'));
     safeTextContent('.custom_question', i18next.t('custom_question'));
+    safeTextContent('.tof_question', i18next.t('tof_question'));
 
     const input = document.querySelector('.Input');
     if (input) input.placeholder = i18next.t('inputPlaceholder');
@@ -48,6 +49,13 @@ function updateContent() {
 
     safeTextContent('.howToPlayTitle', i18next.t('howToPlay'));
     safeTextContent('.howToPlayDesc', i18next.t('description'));
+    safeTextContent('.howToPlayTOF', i18next.t('howToPlayTOF'));
+
+    safeTextContent('.topicsTextTOF', i18next.t('topicsTextTOF'));
+    safeTextContent('.topicsTitleTOF', i18next.t('topicsTitleTOF'));
+
+    safeTextContent('.scoreTextTOF', i18next.t('scoreTextTOF'));
+    safeTextContent('.scoreTitleTOF', i18next.t('scoreTitleTOF'));
 
     safeTextContent('.categoryTitle', i18next.t('categoryInfoTitle'));
     safeTextContent('.categoryText', i18next.t('categoryInfoText'));

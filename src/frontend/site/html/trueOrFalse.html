@@ -38,7 +38,7 @@
     <button class="footer-info">?</button>
   </header>
   
-  <h2>É verdade ou mentira?</h2>
+  <h2 class="tof_question">É verdadeiro ou falso?</h2>
 
   <!-- Score display -->
   <div class="score-display">
@@ -46,11 +46,8 @@
     <div>Questões: <span class="current-question">0</span>/<span class="total-questions">10</span></div>
   </div>
 
-  <!-- Global answer buttons
-  <div class="div_choice">
-    <button class="button_choice" id="true-btn">Verdadeiro</button>
-    <button class="button_choice" id="false-btn">Falso</button>
-  </div> -->
+  <!-- Ancor div for new cards -->
+  <div class="cards-container"></div>
 
   <!-- Loading indicator -->
   <div class="loading" id="loading" style="display: none;">
@@ -58,82 +55,39 @@
     <p>Carregando questões...</p>
   </div>
 
-
-
-  <!-- <div class="div_choice">
-    <button class="button_choice">Verdá</button>
-    <button class="button_choice">Fá</button>
-  </div> -->
-
-
-
-  <!-- Ancor div for new cards -->
-  <div class="cards-container"></div>
-
-  <!-- New game button -->
-  <!-- <button class="new-game-btn" id="new-game-btn">Novo Jogo</button> -->
-
-
-
   <!-- Help and Information Dialogs -->
   <dialog class="infoDialog">
-    <h1 class="howToPlayTitle">Como jogar</h1>
-    <p class="howToPlayDesc">Você deve adivinhar o algoritmo do dia se baseando nas pistas.</p> 
-    
-    <h2 class="categoryTitle">Categoria</h2>
-    <p class="categoryText">
-      O tipo ou propósito geral do algoritmo.
-      Ex: ordenação, busca, grafos, otimização, geometria computacional.
+    <h1 class="howToPlayTitle">
+      Como Jogar
+    </h1>
+
+    <p class="howToPlayTOF">
+      Responda as perguntas com verdadeiro ou falso com base nos seus conhecimentos. 
     </p>
 
-    <h2 class="yearTitle">Ano</h2>
-    <p class="yearText">
-      Ano de criação ou publicação do algoritmo.
-      Refere-se ao momento em que o algoritmo foi proposto ou documentado pela primeira vez.
+    <h1 class="topicsTitleTOF">
+      Tópicos
+    </h1>
+    <p class="topicsTextTOF">
+      Perguntas estas que são separadas por temas da computação.
     </p>
 
-    <h2 class="timeTitle">Complexidade Temporal Média</h2>
-    <p class="timeText">
-      Tempo esperado que o algoritmo leva para executar em casos comuns.
-      Representada em notação Big-O: O(n), O(n log n), etc.
+    <h1 class="scoreTitleTOF">
+      Pontuação
+    </h1>
+    <p class="scoreTextTOF">
+      Pontuação de 0 a 5 de acordo com a quantidade de acertos.
     </p>
 
-    <h2 class="spaceTitle">Complexidade Espacial Auxiliar</h2>
-    <p class="spaceText">
-      Memória extra necessária além da entrada original.
-      Também expressa em Big-O, como O(1), O(n).
-      Não conta a memória ocupada pelos dados de entrada.
-    </p>
-
-    <h2 class="structureTitle">Estrutura de Dados</h2>
-    <p class="structureText">
-      As estruturas usadas para processar a informação.
-      Ex: listas, filas, pilhas, árvores, heaps, tabelas hash.
-    </p>
-
-    <h2 class="solutionTitle">Solução</h2>
-    <p class="solutionText">
-      Tipo de abordagem adotada pelo algoritmo.
-      Exata: resolve o problema com resposta correta garantida.
-      Aproximada: gera uma solução próxima da ideal (usado em problemas complexos como NP-difíceis).
-      Heurística: usa regras práticas para encontrar soluções boas, mas não garantidas.
-    </p>
-
-    <h2 class="generalityTitle">Generalidade</h2>
-    <p class="generalityText">
-      O algoritmo soluciona qualquer tipo de problema dentro da sua categoria ou ele exige certas condições
-      para apresentar uma resolução válida?
-      Exemplo:
-      BubbleSort ordena quaisquer vetores desordenados, sem restrições. (Geral)
-      RadixSort só pode ordenar vetores de números inteiros. (Específica)
-    </p>
     <button class="closeDialog" aria-label="Fechar">&times;</button>
   </dialog>
 
   <footer class="footer">
+    <!-- translate -->
     <select class="translateBox">
       <option value="pt">Português</option>
       <option value="en">English</option>
+      <option value="es">Español</option>
     </select>
   </footer>
 

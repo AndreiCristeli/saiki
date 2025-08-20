@@ -9,6 +9,7 @@
 
 import { Renderer } from "./renderer.js";
 import { api } from "./api.js";
+import { changeLanguage } from "./translate.js";
 
 let renderer = new Renderer()
 
@@ -45,6 +46,9 @@ window.onload = function () {
         closeBtn.addEventListener('click', (event) => renderer.input_handler.close_info_dialog(event, dialog));
     }
 
+    const select_language = document.querySelector('.translateBox');
+    select_language.addEventListener('change', (event) => changeLanguage(select_language.value));
+
     // New game button
     // const newGameBtn = document.querySelector('.new-game-btn');
     // console.log("Botão encontrado?", newGameBtn);
@@ -61,7 +65,6 @@ window.onload = function () {
     // } else {
     //   console.warn("Botão '.new-game-btn' não encontrado no DOM!");
     // }
-
 
     // Inicializar jogo automaticamente
     initializeGame();
