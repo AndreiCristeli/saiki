@@ -19,7 +19,7 @@ i18next.init({
 });
 
 function updateContent() {
-    safeTextContent('.diaryText a', i18next.t('diary'));
+    safeTextContent('.dailyText a', i18next.t('daily'));
     safeTextContent('.trueOrFalseText a', i18next.t('trueOrFalse'));
     safeTextContent('.customText a', i18next.t('custom'));
 

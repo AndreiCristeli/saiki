@@ -9,7 +9,7 @@
 const resources = {
   pt: {
     translation: {
-      diary: "Diário",
+      daily: "Diário",
       trueOrFalse: "Verdadeiro ou Falso",
       custom: "Personalizado",
       index_question: "Qual é o algoritmo do dia?",
@@ -36,7 +36,7 @@ const resources = {
   },
   en: {
     translation: {
-      diary: "Daily",
+      daily: "Daily",
       trueOrFalse: "True or False",
       custom: "Custom",
       index_question: "What is today's algorithm?",

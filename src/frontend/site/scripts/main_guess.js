@@ -42,7 +42,8 @@ window.onload = function () {
 
 	const input = document.querySelector('.Input');
 	const div_attempts = document.querySelector('.attempts-field');
-	input.addEventListener('keydown', (event) => renderer.input_handler.input_keydown(event));
+	input.addEventListener('input', (event) => renderer.input_handler.input_on_text_change(event));
+	input.addEventListener('keydown', (event) => renderer.input_handler.input_on_keydown(event));
 	
 	const button = document.querySelector('.footer-info');
 	button.addEventListener('click', (event) => renderer.input_handler.info_click(event, button));
@@ -65,7 +66,7 @@ window.onload = function () {
 			} catch (NotFoundError) {
 				// blank - No exception action needed.
 			}
-		}, 90);
+		}, 120);
 	})
 };
 

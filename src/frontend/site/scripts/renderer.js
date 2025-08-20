@@ -118,12 +118,13 @@ export class Renderer {
 
 			hint_item.innerText = name;
 			hint_item.addEventListener('click', (event) => this.input_handler.hint_click(event, hint_item));
+			// hint_item.addEventListener('touchend', (event) => this.input_handler.hint_click(event, hint_item));
 			hint_item.addEventListener('mouseenter', (event) => {
     			hint_item.className = hint_item.className + " selected";
-			})
+			});
 			hint_item.addEventListener('mouseleave', (event) => {
     			hint_item.className = "hint_item";
-			})
+			});
 			hints_container.appendChild(hint_item);
 		}
 		

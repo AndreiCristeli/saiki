@@ -26,6 +26,9 @@ export class InputHandler {
 		this.current_game_session = null;
 		this.current_question_index = 0;
 		this.renderer = renderer;
+		this.user_input = "";
+		this.hints = new Hints(renderer);
+		this.attempt_handler = new AttemptsHandler(renderer);
 	}
 	
 	// Normalizes user's input.
@@ -35,23 +38,25 @@ export class InputHandler {
 		return trimmed.toLowerCase();
 	}
 
-	// Event handler for keydown on the input text box
-	async input_keydown(event) {
-		let user_input = this.#__normalize_input(event.target.value); 
-	
-		// console.log(`Nomalized Input: ${user_input}`);
+
+	// Event handler for input event on the input text box. (Essetialy handles text changes).
+	input_on_text_change(event){
+		this.user_input = this.#__normalize_input(event.target.value); 
+		// console.log(`Nomalized Input: ${this.user_input}`);
 	
 		// In the case there's no input in the text-box
-		if (!user_input){
+		if (!this.user_input){
 			this.hints.hide();
 			return;
 		}
 	
-		if (/^[a-zA-z]$/.test(event.key)) { // Using RegExp for validating if entry is a letter.
-			// console.log(event.key);
-			this.hints.display(user_input);
-	
-		}else if ((event.key == "ArrowUp") && this.hints.is_displaying()) {
+		//console.log(event.target.value);
+		this.hints.display(this.user_input);
+	}
+
+	// Event handler for keydown on the input text box. (Essentialy handles navigation).
+	async input_on_keydown(event) {
+		if ((event.key == "ArrowUp") && this.hints.is_displaying()) {
 			// console.log("arrowUp");
 			this.hints.move_hint_selection("up");
 			
@@ -60,28 +65,29 @@ export class InputHandler {
 			this.hints.move_hint_selection("down");
 		
 		} else if (event.key === 'Enter') {
+			console.log("ENTER");
 			if (this.hints.is_displaying() === true){
-				user_input = this.#__normalize_input(this.hints.the_hints[this.hints.selected_hint]);
+				this.user_input = this.#__normalize_input(this.hints.the_hints[this.hints.selected_hint]);
 			}
 
-			await this.process_input(user_input);
+			await this.process_input();
 		}
 	}
 
-	async process_input(user_input){
+	async process_input(){
 		let input_box = document.querySelector(".Input");
 		const current_page = document.body.dataset.page;
 		
 		this.hints.hide(); // Hinding the Hints
 	
-		if (user_input === "milvus"){
-		eg.showMilvusDialog(); input_box.value = ''; return;
+		if (this.user_input === "milvus"){
+			eg.showMilvusDialog(); input_box.value = ''; return;
 
-		} else if (user_input === "pokemon" || user_input === "monkepo"){
-		eg.showPokemonDialog(); input_box.value = ''; return;
+		} else if (this.user_input === "pokemon" || this.user_input === "monkepo"){
+			eg.showPokemonDialog(); input_box.value = ''; return;
 		}
 
-		let attempt_rc = await this.attempt_handler.process_attempt(user_input, ENTITY_TYPE_PH);
+		let attempt_rc = await this.attempt_handler.process_attempt(this.user_input, ENTITY_TYPE_PH);
 
 		switch (attempt_rc) {
 			case ATTEMPT_RC.REPEATED_ANSWER: 
@@ -290,6 +296,15 @@ export class InputHandler {
 		}
 	}  
 
+	// Click event handler for when clicking on True or False buttons.
+	choice_click(event, button) { 
+		console.log("Botão clicado:", button.textContent);
+		if (button.textContent === "Verdá") {
+			console.log("Você escolheu Verdadeiro.");
+		} else {
+			console.log("Você escolheu Falso.");
+		}
+	}
 	// choice_click(event, button) { 
 	// 	console.log("Botão clicado:", button.textContent);
 	// 	if (button.textContent === "Verdá") {
@@ -546,9 +561,8 @@ function reset_diary_mode(container, input_handler) {
     new_input.disabled = false;
     new_input.value = "";
 
-    new_input.addEventListener("keydown", (event) =>
-        input_handler.input_keydown(event, new_input)
-    );
+    new_input.addEventListener("keydown", (event) => input_handler.input_on_keydown(event, new_input));
+    new_input.addEventListener("input", (event) => input_handler.input_on_text_change(event, new_input));
 
     container.parentNode.replaceChild(new_input, container);
 
