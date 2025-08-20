@@ -19,7 +19,6 @@ const ENTITY_TYPE_PH = "Algorithm"
 
 export class InputHandler {
 	constructor(renderer){
-		this.user_input = "";
 		this.hints = new Hints(renderer)
 		this.attempt_handler = new AttemptsHandler(renderer)
 
@@ -442,7 +441,7 @@ export class InputHandler {
 		setTimeout(() => {
 			alert(`Jogo finalizado! Pontuação: ${score}/${total}`);
 			// Opcionalmente, mostrar botão de novo jogo
-			this.show_new_game_option();
+			// this.show_new_game_option();
 		}, 500);
 	}
 
@@ -520,19 +519,19 @@ function reset_game(container, input_handler) {
     if (cardsContainer) {
         cardsContainer.innerHTML = "";
     }
-    
-    if (currentPage === "diary") {
-        // Lógica específica do modo diário
-        reset_diary_mode(container, input_handler);
-        
-    } else if (currentPage === "true_or_false") {
+     
+	if (currentPage === "true_or_false") {
         // Lógica específica do modo True or False
         reset_tof_mode(container, input_handler);
+
+	} else if (currentPage === "custom") {
+        // Lógica específica do modo Personalizado
+        reset_custom_mode(container, input_handler);
     }
 }
 
-// Função específica para resetar modo diário
-function reset_diary_mode(container, input_handler) {
+// Função específica para resetar modo personalizado
+function reset_custom_mode(container, input_handler) {
     // Recreating input box (código original)
     const new_input = document.createElement("input");
     new_input.type = "text";
