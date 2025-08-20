@@ -39,7 +39,7 @@
         </ul>
 
         {% if jogador.user == sessao.root_player.user and sessao.status %}
-        <form method="post" action="{% url 'encerrar_sessao' sessao.id %}">
+        <form method="post" action="{% url 'session-end' sessao.id %}">
             {% csrf_token %}
             <button class="btn" type="submit">Encerrar Sessão</button>
         </form>

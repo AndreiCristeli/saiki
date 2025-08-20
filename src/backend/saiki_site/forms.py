@@ -1,6 +1,7 @@
 from django import forms
 from .models import Jogador
 
+
 class JogadorForm(forms.ModelForm):
     #name_password = forms.CharField(widget=forms.PasswordInput, label="Senha")
 
@@ -27,9 +28,11 @@ class JogadorForm(forms.ModelForm):
             jogador.save()
         return jogador
 
+
 class JogadorLoginForm(forms.Form):
     name_user = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-login-field', 'placeholder': 'Nome de Usuário'}), label="Nome de Usuário")
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-login-field', 'placeholder': 'Senha'}), label="Senha")
-    
+
+
 class MessageForm(forms.Form):
     texto = forms.CharField(widget=forms.Textarea(attrs={'rows': 3, 'placeholder': 'Digite sua mensagem...'}), max_length=1000)

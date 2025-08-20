@@ -27,7 +27,7 @@ class ModelAlgorithm(models.Model):
 
     name: CharField = CharField(max_length=32)
     year: IntegerField = IntegerField()
-
+    
     category: CharField = CharField(max_length=32)
     design_paradigm: CharField = CharField(max_length=32)
     generality: CharField = CharField(max_length=32)

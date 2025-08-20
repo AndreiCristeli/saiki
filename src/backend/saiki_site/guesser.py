@@ -264,21 +264,19 @@ class Guesser(object):
         matches: list[str] = get_close_matches(name, name_list, n=max_query_results, cutoff=cutoff)
         """
 
-
         def get_names_by_prefix(prefix: str, names: list[str]) -> list[str]:
+            """bosta"""
+
             prefix = prefix.strip().lower()
-            print(f"prefix: {prefix}")
             return [name for name in names if name.lower().startswith(prefix)]
 
-        attempt_names: list[str] = state.attempted_names
+        attempt_names: list[str] = state.attempted_names # faz tudo errado
         name_list: list[str] = list(filter(
             lambda x: x not in attempt_names,
             saiki_entities    # entity names.
         ))
-        matches: list[str] = get_names_by_prefix(name, name_list)
 
-        print(f"name_list: {name_list}")
-        print(f"matches: {matches}")
+        matches: list[str] = get_names_by_prefix(name, name_list)[:max_query_results]
 
         return matches
 
