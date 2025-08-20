@@ -254,7 +254,8 @@ export class InputHandler {
 	}
 
 	// Nova função para processar resposta global
-	async process_global_tof_answer(answer) {
+	async process_global_tof_answer(answer, question_index) {
+		console.log(question_index);
 		try {
 			// Se não há sessão ativa, iniciar uma nova
 			if (!this.current_game_session) {
@@ -262,10 +263,10 @@ export class InputHandler {
 			}
 			
 			// Submeter resposta para a questão atual
-			if (this.current_question_index < this.current_game_session.questions.length) {
+			if (question_index < this.current_game_session.questions.length) {
 				console.log("Enviando resposta...");
-				console.log(this.current_question_index);
-				await this.submit_answer(this.current_question_index, answer);
+				console.log(question_index);
+				await this.submit_answer(question_index, answer);
 				this.current_question_index++;
 				
 				// Verificar se o jogo terminou

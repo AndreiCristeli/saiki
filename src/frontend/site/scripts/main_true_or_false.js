@@ -15,7 +15,6 @@ let renderer = new Renderer()
 
 // Adicionar após as importações
 let gameSession = null;
-let currentQuestionIndex = 0;
 
 window.onload = function () {
     const currentPage = document.body.dataset.page;

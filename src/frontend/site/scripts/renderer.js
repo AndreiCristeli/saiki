@@ -210,8 +210,7 @@ export class Renderer {
 			btn.addEventListener('click', (e) => {
 				const questionIndex = parseInt(e.target.dataset.question);
 				const answer = e.target.dataset.answer === 'true';
-				// this.input_handler.submit_answer(questionIndex, answer);
-				this.input_handler.process_global_tof_answer(answer);
+				this.input_handler.process_global_tof_answer(answer, questionIndex);
 			});
 		});
 		
