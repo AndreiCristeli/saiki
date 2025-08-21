@@ -41,10 +41,12 @@
   cursor: default;
 }
 
-.logout-btn {
+.logout {
   position: absolute;
   left: 90vw;
+}
 
+.logout-btn {
   border: none;
   border-radius: 10px;
 
@@ -56,7 +58,7 @@
   padding: 0.5rem;
 }
 
-.logout-btn:hover {
+.logout.btn:hover {
   background-color: var(--wrong-color-hover);
   transform: scale(1.02);
 }
