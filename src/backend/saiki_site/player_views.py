@@ -76,7 +76,9 @@ class PlayerView(object):
     @staticmethod
     @csrf_exempt
     def serve_logged(req: WSGIRequest) -> HttpResponse:
-        return redirect("player-panel")
+        # return redirect("player-panel")
+        # return PlayerView.serve_login(req)
+        return redirect("main")
 
     @staticmethod
     @csrf_exempt
@@ -85,11 +87,8 @@ class PlayerView(object):
         De-authenticates it and then servers the login-page."""
 
         logout(req)
-        print("o cara saiu")
 
         return redirect("player-login")
-        # return PlayerView.serve_login(req)
-        # return JsonResponse({"asd": 1})
 
     @staticmethod
     @csrf_exempt
@@ -135,7 +134,7 @@ class PlayerView(object):
         # return HttpResponse("Jogador criado com sucesso!")
 
         return PlayerView.serve_logged(req)
-    
+
     @staticmethod
     def session_create(request) -> HttpResponse:
         if not request.user.is_authenticated:

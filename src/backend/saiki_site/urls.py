@@ -12,7 +12,7 @@ from . import views
 urlpatterns: list[URLPattern | URLResolver] = [
 
     # Frontend views.
-    path("", views.FrontendView.serve_frontend),
+    path("", views.FrontendView.serve_frontend, name="main"),
     path("custom/", views.FrontendView.serve_custom_mode, name="custom"),
     path("daily/", views.FrontendView.serve_daily_mode, name="daily"),
     path("tof/", views.FrontendView.serve_tof_mode, name="tof"),
