@@ -53,11 +53,22 @@ class PlayerView(object):
                 player: None | Jogador = PlayerView.__authenticate_user(name_user, password)
                 if player:
                     login(req, player.user)
+                    req.session["doidera"] = 1
+
                     return PlayerView.serve_logged(req)
 
                 messages.error(req, "Usuário não encontrado.")
 
         else:
+            # req.session["cala_a_boca"] = 2
+
+            try:
+                # print("cala a boca:", req.session["cala_a_boca"])
+                # print(req.session.load())
+                ...
+
+            except KeyError:
+                ...
             form = JogadorLoginForm()
 
         return render(req, "player_login.html", {"form": form})

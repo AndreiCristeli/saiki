@@ -57,6 +57,12 @@ class GuessState:
 
         print(f"COOKIE GET. key: {key} ({type(key)}); selected: {selected} ({type(selected)}); attempted: {attempted}")
 
+        if request.user.is_authenticated:
+            # asd
+            ...
+
+        # print(request.session.load(), request.user)
+
         return GuessState(
             key, selected, attempted
         )
@@ -72,7 +78,7 @@ class GuessState:
             response_json.delete_cookie("A#", samesite="Lax")
 
             return response_json
-
+        ''
         response_json.set_cookie("key", self.key, secure=False, httponly=True, samesite="Lax")
         response_json.set_cookie("selected", self.selected, secure=False, httponly=True, samesite="Lax")
 
@@ -248,35 +254,28 @@ class Guesser(object):
 
         Stateless."""
 
-        from difflib import get_close_matches
         from typing import Iterable
 
         max_query_results: int = 5
-        cutoff: float = 0.3
 
         """
-        attempt_names: list[str] = state.attempted_names
-        name_list: Iterable[str] = filter(
-            lambda x: x not in attempt_names,
-            saiki_entities    # entity names.
-        )
-
+        from difflib import get_close_matches
+        cutoff: float = 0.3
         matches: list[str] = get_close_matches(name, name_list, n=max_query_results, cutoff=cutoff)
         """
 
-        def get_names_by_prefix(prefix: str, names: list[str]) -> list[str]:
-            """bosta"""
-
+        def get_names_by_prefix(prefix: str, names: Iterable[str]) -> list[str]:
             prefix = prefix.strip().lower()
             return [name for name in names if name.lower().startswith(prefix)]
 
-        attempt_names: list[str] = state.attempted_names # faz tudo errado
+        attempt_names: list[str] = state.attempted_names
         name_list: list[str] = list(filter(
             lambda x: x not in attempt_names,
             saiki_entities    # entity names.
         ))
 
         matches: list[str] = get_names_by_prefix(name, name_list)[:max_query_results]
+        print(matches)
 
         return matches
 
