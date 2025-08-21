@@ -2,344 +2,409 @@
   {
     "area": "Algoritmos",
     "pergunta": "O algoritmo de ordenação Bubble Sort possui complexidade média O(n log n).",
-    "resposta": false
+    "resposta": false,
+    "id": 1
   },
   {
     "area": "Algoritmos",
     "pergunta": "O algoritmo de Dijkstra não funciona corretamente com arestas de peso negativo.",
-    "resposta": true
+    "resposta": true,
+    "id": 2
   },
   {
     "area": "Algoritmos",
     "pergunta": "A busca em largura (BFS) utiliza uma estrutura de fila.",
-    "resposta": true
+    "resposta": true,
+    "id": 3
   },
   {
     "area": "Algoritmos",
     "pergunta": "O algoritmo QuickSort é um algoritmo de ordenação estável.",
-    "resposta": false
+    "resposta": false,
+    "id": 4
   },
   {
     "area": "Algoritmos",
     "pergunta": "A programação dinâmica é usada para resolver problemas com subproblemas sobrepostos.",
-    "resposta": true
+    "resposta": true,
+    "id": 5
   },
 
   {
     "area": "Estruturas de Dados",
     "pergunta": "Uma pilha (stack) funciona no modelo FIFO (First In, First Out).",
-    "resposta": false
+    "resposta": false,
+    "id": 6
   },
   {
     "area": "Estruturas de Dados",
     "pergunta": "Uma árvore binária de busca garante complexidade O(log n) em operações de busca, inserção e remoção no caso médio.",
-    "resposta": true
+    "resposta": true,
+    "id": 7
   },
   {
     "area": "Estruturas de Dados",
     "pergunta": "Em uma tabela hash, colisões podem ser tratadas usando encadeamento.",
-    "resposta": true
+    "resposta": true,
+    "id": 8
   },
   {
     "area": "Estruturas de Dados",
     "pergunta": "Filas de prioridade são comumente implementadas usando listas ligadas simples.",
-    "resposta": false
+    "resposta": false,
+    "id": 9
   },
   {
-    "area": "Estruturas de Dados",
-    "pergunta": "Um grafo direcionado pode conter ciclos.",
-    "resposta": true
+  "area": "Estruturas de Dados",
+  "pergunta": "Um grafo direcionado pode conter ciclos.",
+  "resposta": true,
+  "id": 10
   },
-
   {
     "area": "Sistemas Operacionais",
     "pergunta": "O escalonamento preemptivo permite que o sistema interrompa um processo em execução para dar lugar a outro.",
-    "resposta": true
+    "resposta": true,
+    "id": 11
   },
   {
     "area": "Sistemas Operacionais",
     "pergunta": "O deadlock ocorre quando processos aguardam indefinidamente por recursos que nunca serão liberados.",
-    "resposta": true
+    "resposta": true,
+    "id": 12
   },
   {
     "area": "Sistemas Operacionais",
     "pergunta": "Memória virtual permite que o sistema execute programas maiores do que a memória física disponível.",
-    "resposta": true
+    "resposta": true,
+    "id": 13
   },
   {
     "area": "Sistemas Operacionais",
     "pergunta": "Threads compartilham o mesmo espaço de memória, enquanto processos não compartilham.",
-    "resposta": true
+    "resposta": true,
+    "id": 14
   },
   {
     "area": "Sistemas Operacionais",
     "pergunta": "O sistema de arquivos FAT32 suporta arquivos maiores que 4 GB.",
-    "resposta": false
+    "resposta": false,
+    "id": 15
   },
 
   {
     "area": "Redes de Computadores",
     "pergunta": "O modelo OSI possui 7 camadas.",
-    "resposta": true
+    "resposta": true,
+    "id": 16
   },
   {
     "area": "Redes de Computadores",
     "pergunta": "O protocolo UDP garante a entrega ordenada e confiável dos dados.",
-    "resposta": false
+    "resposta": false,
+    "id": 17
   },
   {
     "area": "Redes de Computadores",
     "pergunta": "A camada de enlace do modelo OSI é responsável pelo endereçamento físico dos dispositivos.",
-    "resposta": true
+    "resposta": true,
+    "id": 18
   },
   {
     "area": "Redes de Computadores",
     "pergunta": "Um switch opera na camada de rede do modelo OSI.",
-    "resposta": false
+    "resposta": false,
+    "id": 19
   },
   {
     "area": "Redes de Computadores",
     "pergunta": "O endereço IPv6 possui 128 bits.",
-    "resposta": true
+    "resposta": true,
+    "id": 20
   },
 
   {
     "area": "Inteligência Artificial",
     "pergunta": "Redes neurais artificiais são inspiradas na estrutura do cérebro humano.",
-    "resposta": true
+    "resposta": true,
+    "id": 21
   },
   {
     "area": "Inteligência Artificial",
     "pergunta": "Aprendizado supervisionado requer dados rotulados para treinar o modelo.",
-    "resposta": true
+    "resposta": true,
+    "id": 22
   },
   {
     "area": "Inteligência Artificial",
     "pergunta": "Algoritmos genéticos são baseados em conceitos de física quântica.",
-    "resposta": false
+    "resposta": false,
+    "id": 23
   },
   {
-    "area": "Inteligência Artificial",
-    "pergunta": "Machine learning é um subcampo da inteligência artificial.",
-    "resposta": true
+  "area": "Inteligência Artificial",
+  "pergunta": "Machine learning é um subcampo da inteligência artificial.",
+  "resposta": true,
+  "id": 24
   },
   {
     "area": "Banco de Dados",
     "pergunta": "A linguagem SQL é usada apenas para consulta de dados, não para manipulação.",
-    "resposta": false
+    "resposta": false,
+    "id": 25
   },
   {
     "area": "Banco de Dados",
     "pergunta": "Em um banco de dados relacional, a normalização ajuda a evitar redundâncias e inconsistências.",
-    "resposta": true
+    "resposta": true,
+    "id": 26
   },
   {
     "area": "Banco de Dados",
     "pergunta": "A operação JOIN é usada para combinar dados de múltiplas tabelas com base em uma condição comum.",
-    "resposta": true
+    "resposta": true,
+    "id": 27
   },
   {
     "area": "Banco de Dados",
     "pergunta": "O modelo NoSQL é ideal para dados altamente estruturados e relacionais.",
-    "resposta": false
+    "resposta": false,
+    "id": 28
   },
 
   {
     "area": "Compiladores",
     "pergunta": "A análise léxica é responsável por verificar a semântica do código-fonte.",
-    "resposta": false
+    "resposta": false,
+    "id": 29
   },
   {
     "area": "Compiladores",
     "pergunta": "O parser realiza a análise sintática do código-fonte.",
-    "resposta": true
+    "resposta": true,
+    "id": 30
   },
   {
     "area": "Compiladores",
     "pergunta": "A geração de código intermediário ocorre antes da otimização do código.",
-    "resposta": true
+    "resposta": true,
+    "id": 31
   },
   {
     "area": "Compiladores",
     "pergunta": "Compiladores não podem detectar erros em tempo de compilação.",
-    "resposta": false
+    "resposta": false,
+    "id": 32
   },
   {
     "area": "Compiladores",
     "pergunta": "O analisador léxico converte a entrada em uma sequência de tokens.",
-    "resposta": true
+    "resposta": true,
+    "id": 33
   },
 
   {
     "area": "Teoria da Computação",
     "pergunta": "Máquinas de Turing são menos poderosas que autômatos finitos.",
-    "resposta": false
+    "resposta": false,
+    "id": 34
   },
-  
+
   {
     "area": "Teoria dos Grafos",
     "pergunta": "Nem todo problema computacional pode ser resolvido por algoritmos.",
-    "resposta": true
+    "resposta": true,
+    "id": 35
   },
   {
     "area": "Teoria dos Grafos",
     "pergunta": "A classe NP inclui problemas que podem ser verificados em tempo polinomial.",
-    "resposta": true
+    "resposta": true,
+    "id": 36
   },
   {
     "area": "Teoria dos Grafos",
     "pergunta": "O problema do Caixeiro Viajante pertence à classe P.",
-    "resposta": false
+    "resposta": false,
+    "id": 37
   },
   {
     "area": "Teoria dos Grafos",
     "pergunta": "Problemas indecidíveis não possuem algoritmo que os resolva em todos os casos.",
-    "resposta": true
+    "resposta": true,
+    "id": 38
   },
 
   {
     "area": "Engenharia de Software",
     "pergunta": "O modelo em cascata permite mudanças frequentes nos requisitos durante o projeto.",
-    "resposta": false
+    "resposta": false,
+    "id": 39
   },
   {
     "area": "Engenharia de Software",
     "pergunta": "SCRUM é uma metodologia ágil amplamente utilizada no desenvolvimento de software.",
-    "resposta": true
+    "resposta": true,
+    "id": 40
   },
   {
     "area": "Engenharia de Software",
     "pergunta": "O diagrama de casos de uso descreve como os usuários interagem com o sistema.",
-    "resposta": true
+    "resposta": true,
+    "id": 41
   },
   {
     "area": "Engenharia de Software",
     "pergunta": "Testes de integração são realizados antes dos testes unitários.",
-    "resposta": false
+    "resposta": false,
+    "id": 42
   },
   {
     "area": "Engenharia de Software",
     "pergunta": "Refatoração melhora a estrutura do código sem alterar seu comportamento externo.",
-    "resposta": true
+    "resposta": true,
+    "id": 43
   },
   {
     "area": "Engenharia de Software",
     "pergunta": "É boa prática fazer com que o projeto possua baixa coesão e alto acoplamento.",
-    "resposta": false
+    "resposta": false,
+    "id": 44
   },
 
   {
-    "area": "Segurança da Informação",
-    "pergunta": "Criptografia simétrica utiliza chaves diferentes para criptografar e descriptografar os dados.",
-    "resposta": false
+  "area": "Segurança da Informação",
+  "pergunta": "Criptografia simétrica utiliza chaves diferentes para criptografar e descriptografar os dados.",
+  "resposta": false,
+  "id": 45
   },
   {
     "area": "Segurança da Informação",
     "pergunta": "O protocolo HTTPS utiliza criptografia para proteger a comunicação entre cliente e servidor.",
-    "resposta": true
+    "resposta": true,
+    "id": 46
   },
   {
     "area": "Segurança da Informação",
     "pergunta": "O uso de senhas fortes elimina totalmente o risco de ataques cibernéticos.",
-    "resposta": false
+    "resposta": false,
+    "id": 47
   },
   {
     "area": "Segurança da Informação",
     "pergunta": "Firewalls ajudam a controlar o tráfego de rede, impedindo acessos não autorizados.",
-    "resposta": true
+    "resposta": true,
+    "id": 48
   },
 
   {
     "area": "Computação Gráfica",
     "pergunta": "O algoritmo de Bresenham é utilizado para rasterização de linhas.",
-    "resposta": true
+    "resposta": true,
+    "id": 49
   },
   {
     "area": "Computação Gráfica",
     "pergunta": "Shaders são scripts usados para controlar a renderização em GPUs.",
-    "resposta": true
+    "resposta": true,
+    "id": 50
   },
   {
     "area": "Computação Gráfica",
     "pergunta": "O modelo RGB é baseado em subtração de cores.",
-    "resposta": false
+    "resposta": false,
+    "id": 51
   },
   {
     "area": "Computação Gráfica",
     "pergunta": "Ray tracing simula o comportamento da luz para gerar imagens realistas.",
-    "resposta": true
+    "resposta": true,
+    "id": 52
   },
   {
     "area": "Computação Gráfica",
     "pergunta": "Modelagem 3D é feita exclusivamente com polígonos triangulares.",
-    "resposta": false
+    "resposta": false,
+    "id": 53
   },
 
   {
     "area": "Arquitetura de Computadores",
     "pergunta": "O barramento de dados é responsável por transferir informações entre CPU e memória.",
-    "resposta": true
+    "resposta": true,
+    "id": 54
   },
   {
     "area": "Arquitetura de Computadores",
     "pergunta": "O pipeline de instruções melhora a eficiência executando instruções sequencialmente, uma de cada vez.",
-    "resposta": false
+    "resposta": false,
+    "id": 55
   },
   {
     "area": "Arquitetura de Computadores",
     "pergunta": "Memórias cache são mais rápidas que memórias RAM.",
-    "resposta": true
+    "resposta": true,
+    "id": 56
   },
   {
     "area": "Arquitetura de Computadores",
     "pergunta": "Registradores são unidades de armazenamento localizadas fora da CPU.",
-    "resposta": false
+    "resposta": false,
+    "id": 57
   },
   {
     "area": "Arquitetura de Computadores",
     "pergunta": "O conjunto de instruções RISC tende a ter instruções mais simples que o CISC.",
-    "resposta": true
+    "resposta": true,
+    "id": 58
   },
 
   {
     "area": "Computação Quântica",
     "pergunta": "Um qubit pode representar 0 e 1 ao mesmo tempo, devido ao fenômeno da superposição.",
-    "resposta": true
+    "resposta": true,
+    "id": 59
   },
   {
     "area": "Computação Quântica",
     "pergunta": "A computação quântica é baseada nos mesmos princípios que a computação clássica.",
-    "resposta": false
+    "resposta": false,
+    "id": 60
   },
   {
     "area": "Computação Quântica",
     "pergunta": "O entrelaçamento quântico permite que dois qubits compartilhem informações instantaneamente.",
-    "resposta": true
+    "resposta": true,
+    "id": 61
   },
   {
     "area": "Computação Quântica",
     "pergunta": "Computadores quânticos são largamente utilizados em produção atualmente.",
-    "resposta": false
+    "resposta": false,
+    "id": 62
   },
 
   {
     "area": "Computação em Nuvem",
     "pergunta": "SaaS significa Software as a Service.",
-    "resposta": true
+    "resposta": true,
+    "id": 63
   },
   {
     "area": "Computação em Nuvem",
     "pergunta": "Na computação em nuvem, a escalabilidade horizontal significa adicionar mais recursos a uma máquina individual.",
-    "resposta": false
+    "resposta": false,
+    "id": 64
   },
   {
     "area": "Computação em Nuvem",
     "pergunta": "Containers como Docker permitem empacotar aplicações com todas as suas dependências.",
-    "resposta": true
+    "resposta": true,
+    "id": 65
   },
   {
     "area": "Computação em Nuvem",
     "pergunta": "Backup em nuvem não é recomendado para dados sensíveis.",
-    "resposta": false
+    "resposta": false,
+    "id": 66
   }
 ]

@@ -21,6 +21,10 @@ urlpatterns: list[URLPattern | URLResolver] = [
     path("api/guess/hint/", views.GuessView.request_hint),
     path("api/guess/entity/", views.GuessView.request_entity),
     path("api/guess/load/", views.GuessView.request_load),
+    
+    # ToF mode requests.
+    path("api/true-or-false/start/", views.TrueOrFalseView.start_game),
+    path("api/true-or-false/answer/", views.TrueOrFalseView.submit_answer),
 
     # Player urls.
     path("login/", views.PlayerView.serve_login, name="player-login"),

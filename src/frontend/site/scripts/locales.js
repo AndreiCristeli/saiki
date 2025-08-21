@@ -3,7 +3,7 @@
  * 
  * @author AndreiCristeli
  * 
- * @version 0.1
+ * @version 0.2
  */
 
 const resources = {
@@ -16,7 +16,13 @@ const resources = {
       custom_question: "Qual é o algoritmo?",
       inputPlaceholder: "Escreva aqui",
       attempts: "Tentativas: ",
+      tof_question: "É verdadeiro ou falso?",
       howToPlay: "Como jogar",
+      howToPlayTOF: "Responda as perguntas com verdairo ou falso com base nos seus conhecimentos.",
+      topicsTextTOF: "Perguntas estas que são separadas por temas da computação.",
+      scoreTextTOF: "Pontuação de 0 a 5 de acordo com a quantidade de acertos.",
+      topicsTitleTOF: "Tópicos",
+      scoreTitleTOF: "Pontuação",
       description: "Você deve adivinhar o algoritmo do dia se baseando nas pistas.",
       categoryInfoTitle: "Categoria",
       categoryInfoText: "O tipo ou propósito geral do algoritmo. Ex: ordenação, busca, grafos, otimização, geometria computacional.",
@@ -43,7 +49,13 @@ const resources = {
       custom_question: "What is the algorithm?",
       inputPlaceholder: "Type here",
       attempts: "Attempts: ",
+      tof_question: "Is True or False?",
       howToPlay: "How to play",
+      howToPlayTOF: "Answer the questions true or false based on your knowledge.",
+      topicsTextTOF: "These questions are separated by computing topics.",
+      scoreTextTOF: "Scores range from 0 to 5 based on the number of correct answers.",
+      topicsTitleTOF: "Topics",
+      scoreTitleTOF: "Score",
       description: "You must guess the algorithm of the day based on the clues.",
       categoryInfoTitle: "Category",
       categoryInfoText: "The general type or purpose of the algorithm. E.g., sorting, search, graphs, optimization, computational geometry.",
@@ -59,6 +71,141 @@ const resources = {
       solutionInfoText: "Approach type. Exact: gives guaranteed correct answer. Approximate: gives near-optimal solution. Heuristic: uses practical rules for good (but not guaranteed) answers.",
       generalityInfoTitle: "Generality",
       generalityInfoText: "Does it solve any problem in its category or does it need specific conditions? E.g., BubbleSort works on any list; RadixSort needs integers."
+    }
+  },
+  es: {
+    translation: {
+      daily: "Diario",
+      trueOrFalse: "Verdadero o Falso",
+      custom: "Personalizado",
+      index_question: "¿Cuál es el algoritmo del día?",
+      custom_question: "¿Cuál es el algoritmo?",
+      inputPlaceholder: "Escribe aquí",
+      attempts: "Intentos: ",
+      tof_question: "¿Es verdadero o falso?",
+      howToPlay: "Cómo jugar",
+      howToPlayTOF: "Responde las preguntas con verdadero o falso según tus conocimientos.",
+      topicsTextTOF: "Estas preguntas están organizadas por temas de computación.",
+      scoreTextTOF: "Puntuación de 0 a 5 según la cantidad de aciertos.",
+      topicsTitleTOF: "Temas",
+      scoreTitleTOF: "Puntuación",
+      description: "Debes adivinar el algoritmo del día basándote en las pistas.",
+      categoryInfoTitle: "Categoría",
+      categoryInfoText: "El tipo o propósito general del algoritmo. Ej.: ordenación, búsqueda, grafos, optimización, geometría computacional.",
+      yearInfoTitle: "Año",
+      yearInfoText: "Año de creación o publicación del algoritmo. Se refiere al momento en que fue propuesto o documentado por primera vez.",
+      timeInfoTitle: "Complejidad Temporal Promedio",
+      timeInfoText: "Tiempo esperado que el algoritmo tarda en ejecutarse en casos comunes. Representado en notación Big-O: O(n), O(n log n), etc.",
+      spaceInfoTitle: "Complejidad Espacial Auxiliar",
+      spaceInfoText: "Memoria extra necesaria además de la entrada original. También expresada en Big-O, como O(1), O(n). No cuenta la memoria ocupada por los datos de entrada.",
+      structureInfoTitle: "Estructura de Datos",
+      structureInfoText: "Las estructuras utilizadas para procesar la información. Ej.: listas, colas, pilas, árboles, montículos, tablas hash.",
+      solutionInfoTitle: "Solución",
+      solutionInfoText: "Tipo de enfoque adoptado por el algoritmo. Exacta: resuelve el problema con respuesta garantizada. Aproximada: genera una solución cercana a la ideal. Heurística: usa reglas prácticas para encontrar buenas soluciones.",
+      generalityInfoTitle: "Generalidad",
+      generalityInfoText: "¿El algoritmo resuelve cualquier tipo de problema dentro de su categoría o requiere condiciones específicas? Ej.: BubbleSort ordena cualquier vector. RadixSort requiere enteros."
+    }
+  },
+
+  ja: {
+    translation: {
+      daily: "デイリー",
+      trueOrFalse: "真か偽か",
+      custom: "カスタム",
+      index_question: "今日のアルゴリズムは何ですか？",
+      custom_question: "アルゴリズムは何ですか？",
+      inputPlaceholder: "ここに入力してください",
+      attempts: "試行回数: ",
+      tof_question: "これは真ですか偽ですか？",
+      howToPlay: "遊び方",
+      howToPlayTOF: "知識に基づいて真偽で答えてください。",
+      topicsTextTOF: "これらの質問は計算機科学のトピックごとに分けられています。",
+      scoreTextTOF: "正答数に基づいて0から5までのスコア。",
+      topicsTitleTOF: "トピック",
+      scoreTitleTOF: "スコア",
+      description: "ヒントをもとに今日のアルゴリズムを推測してください。",
+      categoryInfoTitle: "カテゴリ",
+      categoryInfoText: "アルゴリズムの一般的な種類や目的。例: ソート、探索、グラフ、最適化、計算幾何学。",
+      yearInfoTitle: "年",
+      yearInfoText: "アルゴリズムが初めて提案または文書化された年。",
+      timeInfoTitle: "平均時間計算量",
+      timeInfoText: "典型的な入力に対してアルゴリズムがかかる期待時間。Big-O記法で表現: O(n), O(n log n) など。",
+      spaceInfoTitle: "補助空間計算量",
+      spaceInfoText: "入力以外に必要な追加メモリ。Big-Oで表される。例: O(1), O(n)。入力そのもののメモリは含まない。",
+      structureInfoTitle: "データ構造",
+      structureInfoText: "データを処理するために使用される構造。例: リスト、キュー、スタック、ツリー、ヒープ、ハッシュテーブル。",
+      solutionInfoTitle: "解法",
+      solutionInfoText: "アルゴリズムのアプローチ。厳密解: 常に正しい解を保証。近似解: 最適解に近い答え。ヒューリスティック: 実用的な規則で良い解を見つける。",
+      generalityInfoTitle: "一般性",
+      generalityInfoText: "カテゴリ内のすべての問題を解決できるか、特定の条件が必要か。例: バブルソートは任意の配列を整列可能。基数ソートは整数が必要。"
+    }
+  },
+
+  it: {
+    translation: {
+      daily: "Giornaliero",
+      trueOrFalse: "Vero o Falso",
+      custom: "Personalizzato",
+      index_question: "Qual è l'algoritmo di oggi?",
+      custom_question: "Qual è l'algoritmo?",
+      inputPlaceholder: "Scrivi qui",
+      attempts: "Tentativi: ",
+      tof_question: "È vero o falso?",
+      howToPlay: "Come giocare",
+      howToPlayTOF: "Rispondi alle domande con vero o falso in base alle tue conoscenze.",
+      topicsTextTOF: "Queste domande sono suddivise per argomenti di informatica.",
+      scoreTextTOF: "Punteggio da 0 a 5 in base al numero di risposte corrette.",
+      topicsTitleTOF: "Argomenti",
+      scoreTitleTOF: "Punteggio",
+      description: "Devi indovinare l'algoritmo del giorno basandoti sugli indizi.",
+      categoryInfoTitle: "Categoria",
+      categoryInfoText: "Il tipo o lo scopo generale dell'algoritmo. Es: ordinamento, ricerca, grafi, ottimizzazione, geometria computazionale.",
+      yearInfoTitle: "Anno",
+      yearInfoText: "Anno di creazione o pubblicazione dell'algoritmo.",
+      timeInfoTitle: "Complessità Temporale Media",
+      timeInfoText: "Tempo atteso che l'algoritmo impiega per eseguirsi nei casi comuni. Espresso in notazione Big-O: O(n), O(n log n), ecc.",
+      spaceInfoTitle: "Complessità Spaziale Ausiliaria",
+      spaceInfoText: "Memoria extra necessaria oltre all'input. In notazione Big-O, come O(1), O(n).",
+      structureInfoTitle: "Struttura Dati",
+      structureInfoText: "Le strutture utilizzate per elaborare i dati. Es: liste, code, pile, alberi, heap, tabelle hash.",
+      solutionInfoTitle: "Soluzione",
+      solutionInfoText: "Tipo di approccio adottato. Esatto: risposta garantita. Approssimato: soluzione vicina all'ottimale. Euristico: regole pratiche per soluzioni buone ma non garantite.",
+      generalityInfoTitle: "Generalità",
+      generalityInfoText: "Risolvi qualsiasi problema nella categoria o richiede condizioni specifiche? Es: BubbleSort ordina qualsiasi vettore. RadixSort richiede interi."
+    }
+  },
+
+  fr: {
+    translation: {
+      daily: "Quotidien",
+      trueOrFalse: "Vrai ou Faux",
+      custom: "Personnalisé",
+      index_question: "Quel est l'algorithme du jour ?",
+      custom_question: "Quel est l'algorithme ?",
+      inputPlaceholder: "Écrivez ici",
+      attempts: "Essais : ",
+      tof_question: "Est-ce vrai ou faux ?",
+      howToPlay: "Comment jouer",
+      howToPlayTOF: "Répondez aux questions par vrai ou faux selon vos connaissances.",
+      topicsTextTOF: "Ces questions sont organisées par thèmes informatiques.",
+      scoreTextTOF: "Score de 0 à 5 en fonction du nombre de bonnes réponses.",
+      topicsTitleTOF: "Sujets",
+      scoreTitleTOF: "Score",
+      description: "Vous devez deviner l'algorithme du jour à partir des indices.",
+      categoryInfoTitle: "Catégorie",
+      categoryInfoText: "Le type ou l'objectif général de l'algorithme. Ex : tri, recherche, graphes, optimisation, géométrie computationnelle.",
+      yearInfoTitle: "Année",
+      yearInfoText: "Année de création ou de publication de l'algorithme.",
+      timeInfoTitle: "Complexité Temporelle Moyenne",
+      timeInfoText: "Temps attendu pour exécuter l'algorithme dans les cas typiques. En notation Big-O : O(n), O(n log n), etc.",
+      spaceInfoTitle: "Complexité Spatiale Auxiliaire",
+      spaceInfoText: "Mémoire supplémentaire nécessaire en plus de l'entrée. Exprimée en Big-O comme O(1), O(n).",
+      structureInfoTitle: "Structure de Données",
+      structureInfoText: "Structures utilisées pour traiter les données. Ex : listes, files, piles, arbres, tas, tables de hachage.",
+      solutionInfoTitle: "Solution",
+      solutionInfoText: "Type d'approche adoptée. Exacte : réponse garantie. Approximative : proche de l'optimum. Heuristique : règles pratiques pour de bonnes solutions.",
+      generalityInfoTitle: "Généralité",
+      generalityInfoText: "Résout-il tous les problèmes de sa catégorie ou nécessite-t-il des conditions spécifiques ? Ex : BubbleSort trie n'importe quel vecteur. RadixSort nécessite des entiers."
     }
   }
 };
