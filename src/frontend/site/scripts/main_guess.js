@@ -52,7 +52,7 @@ window.onload = function () {
 	select_language.addEventListener('change', () => changeLanguage(select_language.value));
 
 	const nav_logout = document.querySelector(".logout-btn");
-	nav_logout.addEventListener("click", () => renderer.input_handler.logout_click());
+	nav_logout.addEventListener("click", (event) => renderer.input_handler.logout_click(event));
 
 	const closeBtn = document.querySelector('.closeDialog');
 	if (closeBtn) {

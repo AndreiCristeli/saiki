@@ -135,8 +135,9 @@ export class InputHandler {
 		await this.process_input();
 	}
 
-	logout_click(){
-		api("/logout/");
+	async logout_click(event){
+		console.log("saa~sdsdsd");
+		await api("/logout/", "GET", null);
 	}
 }
 
