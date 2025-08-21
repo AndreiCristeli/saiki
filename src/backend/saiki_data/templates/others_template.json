@@ -1,0 +1,80 @@
+[
+  {
+    "name": "Huffman",
+    "type": "Algorithm",
+    "data": {
+      "category": "Data Compression",
+      "year": 1952,
+      "average_time_complexity": "O(n \\log n)",
+      "auxiliary_space_complexity": "O(n)",
+      "data_structure": ["Binary Tree"],
+      "kind_of_solution": "Exact",
+      "generality": "General-purpose"
+    }
+  },
+  {
+    "name": "RSA",
+    "type": "Algorithm",
+    "data": {
+      "category": "Asymmetric Cryptography",
+      "year": 1977,
+      "average_time_complexity": "O(n^3)",
+      "auxiliary_space_complexity": "O(n)",
+      "data_structure": ["Large Integers"],
+      "kind_of_solution": "Exact",
+      "generality": "General-purpose"
+    }
+  },
+  {
+    "name": "Ford-Fulkerson",
+    "type": "Algorithm",
+    "data": {
+      "category": "Maximum Flow in Graphs",
+      "year": 1956,
+      "average_time_complexity": "O(|E| \\cdot f)",
+      "auxiliary_space_complexity": "O(|V|)",
+      "data_structure": ["Residual Graph"],
+      "kind_of_solution": "Exact",
+      "generality": "General-purpose"
+    }
+  },
+  {
+    "name": "Edmonds-Karp",
+    "type": "Algorithm",
+    "data": {
+      "category": "Maximum Flow in Graphs",
+      "year": 1972,
+      "average_time_complexity": "O(|V| \\cdot |E|^2)",
+      "auxiliary_space_complexity": "O(|V|)",
+      "data_structure": ["Queue, Residual Graph"],
+      "kind_of_solution": "Exact",
+      "generality": "General-purpose"
+    }
+  },
+  {
+    "name": "Karatsuba",
+    "type": "Algorithm",
+    "data": {
+      "category": "Large Integer Multiplication",
+      "year": 1960,
+      "average_time_complexity": "O(n^{\\log_{2}{3}})",
+      "auxiliary_space_complexity": "O(n)",
+      "data_structure": ["Digit Array"],
+      "kind_of_solution": "Exact",
+      "generality": "General-purpose"
+    }
+  },
+  {
+    "name": "MapReduce",
+    "type": "Algorithm",
+    "data": {
+      "category": "Parallel Computing / Big Data Processing",
+      "year": 2004,
+      "average_time_complexity": "O(n \\log n * \\frac{s}{p} )",
+      "auxiliary_space_complexity": "Distributed",
+      "data_structure": ["Key-Value Pairs"],
+      "kind_of_solution": "Exact",
+      "generality": "General-purpose"
+    }
+  }
+]

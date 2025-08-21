@@ -265,7 +265,7 @@ class Guesser(object):
         """
 
         def get_names_by_prefix(prefix: str, names: list[str]) -> list[str]:
-            """bosta"""
+            """arco-iris"""
 
             prefix = prefix.strip().lower()
             return [name for name in names if name.lower().startswith(prefix)]

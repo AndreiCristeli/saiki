@@ -1,0 +1,106 @@
+[
+  {
+    "name": "Breadth-First Search (BFS)",
+    "type": "Algorithm",
+    "data": {
+      "category": "Graph Search",
+      "year": 1959,
+      "average_time_complexity": "O(|V| + |E|)",
+      "auxiliary_space_complexity": "O(|V|)",
+      "data_structure": ["Graph"],
+      "kind_of_solution": "Exact",
+      "generality": "General-purpose"
+    }
+  },
+  {
+    "name": "Depth-First Search (DFS)",
+    "type": "Algorithm",
+    "data": {
+      "category": "Graph Search",
+      "year": 1959,
+      "average_time_complexity": "O(|V| + |E|)",
+      "auxiliary_space_complexity": "O(|V|)",
+      "data_structure": ["Graph"],
+      "kind_of_solution": "Exact",
+      "generality": "General-purpose"
+    }
+  },
+  {
+    "name": "Dijkstra's Algorithm",
+    "type": "Algorithm",
+    "data": {
+      "category": "Graph Search",
+      "year": 1956,
+      "average_time_complexity": "O((|V| + |E|) \\log |V|)",
+      "auxiliary_space_complexity": "O(|V|)",
+      "data_structure": ["Graph"],
+      "kind_of_solution": "Exact",
+      "generality": "General-purpose (non-negative weights)"
+    }
+  },
+  {
+    "name": "A* Search",
+    "type": "Algorithm",
+    "data": {
+      "category": "Graph Search",
+      "year": 1968,
+      "average_time_complexity": "O(|E|)",
+      "auxiliary_space_complexity": "O(|V|)",
+      "data_structure": ["Graph"],
+      "kind_of_solution": "Exact",
+      "generality": "General-purpose (with admissible heuristic)"
+    }
+  },
+  {
+    "name": "Bellman-Ford Algorithm",
+    "type": "Algorithm",
+    "data": {
+      "category": "Graph Search",
+      "year": 1958,
+      "average_time_complexity": "O(|V| \\cdot |E|)",
+      "auxiliary_space_complexity": "O(|V|)",
+      "data_structure": ["Graph"],
+      "kind_of_solution": "Exact",
+      "generality": "General-purpose"
+    }
+  },
+  {
+    "name": "Floyd-Warshall Algorithm",
+    "type": "Algorithm",
+    "data": {
+      "category": "Graph Search",
+      "year": 1962,
+      "average_time_complexity": "O(|V|^3)",
+      "auxiliary_space_complexity": "O(|V|^2)",
+      "data_structure": ["Graph", "Simple"],
+      "kind_of_solution": "Exact",
+      "generality": "General-purpose"
+    }
+  },
+  {
+    "name": "Bidirectional Search",
+    "type": "Algorithm",
+    "data": {
+      "category": "Graph Search",
+      "year": 1971,
+      "average_time_complexity": "O(b^{d/2})",
+      "auxiliary_space_complexity": "O(b^{d/2})",
+      "data_structure": ["Graph"],
+      "kind_of_solution": "Exact",
+      "generality": "General-purpose"
+    }
+  },
+  {
+    "name": "Best-First Search",
+    "type": "Algorithm",
+    "data": {
+      "category": "Graph Search",
+      "year": 1985,
+      "average_time_complexity": "O(|E|)",
+      "auxiliary_space_complexity": "O(|V|)",
+      "data_structure": ["Graph"],
+      "kind_of_solution": "Approximate",
+      "generality": "General-purpose"
+    }
+  }
+]
