@@ -155,7 +155,7 @@ class TrueOrFalseGameLogic:
         questions = []
         
         # questions_path = "../../../data/tf_template.json"
-        questions_path: str = path.join(path.dirname(__file__), "../../../data/tf_template.json")
+        questions_path: str = path.join(path.dirname(__file__), "../saiki_data/templates/tf_template.json")
         
         with open(questions_path, 'r', encoding='utf-8') as file:
             all_questions = json.load(file)
@@ -280,7 +280,7 @@ class TrueOrFalseView(object):
     def empty() -> JsonResponse:
         """Represents an empty JSON response."""
         return JsonResponse({})
-
+    
     @staticmethod
     @csrf_exempt
     def start_game(req: WSGIRequest) -> JsonResponse:
@@ -358,7 +358,7 @@ class TrueOrFalseView(object):
                 raise ValueError("question_index inválido ou ausente")
             if user_answer is None or not isinstance(user_answer, bool):
                 raise ValueError("answer deve ser um booleano")
-
+        
         except (TypeError, KeyError, ValueError, json.JSONDecodeError) as e:
             print(f"Erro ao processar dados: {e}")
             return JsonResponse({'error': f'Dados inválidos: {str(e)}'}, status=400)

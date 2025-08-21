@@ -13,8 +13,6 @@ import { Hints } from "./hints.js"
 import * as eg from "./easter_eggs.js"
 import { api } from "./api.js";
 
-import { api } from "./api.js"
-
 // TODO: Handle entity_type properly according to user's selection.
 const ENTITY_TYPE_PH = "Algorithm"
 
@@ -258,7 +256,7 @@ export class InputHandler {
 		console.log("saa~sdsdsd");
 		await api("/logout/", "GET", null);
 	}
-	
+
 	// Nova função para processar resposta global
 	async process_global_tof_answer(answer, question_index) {
 		console.log(question_index);
@@ -342,7 +340,7 @@ export class InputHandler {
 			// Mostrar botão de novo jogo
 			const newGameDiv = this.show_new_game_option();
 
-			// 👉 Se a div foi criada, rolar até ela
+			//  Se a div foi criada, rolar até ela
 			if (newGameDiv) {
 				document.body.scrollIntoView({ behavior: "smooth" });
 			}
