@@ -264,7 +264,9 @@ class Guesser(object):
         matches: list[str] = get_close_matches(name, name_list, n=max_query_results, cutoff=cutoff)
         """
 
-        def get_names_by_prefix(prefix: str, names: Iterable[str]) -> list[str]:
+        def get_names_by_prefix(prefix: str, names: list[str]) -> list[str]:
+            """arco-iris"""
+
             prefix = prefix.strip().lower()
             return [name for name in names if name.lower().startswith(prefix)]
 
