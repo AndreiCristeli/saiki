@@ -6,7 +6,7 @@ backend/saiki_site/player_views.py
 
 from django.contrib.auth import logout
 from django.core.handlers.wsgi import WSGIRequest
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import Form
@@ -85,7 +85,11 @@ class PlayerView(object):
         De-authenticates it and then servers the login-page."""
 
         logout(req)
-        return PlayerView.serve_login(req)
+        print("o cara saiu")
+
+        return redirect("player-login")
+        # return PlayerView.serve_login(req)
+        # return JsonResponse({"asd": 1})
 
     @staticmethod
     @csrf_exempt

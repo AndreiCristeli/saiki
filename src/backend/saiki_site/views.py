@@ -26,7 +26,7 @@ class FrontendView(object):
         from os import path
 
         # inferring the request...
-        print(type(req), req)
+        # print(type(req), req)
 
         # the html source
         index_path: str = path.join(path.dirname(__file__), "../../frontend/site/html/index.html")

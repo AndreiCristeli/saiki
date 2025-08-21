@@ -255,7 +255,6 @@ class Guesser(object):
         Stateless."""
 
         from typing import Iterable
-
         max_query_results: int = 5
 
         """
@@ -264,21 +263,17 @@ class Guesser(object):
         matches: list[str] = get_close_matches(name, name_list, n=max_query_results, cutoff=cutoff)
         """
 
-        def get_names_by_prefix(prefix: str, names: list[str]) -> list[str]:
-            """arco-iris"""
-
+        def get_names_by_prefix(prefix: str, names: Iterable[str]) -> list[str]:
             prefix = prefix.strip().lower()
             return [name for name in names if name.lower().startswith(prefix)]
 
         attempt_names: list[str] = state.attempted_names
-        name_list: list[str] = list(filter(
+        name_list: Iterable[str] = filter(
             lambda x: x not in attempt_names,
             saiki_entities    # entity names.
-        ))
+        )
 
         matches: list[str] = get_names_by_prefix(name, name_list)[:max_query_results]
-        print(matches)
-
         return matches
 
 
