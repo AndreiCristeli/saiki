@@ -383,13 +383,13 @@ function win_condition(input, input_handler, current_page) {
 		// Only permisse in custom game
 		if(current_page === "custom") {
 			// Adding New Game Button.
-    	const btn = document.createElement("button");
-    	btn.textContent = "Novo Jogo";
-    	btn.className = "btn_new_game";
-    	btn.addEventListener("click", (event) => input_handler.new_game_click(event, btn));
-			
+			const btn = document.createElement("button");
+			btn.textContent = "Novo Jogo";
+			btn.className = "btn_new_game";
+			btn.addEventListener("click", (event) => input_handler.new_game_click(event, btn));
+				
 			// Appending New Game's Button as a Child of New Game Div.
-    	div.appendChild(btn);
+			div.appendChild(btn);
 		}
 		
 		input.parentNode.replaceChild(div, input);
@@ -401,6 +401,7 @@ function reset_game(container, input_handler) {
     
     // Limpeza comum para ambos os modos
     const cardsContainer = document.querySelector(".cards-container");
+    const newGameContainer = document.querySelector(".div_new_game");
     if (cardsContainer) {
         cardsContainer.innerHTML = "";
     }
@@ -411,7 +412,7 @@ function reset_game(container, input_handler) {
 
 	} else if (currentPage === "custom") {
         // Lógica específica do modo Personalizado
-        reset_custom_mode(cardsContainer, input_handler);
+        reset_custom_mode(newGameContainer, input_handler);
     }
 }
 

@@ -58,6 +58,12 @@ In this example, the player made three attempts:
 
 ## How to Run the Project
 
+### Requirements:
+- Pyhton 3.12 or above
+- Python's pip package manager.
+- A web browser of your choice
+- Optionally `Make` for ease of installation and lauching of the project.
+
 ### Run Locally:
 1. **Clone the repository**
   ```bash
@@ -67,23 +73,20 @@ In this example, the player made three attempts:
 
 2. **Run the MakeFile script**
 
-  *Linux Version* 
+  Simply running:
+
   ```
-  python -m venv .venv
+  make install
+  make django-migrate
   make run-django
-
   ```
+  Should work in both Windows and Linux-based systems.
 
-  *Windows Version*
-  ```
-  python -m venv .venv
-  .venv\Scripts\activate
-  make run-django
-
-  ```
-  this should start a local server in your localhost.
+  This should start a local server in your localhost.
 
 3. **Connect to `localhost:8000`\* in your prefered browser**
+
+*The site must be accessed from `localhost:8000` instead of `127.0.0.1:8000` to work properly. 
 
 ## Releases Notes
 

@@ -24,7 +24,7 @@
   - Eu como Jogador gostaria de visualizar o meu histórico de jogo.
  
 - **H08**:
-  - Eu como Jogador Gostaria de Vizualizar um manual de usuário.
+  - Eu como Jogador Gostaria de visualizar um manual de usuário.
  
 - **H09**:
   - Eu como Jogador gostaria de: Jogar o modo Multi-jogador.
