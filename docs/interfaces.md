@@ -35,7 +35,7 @@ Nela registra-se quantas tentativas e, para cada tentativa, quais são os campos
 
 No modo de jogo aparece uma sequência de perguntas para tentarem serem acertadas.
 
-![Game Screenshot](./docs/imgs/saiki-tof.png)
+![Game Screenshot](./imgs/saiki-tof.png)
 
 
 ## Outras opções
