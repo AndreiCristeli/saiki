@@ -102,3 +102,16 @@ Realizada através de requisições entre scripts em javascript (frontend) e pyt
 ### Usabilidade:
 * Jogo de advinhação simples:
 Atualmente, o jogo de advinhação está disponível para os algoritmos de ordenação.
+
+
+
+# Colaboradores
+Nós são os integrantes desde projeto:
+
+- Andrei Miguel Cristeli;
+- Cristiano Augusto Mafuz;
+- Gabriel Carlos Silva;
+- Hebert Luiz Madeira Pascoal;
+- Pedro Parentoni;
+- Victor Emmanuel Susko Guimarães;
+- Victor Xavier Costa.
