@@ -1,0 +1,10 @@
+{% extends "painel_jogador.html" %}
+
+{% block content %}
+  <h2>Criar Sessão</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Criar Sessão</button>
+  </form>
+{% endblock %}

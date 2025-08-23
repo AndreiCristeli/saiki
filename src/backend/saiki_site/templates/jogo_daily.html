@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saiki - Sessão {{ sessao.id }}</title>
+  <link rel="stylesheet" href="/static/site/css/style.css">
+  <link rel="shortcut icon" href="/static/assets/favicon.ico" type="image/x-icon">
+
+  <!-- katex dependencies -->
+  <link rel="stylesheet" href="/static/dependencies/katex/katex.min.css">
+  <script defer src="/static/dependencies/katex/katex.min.js"></script>
+  <script defer src="/static/dependencies/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body);"></script>
+
+  <!-- Translate scripts -->
+  <script src="/static/site/scripts/locales.js"></script>
+  <script src="https://unpkg.com/i18next@22.4.10/i18next.min.js"></script>
+
+  <style>
+    body { font-family: Arial; margin: 0; padding: 20px; background: #1e2a38; color: #f0f0f0; }
+    h1 { text-align: center; margin-bottom: 20px; color: #ffffff; }
+    .container { display: flex; gap: 20px; max-width: 1200px; margin: auto; }
+    .left { flex: 2; } 
+    .right { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+    .card { background: #2c3e50; padding: 20px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.5); color: #f0f0f0; }
+    .chat { max-height: 300px; overflow-y: auto; border: 1px solid #4a5a6a; padding: 10px; background: #34495e; }
+    .message { margin-bottom: 10px; }
+    .bold { font-weight: bold; }
+    .btn { padding: 10px 20px; background: #2980b9; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background: #1f6391; }
+    .input-hint { margin-bottom: 15px; }
+    .Input { width: 100%; padding: 10px; font-size: 1em; border-radius:5px; border:none; }
+    .attempts { display: flex; gap: 10px; margin-bottom: 10px; }
+    .hint-labels { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; list-style: none; padding: 0; }
+    .cards-container { margin-top: 10px; }
+    footer.footer { text-align: center; margin-top: 20px; color: #ccc; }
+  </style>
+</head>
+
+<body data-page="diary">
+  <h1>Sessão #{{ sessao.id }}</h1>
+
+  <div class="container">
+    <!-- Jogo Diário -->
+    <div class="left card">
+      <h2 class="index_question">Qual é o algoritmo do dia?</h2>
+      <div class="input-hint">
+        <input type="text" placeholder="Escreva aqui" class="Input" id="resposta-algoritmo">
+      </div>
+      <div class="attempts">
+        <div class="attempts-label">Tentativas: </div>
+        <div class="attempts-field" id="tentativas-count">
+          {{ tentativas }}
+        </div>
+      </div>
+      <ul class="hint-labels">
+        <li>Categoria</li>
+        <li>Ano</li>
+        <li>Complexidade Temporal Média</li>
+        <li>Complexidade Espacial Auxiliar</li>
+        <li>Estrutura de Dados</li>
+        <li>Solução</li>
+        <li>Generalidade</li>
+      </ul>
+      <div class="cards-container"></div>
+    </div>
+
+    <!-- Informações da Sessão e Chat -->
+    <div class="right">
+      <div class="card">
+        <p><span class="bold">Chave Pública:</span> {{ sessao.public_key }}</p>
+        <p><span class="bold">Status:</span> {% if sessao.status %} Ativa {% else %} Encerrada {% endif %}</p>
+        <p><span class="bold">Tipo de Jogo:</span> {{ tipo_jogo }}</p>
+        <p><span class="bold">Tempo:</span> {{ tempo_corrente }}</p>
+        <p><span class="bold">Jogadores Ativos:</span></p>
+        <ul>
+          {% for p in sessao.active_players.all %}
+            <li>{{ p.name_public }}</li>
+          {% endfor %}
+        </ul>
+
+        {% if jogador.user == sessao.root_player.user and sessao.status %}
+        <form method="post" action="{% url 'encerrar_sessao' sessao.id %}">
+          {% csrf_token %}
+          <button class="btn" type="submit">Encerrar Sessão</button>
+        </form>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h3>Chat</h3>
+        <div class="chat">
+          {% for msg in mensagens %}
+            <div class="message">
+              <span class="bold">{{ msg.sender.name_public }}</span>: {{ msg.texto }}
+              <br><small>{{ msg.timestamp|date:"d/m/Y H:i" }}</small>
+            </div>
+          {% empty %}
+            <p>Nenhuma mensagem ainda.</p>
+          {% endfor %}
+        </div>
+
+        {% if sessao.status %}
+        <form method="post" style="margin-top:15px;">
+          {% csrf_token %}
+          <div>{{ form.texto }}</div>
+          <button type="submit" class="btn" style="margin-top:5px;">Enviar</button>
+        </form>
+        {% else %}
+        <p>A sessão está encerrada. Não é possível enviar mensagens.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <dialog class="infoDialog">
+    <h1 class="howToPlayTitle">Como jogar</h1>
+    <p class="howToPlayDesc">Você deve adivinhar o algoritmo do dia se baseando nas pistas.</p>
+    <button class="closeDialog" aria-label="Fechar">&times;</button>
+  </dialog>
+
+  <footer class="footer">
+    <select class="translateBox" aria-label="Selecionar idioma">
+      <option value="pt">Português</option>
+      <option value="en">English</option>
+    </select>
+  </footer>
+
+  <!-- Script: apenas +1 tentativa -->
+  <script>
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+          cookie = cookie.trim();
+          if (cookie.startsWith(name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    const csrftoken = getCookie('csrftoken');
+    const inputField = document.getElementById('resposta-algoritmo');
+    const tentativasField = document.getElementById('tentativas-count');
+
+    inputField.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+
+        fetch("{% url 'registrar_tentativa' sessao.id %}", {
+            method: "POST",
+            headers: { "X-CSRFToken": csrftoken }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (typeof data.tentativas === "number") {
+            tentativasField.textContent = data.tentativas;
+            inputField.value = ""; // limpa o campo
+          } else {
+            console.error("Resposta inesperada:", data);
+          }
+        })
+        .catch(err => console.error("Erro de rede:", err));
+      }
+    });
+  </script>
+
+  <script type="module" src="/static/site/scripts/main_guess.js"></script>
+</body>
+</html>

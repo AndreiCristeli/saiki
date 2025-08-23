@@ -13,16 +13,26 @@
         </p>
     </div>
 
+    <!-- Criar Nova Sessão com escolha do tipo de jogo -->
     <form method="post" action="{% url 'criar_sessao' %}" style="margin-top: 30px;">
         {% csrf_token %}
-        <button type="submit" style="padding: 10px 20px; font-size: 1em;">Criar Nova Sessão</button>
+        <label for="tipo_jogo">Escolha o tipo de jogo:</label><br>
+        <select name="tipo_jogo" id="tipo_jogo" required style="padding: 5px; font-size: 1em; margin-top: 5px;">
+            <option value="daily">Jogo Diário</option>
+            <option value="custom">Jogo Custom</option>
+            <option value="vf">Jogo Verdadeiro/Falso</option>
+        </select>
+        <br>
+        <button type="submit" style="padding: 10px 20px; font-size: 1em; margin-top: 10px;">Criar Nova Sessão</button>
     </form>
+
+    <!-- Entrar em Sessão existente -->
     <form method="post" action="{% url 'entrar_sessao' %}" style="margin-top: 20px;">
-    {% csrf_token %}
-    <label for="chave">Entrar em uma Sessão:</label><br>
-    <input type="text" name="chave_publica" id="chave" placeholder="Digite a chave pública" required style="padding: 5px; width: 100%; max-width: 300px;">
-    <br>
-    <button type="submit" style="margin-top: 10px; padding: 8px 16px;">Entrar</button>
+        {% csrf_token %}
+        <label for="chave">Entrar em uma Sessão:</label><br>
+        <input type="text" name="chave_publica" id="chave" placeholder="Digite a chave pública" required style="padding: 5px; width: 100%; max-width: 300px;">
+        <br>
+        <button type="submit" style="margin-top: 10px; padding: 8px 16px;">Entrar</button>
     </form>
 
 {% else %}
@@ -30,3 +40,21 @@
         Jogador não encontrado ou não está logado.
     </div>
 {% endif %}
+<style>
+    .info {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 5px;
+        max-width: 400px;
+    }
+    .info p {
+        margin: 8px 0;
+    }
+    .label {
+        font-weight: bold;
+    }
+    .message {
+        color: red;
+        font-weight: bold;
+    }

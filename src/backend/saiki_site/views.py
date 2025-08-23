@@ -6,7 +6,13 @@ Viewing configuration for saiki_site Django's application.
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
+<<<<<<< Updated upstream
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
+=======
+from django.views.decorators.csrf import csrf_exempt
+from .forms import CriarSessaoForm
+from .guesser import guesser, GuessState
+>>>>>>> Stashed changes
 from typing import Any
 import json
 from .models import example_algorithm
@@ -175,68 +181,129 @@ def jogador_create(request):
 def jogador_success(request):
     return HttpResponse("Jogador criado com sucesso!")
 
+from .models import Session, Jogador, Jogo_daily, Jogo_custom, Jogo_VF
 
 def criar_sessao(request):
     if not request.user.is_authenticated:
-        return redirect('login')  # ou outra view
+        return redirect('login')
 
     jogador = Jogador.objects.get(user=request.user)
 
-    # Gera chave única com name_user + timestamp
-    timestamp = int(time.time())
-    public_key = f"{jogador.name_user}_{timestamp}"
+    if request.method == 'POST':
+        tipo = request.POST.get('tipo_jogo')  # vem direto do painel
 
-    # Cria a sessão (chat será criado automaticamente no save())
-    sessao = Session.objects.create(
-        public_key=public_key,
-        root_player=jogador,
-    )
+        # Gera chave única
+        timestamp = int(time.time())
+        public_key = f"{jogador.name_user}_{timestamp}"
 
-    return redirect('ver_sessao', sessao_id=sessao.id)
+        # Cria a sessão
+        sessao = Session.objects.create(
+            public_key=public_key,
+            root_player=jogador,
+        )
+
+        # Cria o jogo correspondente
+        if tipo == 'daily':
+            jogo = Jogo_daily.objects.create(session=sessao)
+        elif tipo == 'custom':
+            jogo = Jogo_custom.objects.create(session=sessao)
+        elif tipo == 'vf':
+            jogo = Jogo_VF.objects.create(session=sessao)
+        else:
+            jogo = None
+
+        if jogo:
+            jogo.players.add(jogador)
+
+        return redirect('ver_sessao', sessao_id=sessao.id)
 
 from django.shortcuts import render, get_object_or_404, redirect
+from .forms import MessageForm, JogoDailyForm2
+from django.http import JsonResponse
+from django.db.models import F
+
+from django.db.models import F
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+
+@csrf_exempt
+def registrar_tentativa(request, sessao_id):
+    """
+    Dá +1 em tentativas do Jogo_daily ligado à Session(sessao_id) e devolve o número novo.
+    ATÔMICO e sem depender de nada além do ID da sessão.
+    """
+    if request.method != "POST":
+        return JsonResponse({"error": "Método não permitido"}, status=405)
+
+    updated = Jogo_daily.objects.filter(session_id=sessao_id).update(tentativas=F('tentativas') + 1)
+    if not updated:
+        # não existia jogo_daily ainda — cria com tentativas=1
+        jogo = Jogo_daily.objects.create(session_id=sessao_id, tentativas=1)
+        return JsonResponse({ "tentativas": jogo.tentativas })
+
+    # pega o valor atualizado sem race condition
+    novo_valor = Jogo_daily.objects.filter(session_id=sessao_id).values_list('tentativas', flat=True).get()
+    return JsonResponse({ "tentativas": novo_valor })
+
+
 
 def ver_sessao(request, sessao_id):
     if not request.user.is_authenticated:
         return redirect('login')
 
-    jogador = Jogador.objects.get(user=request.user)
+    jogador = get_object_or_404(Jogador, user=request.user)
     sessao = get_object_or_404(Session, id=sessao_id)
 
+    # Pega o jogo diário (se existir)
+    jogo_daily = None
+    tentativas = 0
+    try:
+        jogo_daily = Jogo_daily.objects.get(session=sessao)
+        tentativas = jogo_daily.tentativas
+    except Jogo_daily.DoesNotExist:
+        pass
+
     if request.method == 'POST':
-        form = MessageForm(request.POST)
-        if form.is_valid() and sessao.status:
-            texto = form.cleaned_data['texto']
-
-            # Cria a mensagem com o remetente
-            nova_msg = message.objects.create(sender=jogador, texto=texto)
-
-            # Define todos com acesso ao chat como destinatários, incluindo o próprio sender
-            destinatarios = sessao.players.all()  # ou: sessao.chat.participants.all() se preferir
-            nova_msg.receivers.set(destinatarios)
-            nova_msg.save()
-
-            # Adiciona a mensagem ao chat
-            sessao.chat.add_message(nova_msg)
-
-            # Garante que todos os jogadores estejam nos participantes do chat
-            sessao.chat.participants.add(*destinatarios)
-
-            return redirect('ver_sessao', sessao_id=sessao.id)
-
+        # Chat
+        if 'texto' in request.POST:
+            form = MessageForm(request.POST)
+            if form.is_valid() and sessao.status:
+                texto = form.cleaned_data['texto']
+                nova_msg = message.objects.create(sender=jogador, texto=texto)
+                destinatarios = sessao.players.all()
+                nova_msg.receivers.set(destinatarios)
+                nova_msg.save()
+                sessao.chat.add_message(nova_msg)
+                sessao.chat.participants.add(*destinatarios)
+                return redirect('ver_sessao', sessao_id=sessao.id)
     else:
         form = MessageForm()
 
     tempo_corrente = timezone.now() - sessao.data_inicio if sessao.status else sessao.session_time
     mensagens = sessao.chat.messages.order_by('timestamp')
 
-    return render(request, 'sessao.html', {
+    # Descobre tipo de jogo
+    tipo_jogo = "Não definido"
+    template = 'sessao.html'
+    if jogo_daily:
+        tipo_jogo = "Diário"
+        template = 'jogo_daily.html'
+    elif sessao.games.filter(jogo_custom__isnull=False).exists():
+        tipo_jogo = "Customizado"
+    elif sessao.games.filter(jogo_vf__isnull=False).exists():
+        tipo_jogo = "Verdadeiro/Falso"
+
+    return render(request, template, {
         'sessao': sessao,
         'jogador': jogador,
         'mensagens': mensagens,
         'tempo_corrente': tempo_corrente,
         'form': form,
+        'jogo_form': jogo_daily,   # objeto inteiro (caso precise acessar mais coisas)
+        'tentativas': tentativas,  # contador já resolvido
+        'tipo_jogo': tipo_jogo,
     })
+
     
 def encerrar_sessao(request, sessao_id):
     if not request.user.is_authenticated:
@@ -272,4 +339,12 @@ def entrar_sessao(request):
 
         return redirect('ver_sessao', sessao_id=sessao.id)
 
+<<<<<<< Updated upstream
     return redirect('painel_jogador')
+=======
+    return redirect('painel_jogador')
+
+
+from django.http import JsonResponse
+
+>>>>>>> Stashed changes

@@ -190,3 +190,51 @@ class Session(models.Model):
     class Meta:
         verbose_name = "Session"
         verbose_name_plural = "Sessions"
+        
+        
+class Jogo(models.Model):
+    """Represents a game; the entity."""
+
+    id = models.AutoField(primary_key=True)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='games')
+    players = models.ManyToManyField(Jogador, related_name='games')
+    data_inicio = models.DateTimeField(auto_now_add=True)
+    data_fim = models.DateTimeField(null=True, blank=True)
+
+    tentativas = IntegerField(default=0)
+    
+    
+    def __str__(self):
+        return f"Game {self.id} in Session {self.session.id}"
+
+    class Meta:
+        verbose_name = "Game"
+        verbose_name_plural = "Games"
+        
+class Jogo_daily(Jogo):
+    """Represents a daily game; the entity."""
+
+    daily_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Daily Game {self.id} on {self.daily_date}"
+
+    class Meta:
+        verbose_name = "Daily Game"
+        verbose_name_plural = "Daily Games"
+
+class Jogo_custom(Jogo):
+    """Represents a custom game; the entity."""
+    class Meta:
+        verbose_name = "Custom Game"
+        verbose_name_plural = "Custom Games"
+        
+class Jogo_VF(Jogo):
+    """Represents a custom game; the entity."""
+    pontuacao = IntegerField(default=0)
+    acertos = IntegerField(default=0)
+    erros = IntegerField(default=0)
+    
+    class Meta:
+        verbose_name = "VF Game"
+        verbose_name_plural = "VF Games"

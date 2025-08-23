@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Jogador, Session, message, chat
-from .forms import JogadorForm
+from .models import Jogador, Session, message, chat, Jogo, Jogo_daily, Jogo_custom, Jogo_VF
+from .forms import JogadorForm, JogoForm, JogoDailyForm, JogoCustomForm, JogoVFForm
 
 @admin.register(Jogador)
 class JogadorAdmin(admin.ModelAdmin):
@@ -49,3 +49,38 @@ class ChatAdmin(admin.ModelAdmin):
     def get_participants(self, obj):
         return ", ".join([p.name_user for p in obj.participants.all()])
     get_participants.short_description = 'Participants'
+
+
+@admin.register(Jogo)
+class JogoAdmin(admin.ModelAdmin):
+    form = JogoForm
+    list_display = ('id', 'session', 'data_inicio', 'data_fim')
+    list_filter = ('session', 'data_inicio', 'data_fim')
+    search_fields = ('id', 'session__id')
+    filter_horizontal = ('players',)  # facilita escolha no ManyToMany
+
+
+@admin.register(Jogo_daily)
+class JogoDailyAdmin(admin.ModelAdmin):
+    form = JogoDailyForm
+    list_display = ('id', 'session', 'daily_date', 'data_inicio', 'data_fim')
+    list_filter = ('daily_date', 'session')
+    search_fields = ('id', 'session__id')
+    filter_horizontal = ('players',)
+
+
+@admin.register(Jogo_custom)
+class JogoCustomAdmin(admin.ModelAdmin):
+    form = JogoCustomForm
+    list_display = ('id', 'session', 'data_inicio', 'data_fim')
+    list_filter = ('session', 'data_inicio', 'data_fim')
+    search_fields = ('id', 'session__id')
+    filter_horizontal = ('players',)
+    
+@admin.register(Jogo_VF)
+class JogoVFAdmin(admin.ModelAdmin):
+    form = JogoVFForm
+    list_display = ('id', 'session', 'pontuacao', 'acertos', 'data_inicio', 'data_fim')
+    list_filter = ('session', 'data_inicio', 'data_fim', 'pontuacao', 'acertos')
+    search_fields = ('id', 'session__id')
+    filter_horizontal = ('players',)

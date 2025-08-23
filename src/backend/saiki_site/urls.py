@@ -7,7 +7,7 @@ URL configuration for saiki_site Django's application.
 from django.urls import path
 from django.urls.resolvers import URLPattern, URLResolver
 from . import views
-
+from .views import registrar_tentativa
 
 urlpatterns: list[URLPattern | URLResolver] = [
     path("", views.FrontendView.serve_frontend),
@@ -31,8 +31,12 @@ urlpatterns: list[URLPattern | URLResolver] = [
     path('sessao/<int:sessao_id>/', views.ver_sessao, name='ver_sessao'),
     path('sessao/<int:sessao_id>/encerrar/', views.encerrar_sessao, name='encerrar_sessao'),
     path('entrar-sessao/', views.entrar_sessao, name='entrar_sessao'),
+<<<<<<< Updated upstream
 
 
+=======
+    path("sessao/<int:sessao_id>/tentativa/", views.registrar_tentativa, name="registrar_tentativa"),
+>>>>>>> Stashed changes
 
 
 ]
